@@ -1,0 +1,3786 @@
+[
+  {
+    "file": "train_opsd_scope.py",
+    "source_sha256": "26e3b16bfd79bce721fb4d794af35159a7055e8f163205758892c3cfd4333dcc",
+    "export_sha256": "c1b02f06d2f95a20c1278ed62edf544a8f669c46d0032f73b64c53d14260fd41",
+    "portable_edits": 1
+  },
+  {
+    "file": "opsd/__init__.py",
+    "source_sha256": "294411a6a20c02d1b0f2a5eefd30c9c7e2c83c4a06a052ff1818f7a051365f82",
+    "export_sha256": "294411a6a20c02d1b0f2a5eefd30c9c7e2c83c4a06a052ff1818f7a051365f82",
+    "portable_edits": 0
+  },
+  {
+    "file": "opsd/visionzip_aokvqa/__init__.py",
+    "source_sha256": "f71f6922433ac56382c4d50a76ccbb725fa46798c98f8aef19136feedcea6442",
+    "export_sha256": "f71f6922433ac56382c4d50a76ccbb725fa46798c98f8aef19136feedcea6442",
+    "portable_edits": 0
+  },
+  {
+    "file": "opsd/visionzip_aokvqa/aokvqa.py",
+    "source_sha256": "3d06717d535054608e88d8eb594713dc43178c8e50a5ab9035dab01ec97e931e",
+    "export_sha256": "145c7637801a54d3b30aeb9a8bc90c5692629a248baf076d25fc1a8dd4d95035",
+    "portable_edits": 1
+  },
+  {
+    "file": "opsd/visionzip_aokvqa/data_integrity.py",
+    "source_sha256": "6cf2f3d8e26163a331a5ebd3ca1d629c06c7d0735b0f86a4683f75cf75ef50f7",
+    "export_sha256": "6cf2f3d8e26163a331a5ebd3ca1d629c06c7d0735b0f86a4683f75cf75ef50f7",
+    "portable_edits": 0
+  },
+  {
+    "file": "opsd/visionzip_aokvqa/epic_official.py",
+    "source_sha256": "6e7dfd2842668793e393d016c1e4e208f97f669bbbae1e418033e363837f0d68",
+    "export_sha256": "6e7dfd2842668793e393d016c1e4e208f97f669bbbae1e418033e363837f0d68",
+    "portable_edits": 0
+  },
+  {
+    "file": "opsd/visionzip_aokvqa/losses.py",
+    "source_sha256": "1f04acf34a1780f4fcde60258bc77497a7de8bad55331138f14de9837bf330a2",
+    "export_sha256": "1f04acf34a1780f4fcde60258bc77497a7de8bad55331138f14de9837bf330a2",
+    "portable_edits": 0
+  },
+  {
+    "file": "opsd/visionzip_aokvqa/native_budget_weighting.py",
+    "source_sha256": "5e5ba6aef6bcf3a125b5768769f97c3cdc2cc2cb84ba9c7ec83682a1b2d62c99",
+    "export_sha256": "5e5ba6aef6bcf3a125b5768769f97c3cdc2cc2cb84ba9c7ec83682a1b2d62c99",
+    "portable_edits": 0
+  },
+  {
+    "file": "opsd/visionzip_aokvqa/paired_sampling.py",
+    "source_sha256": "3a80099b8f6f7b3ba0dbcbe1a859e34d3e747f541a633fb9eac74e43b6f9a38f",
+    "export_sha256": "3a80099b8f6f7b3ba0dbcbe1a859e34d3e747f541a633fb9eac74e43b6f9a38f",
+    "portable_edits": 0
+  },
+  {
+    "file": "opsd/visionzip_aokvqa/phase_ratio_scaling.py",
+    "source_sha256": "71b71dce08405bc43d6962716a2f696b3ef0581cf71c7532c53c312be7c5fd72",
+    "export_sha256": "71b71dce08405bc43d6962716a2f696b3ef0581cf71c7532c53c312be7c5fd72",
+    "portable_edits": 0
+  },
+  {
+    "file": "opsd/visionzip_aokvqa/prompting.py",
+    "source_sha256": "ce6fde4a9d7d1d8256d4a8e9e80eb875078a244d336fde34f71f3735f850533e",
+    "export_sha256": "ce6fde4a9d7d1d8256d4a8e9e80eb875078a244d336fde34f71f3735f850533e",
+    "portable_edits": 0
+  },
+  {
+    "file": "opsd/visionzip_aokvqa/qwen_wrapper.py",
+    "source_sha256": "e973daced0492bec8ac9ed60fa8ae61f2df31d053b3b13c08cce3a2a09bac31f",
+    "export_sha256": "400f96dd232428a2e5f8aab2a549f4c8bb7402f20d424e600d39de1561985d31",
+    "portable_edits": 10
+  },
+  {
+    "file": "opsd/visionzip_aokvqa/root_kl_frontier.py",
+    "source_sha256": "3c67a48fe875b25fc85f69f196f92347454b4506b2e93772883e0ec70a445d3e",
+    "export_sha256": "3c67a48fe875b25fc85f69f196f92347454b4506b2e93772883e0ec70a445d3e",
+    "portable_edits": 0
+  },
+  {
+    "file": "opsd/visionzip_aokvqa/train.py",
+    "source_sha256": "f3deaa593e243d1d56e37671a9fba17e2ab7fd295da574b795460c6adacfa90d",
+    "export_sha256": "e4ae1244e1c16e7d5a24f84ea4dc94d50ac308d514b82018d4815fdcfd521f19",
+    "portable_edits": 1
+  },
+  {
+    "file": "opsd/visionzip_aokvqa/trajectory_weighting.py",
+    "source_sha256": "c98eb10f7fb7bea0e15395c560fc4a42c09c3fb3525f9c535e664d957a2f01eb",
+    "export_sha256": "c98eb10f7fb7bea0e15395c560fc4a42c09c3fb3525f9c535e664d957a2f01eb",
+    "portable_edits": 0
+  },
+  {
+    "file": "opsd/pruning_distill/__init__.py",
+    "source_sha256": "9d0ce90bfdfdb99b6a984a0a7ec235f225ecae57b28e2f52776c75bf24ffa15f",
+    "export_sha256": "9d0ce90bfdfdb99b6a984a0a7ec235f225ecae57b28e2f52776c75bf24ffa15f",
+    "portable_edits": 0
+  },
+  {
+    "file": "opsd/pruning_distill/losses.py",
+    "source_sha256": "d260b4b2bbd54d018dbd4a293a2051b65764a4dd1ee4e48b7edf176291672228",
+    "export_sha256": "d260b4b2bbd54d018dbd4a293a2051b65764a4dd1ee4e48b7edf176291672228",
+    "portable_edits": 0
+  },
+  {
+    "file": "opsd/pruning_distill/pruners.py",
+    "source_sha256": "c11d455816005b83685976a8ab171621baf9206ee683b65fe54376a8270a442c",
+    "export_sha256": "c11d455816005b83685976a8ab171621baf9206ee683b65fe54376a8270a442c",
+    "portable_edits": 0
+  },
+  {
+    "file": "opsd/pruning_distill/qwen25_pruned_forward.py",
+    "source_sha256": "2beb603cfad9396bba110d734d760c70754174e964f83b6fdf016ce409db974c",
+    "export_sha256": "2beb603cfad9396bba110d734d760c70754174e964f83b6fdf016ce409db974c",
+    "portable_edits": 0
+  },
+  {
+    "file": "tests/test_opsd_scope_entrypoint.py",
+    "source_sha256": "9637889a5b785b0a9f53ac44b54264cd5b23251e2990f20c258ee0539e7497c1",
+    "export_sha256": "62cad33a2b1d776bdb546a121ce8816904d06223810bc060595fe85164521155",
+    "portable_edits": 1
+  },
+  {
+    "file": "tests/test_qwen25vl_pruned_forward.py",
+    "source_sha256": "8c29aa9405b9456f512229ea21878cb3e5d0e3dbaff8879de11724ebf8779cfb",
+    "export_sha256": "8c29aa9405b9456f512229ea21878cb3e5d0e3dbaff8879de11724ebf8779cfb",
+    "portable_edits": 0
+  },
+  {
+    "file": "tests/test_token_budget_stability.py",
+    "source_sha256": "3ea0b13db82a3f4a82311c78b135ff28e0091d363c474f1676b9cdfaa31a4df8",
+    "export_sha256": "3ea0b13db82a3f4a82311c78b135ff28e0091d363c474f1676b9cdfaa31a4df8",
+    "portable_edits": 0
+  },
+  {
+    "file": "tests/test_data_integrity.py",
+    "source_sha256": "30d106aa6eb22048e1fb71d40b37ade80bd062fbac3d4f5e8a88050cce6f5ea1",
+    "export_sha256": "30d106aa6eb22048e1fb71d40b37ade80bd062fbac3d4f5e8a88050cce6f5ea1",
+    "portable_edits": 0
+  },
+  {
+    "file": "runtime/overlays/train/transformers/generation/utils.py",
+    "source_sha256": "9acc5ad5be42eec3661c899a5ef1b37d076f3f2c64eb992998ce5198862e05fc",
+    "export_sha256": "9acc5ad5be42eec3661c899a5ef1b37d076f3f2c64eb992998ce5198862e05fc",
+    "portable_edits": 0
+  },
+  {
+    "file": "runtime/overlays/train/transformers/integrations/flash_attention.py",
+    "source_sha256": "b16484572ac4940d304ba667a76a809ae22433cbe12e46c66ae2c2fc7f3651d8",
+    "export_sha256": "b16484572ac4940d304ba667a76a809ae22433cbe12e46c66ae2c2fc7f3651d8",
+    "portable_edits": 0
+  },
+  {
+    "file": "runtime/overlays/train/transformers/models/auto/configuration_auto.py",
+    "source_sha256": "120b62cd4e13dd155762acd14cf64fc8bca17a068f5dd004ddfd30fbcb2ef4ab",
+    "export_sha256": "120b62cd4e13dd155762acd14cf64fc8bca17a068f5dd004ddfd30fbcb2ef4ab",
+    "portable_edits": 0
+  },
+  {
+    "file": "runtime/overlays/train/transformers/models/qwen2_5_vl/modeling_qwen2_5_vl.py",
+    "source_sha256": "4a207f07cd6d3d20fdd9afd33a3933cffc3f1d4ab1d386900579eba09b9e558a",
+    "export_sha256": "4a207f07cd6d3d20fdd9afd33a3933cffc3f1d4ab1d386900579eba09b9e558a",
+    "portable_edits": 0
+  },
+  {
+    "file": "runtime/overlays/train/transformers/models/qwen3/modeling_qwen3.py",
+    "source_sha256": "96ac412e70cfe2d883a6741884ab550d31c45fbdc5cd7e4af3e29cff1cb9c5e3",
+    "export_sha256": "96ac412e70cfe2d883a6741884ab550d31c45fbdc5cd7e4af3e29cff1cb9c5e3",
+    "portable_edits": 0
+  },
+  {
+    "file": "runtime/overlays/train/transformers/models/qwen3_vl/modeling_qwen3_vl.py",
+    "source_sha256": "e0186fd3a226eed289e29ea0d993d3e7ab9eb4c5f83a2c1b02c67b0260964203",
+    "export_sha256": "e0186fd3a226eed289e29ea0d993d3e7ab9eb4c5f83a2c1b02c67b0260964203",
+    "portable_edits": 0
+  },
+  {
+    "file": "runtime/overlays/eval/transformers/generation/utils.py",
+    "source_sha256": "9acc5ad5be42eec3661c899a5ef1b37d076f3f2c64eb992998ce5198862e05fc",
+    "export_sha256": "9acc5ad5be42eec3661c899a5ef1b37d076f3f2c64eb992998ce5198862e05fc",
+    "portable_edits": 0
+  },
+  {
+    "file": "runtime/overlays/eval/transformers/integrations/flash_attention.py",
+    "source_sha256": "274a6a261437673efcb4ba76f4a78304ed6245e3a1f200376137090bdcb9c8de",
+    "export_sha256": "274a6a261437673efcb4ba76f4a78304ed6245e3a1f200376137090bdcb9c8de",
+    "portable_edits": 0
+  },
+  {
+    "file": "runtime/overlays/eval/transformers/models/auto/configuration_auto.py",
+    "source_sha256": "120b62cd4e13dd155762acd14cf64fc8bca17a068f5dd004ddfd30fbcb2ef4ab",
+    "export_sha256": "120b62cd4e13dd155762acd14cf64fc8bca17a068f5dd004ddfd30fbcb2ef4ab",
+    "portable_edits": 0
+  },
+  {
+    "file": "runtime/overlays/eval/transformers/models/qwen2_5_vl/modeling_qwen2_5_vl.py",
+    "source_sha256": "97d0f146fc760162039a6883a9a0a787b7cafe3d550e737210b9194294f7b683",
+    "export_sha256": "81e1e76eff4d476bf7a56fe57295cd4cfb8b826a8b7d1ed4ab8ee49e5757dc8f",
+    "portable_edits": 0,
+    "additional_export_edit": "Portable dependency path or multi-image prompt preservation"
+  },
+  {
+    "file": "runtime/overlays/eval/transformers/models/qwen3/modeling_qwen3.py",
+    "source_sha256": "96ac412e70cfe2d883a6741884ab550d31c45fbdc5cd7e4af3e29cff1cb9c5e3",
+    "export_sha256": "96ac412e70cfe2d883a6741884ab550d31c45fbdc5cd7e4af3e29cff1cb9c5e3",
+    "portable_edits": 0
+  },
+  {
+    "file": "runtime/overlays/eval/transformers/models/qwen3_vl/modeling_qwen3_vl.py",
+    "source_sha256": "e0186fd3a226eed289e29ea0d993d3e7ab9eb4c5f83a2c1b02c67b0260964203",
+    "export_sha256": "e0186fd3a226eed289e29ea0d993d3e7ab9eb4c5f83a2c1b02c67b0260964203",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/__init__.py",
+    "source_sha256": "4e4838dfd4408f4494ddf21199fc8613a0c911f9172d2e190890976f74e1b398",
+    "export_sha256": "00ac4a9cd774991ce805e97e7d655cadfbd4698944a9333a99e03ad7d17d4269",
+    "portable_edits": 0,
+    "additional_export_edit": "Portability, HTTPS defaults, safe parsing, or multi-image prompt preservation; see docs/ENVIRONMENT.md"
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/__init__.py",
+    "source_sha256": "ebf9787e681641ae84bde3a978b31595a9238721c7fcad75f85ae528a7126ec6",
+    "export_sha256": "ebf9787e681641ae84bde3a978b31595a9238721c7fcad75f85ae528a7126ec6",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/arm_thinker.py",
+    "source_sha256": "e8caf3c26208f4ab321b8e28505637c42d1e466fdd7893fcd868406a4a20d442",
+    "export_sha256": "e8caf3c26208f4ab321b8e28505637c42d1e466fdd7893fcd868406a4a20d442",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/bailingmm.py",
+    "source_sha256": "6aa36877488c3200f38c3ecb7bbbcf869839d5a2418ca10a37b1963a609c8907",
+    "export_sha256": "6aa36877488c3200f38c3ecb7bbbcf869839d5a2418ca10a37b1963a609c8907",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/base.py",
+    "source_sha256": "0a8d1ebb999fad13a3b1062ed15362332dc10844feb2bbcc82c78159120e92a6",
+    "export_sha256": "0a8d1ebb999fad13a3b1062ed15362332dc10844feb2bbcc82c78159120e92a6",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/bluelm_api.py",
+    "source_sha256": "35738ee6d67e0b29e0e1c5fe219b1566108b0bce3260d581c09080b5390cb517",
+    "export_sha256": "35738ee6d67e0b29e0e1c5fe219b1566108b0bce3260d581c09080b5390cb517",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/claude.py",
+    "source_sha256": "8be48651bcc3fa0776305cabd9ba2166caac1aff5a95d564959da9db98618e3c",
+    "export_sha256": "8be48651bcc3fa0776305cabd9ba2166caac1aff5a95d564959da9db98618e3c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/cloudwalk.py",
+    "source_sha256": "c7833237393afc4d4385651ee9de41e14907895e213b4a245a2da5abbe742b94",
+    "export_sha256": "c7833237393afc4d4385651ee9de41e14907895e213b4a245a2da5abbe742b94",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/doubao_vl_api.py",
+    "source_sha256": "3ef2db98457ebfe2f1665dcb9c6ff8df3d16157c0aabb0e6ab7c84c3cbfbf3cc",
+    "export_sha256": "3ef2db98457ebfe2f1665dcb9c6ff8df3d16157c0aabb0e6ab7c84c3cbfbf3cc",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/gemini.py",
+    "source_sha256": "43272cdce003a313da3841aa2f711e7a1edc9325bf0148914c326c851b4ebc3f",
+    "export_sha256": "43272cdce003a313da3841aa2f711e7a1edc9325bf0148914c326c851b4ebc3f",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/glm_vision.py",
+    "source_sha256": "6b4b4e83e869ff47637b28f588253c150b3048fd8be821397ca5f237e85196fb",
+    "export_sha256": "6b4b4e83e869ff47637b28f588253c150b3048fd8be821397ca5f237e85196fb",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/gpt.py",
+    "source_sha256": "89fb6386cb4c34e3f65ae367ef969590caaa12f040ca2a616c12491dce14a6b9",
+    "export_sha256": "89fb6386cb4c34e3f65ae367ef969590caaa12f040ca2a616c12491dce14a6b9",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/hf_chat_model.py",
+    "source_sha256": "e2f784686fe9538cfe62f9ba0bd1574590f67b505eafb6bddb9167cbc015d92e",
+    "export_sha256": "e2f784686fe9538cfe62f9ba0bd1574590f67b505eafb6bddb9167cbc015d92e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/hunyuan.py",
+    "source_sha256": "44261f01aa6d2bc03b2feac133042a038e2dea2f79ff2e237fb81699dad0de41",
+    "export_sha256": "44261f01aa6d2bc03b2feac133042a038e2dea2f79ff2e237fb81699dad0de41",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/jt_vl_chat.py",
+    "source_sha256": "b0a0be4b8da08075364ba8aedd226f1bb6e5ba3ee32200a219d7323fd4817aa8",
+    "export_sha256": "b0a0be4b8da08075364ba8aedd226f1bb6e5ba3ee32200a219d7323fd4817aa8",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/jt_vl_chat_mini.py",
+    "source_sha256": "099944ea73cff4cae8329f3e2502f286f87327a82d04d95f85085c17c76923cf",
+    "export_sha256": "099944ea73cff4cae8329f3e2502f286f87327a82d04d95f85085c17c76923cf",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/kimivl_api.py",
+    "source_sha256": "f340d06cb6ecde8b4c5ec2354da28783d3b0c93f65e3d878a303b8d56e244e13",
+    "export_sha256": "f340d06cb6ecde8b4c5ec2354da28783d3b0c93f65e3d878a303b8d56e244e13",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/lmdeploy.py",
+    "source_sha256": "571b64a24dcbd655eb7eb163e1d170fb5fffb0f63334dc1c21b8620872f1b56b",
+    "export_sha256": "571b64a24dcbd655eb7eb163e1d170fb5fffb0f63334dc1c21b8620872f1b56b",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/mug_u.py",
+    "source_sha256": "f926d6160b9be3971660775221b5ed751cd3de99dfceb898f0196a42a05d5e60",
+    "export_sha256": "f926d6160b9be3971660775221b5ed751cd3de99dfceb898f0196a42a05d5e60",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/qwen_api.py",
+    "source_sha256": "bc479c9b4c0ba41412ef5cb8471e555af11e2d0c53ab6b3d8c81ade3d101b241",
+    "export_sha256": "bc479c9b4c0ba41412ef5cb8471e555af11e2d0c53ab6b3d8c81ade3d101b241",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/qwen_vl_api.py",
+    "source_sha256": "2e1605767f6db702296d28805df656f84c37dd49c3c7026beffa54e79e18f2a9",
+    "export_sha256": "2e1605767f6db702296d28805df656f84c37dd49c3c7026beffa54e79e18f2a9",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/rbdashmm_chat3_5_api.py",
+    "source_sha256": "be17f763682222de3ba672b0f28180533b2e65d7d8d968352409581d31588900",
+    "export_sha256": "be17f763682222de3ba672b0f28180533b2e65d7d8d968352409581d31588900",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/rbdashmm_chat3_api.py",
+    "source_sha256": "dcc6234dd4f6a1dbda0ae398e37a78463a137b002f8a8cc4901aaaba61cfe0a2",
+    "export_sha256": "dcc6234dd4f6a1dbda0ae398e37a78463a137b002f8a8cc4901aaaba61cfe0a2",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/reka.py",
+    "source_sha256": "4bd164272693537f2391c0727e253c3f06794d60c0e202820737fffb94ad1f27",
+    "export_sha256": "4bd164272693537f2391c0727e253c3f06794d60c0e202820737fffb94ad1f27",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/sensechat_vision.py",
+    "source_sha256": "8de3f117d40c7cfff4a4076028443e9f2bb54e6d5466dd625115cfdb6d39536d",
+    "export_sha256": "8de3f117d40c7cfff4a4076028443e9f2bb54e6d5466dd625115cfdb6d39536d",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/siliconflow.py",
+    "source_sha256": "371d8e7fbdb3f3dd052cb912c9abcf4c5f00c16fbc576807e3da4c6d8cf724b7",
+    "export_sha256": "371d8e7fbdb3f3dd052cb912c9abcf4c5f00c16fbc576807e3da4c6d8cf724b7",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/stepai.py",
+    "source_sha256": "f248cb710f0c3a1d9bed9b70c9c086dc76aaa85527f299a01d33f0583357a3be",
+    "export_sha256": "f248cb710f0c3a1d9bed9b70c9c086dc76aaa85527f299a01d33f0583357a3be",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/taichu.py",
+    "source_sha256": "4ae57e9baf4132d46a9c8843cec1a52deb7e4cf209144c6509fab81694b6918e",
+    "export_sha256": "4ae57e9baf4132d46a9c8843cec1a52deb7e4cf209144c6509fab81694b6918e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/taiyi.py",
+    "source_sha256": "1b8947bcb72f2956d8c0499a6613094a180f8275b9710c8082223b6463ca8b97",
+    "export_sha256": "1b8947bcb72f2956d8c0499a6613094a180f8275b9710c8082223b6463ca8b97",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/api/video_chat_online_v2.py",
+    "source_sha256": "54106f49b4a82389309578b74f5c6c9f520f09c0f8f812177955397d01d4a0a6",
+    "export_sha256": "54106f49b4a82389309578b74f5c6c9f520f09c0f8f812177955397d01d4a0a6",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/config.py",
+    "source_sha256": "0f455ba54dae73e12d08600345382cb19a9b91dfff6023dbd74278f7998c8604",
+    "export_sha256": "0f455ba54dae73e12d08600345382cb19a9b91dfff6023dbd74278f7998c8604",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/CGAVCounting/__init__.py",
+    "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "export_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/CGAVCounting/cg_av_counting.py",
+    "source_sha256": "b603f87def09fe8be8c78705c1c394e0eb6aeff2d9e12aaca8bf2c8146e77f4f",
+    "export_sha256": "b603f87def09fe8be8c78705c1c394e0eb6aeff2d9e12aaca8bf2c8146e77f4f",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/CGAVCounting/utils.py",
+    "source_sha256": "5bbe2ffcf55bc7ce0c533b677b9765fc062fdd7813ea6657fd289227f90c9250",
+    "export_sha256": "5bbe2ffcf55bc7ce0c533b677b9765fc062fdd7813ea6657fd289227f90c9250",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/EgoExoBench/__init__.py",
+    "source_sha256": "8ca4a2e2323ce1e2a986f11d3379bc68c1ed24528edd34df70ae6178f55c921c",
+    "export_sha256": "8ca4a2e2323ce1e2a986f11d3379bc68c1ed24528edd34df70ae6178f55c921c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/EgoExoBench/cvmhat_preprocess.py",
+    "source_sha256": "391695cdb26a5edd022b55dea69148eba021ce5233e9dae668ed206b93b3db81",
+    "export_sha256": "391695cdb26a5edd022b55dea69148eba021ce5233e9dae668ed206b93b3db81",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/EgoExoBench/egoexobench.py",
+    "source_sha256": "7bc7dd2f72a251a19dd6249da0b0564bc49be1f9cf38a4e15c569b7f6a8bc005",
+    "export_sha256": "7bc7dd2f72a251a19dd6249da0b0564bc49be1f9cf38a4e15c569b7f6a8bc005",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/EgoExoBench/tf2023_preprocess.py",
+    "source_sha256": "8b44a10e6f47e0976aeff9a8aa7851672432d14d670b0062fd7621f34b137030",
+    "export_sha256": "8b44a10e6f47e0976aeff9a8aa7851672432d14d670b0062fd7621f34b137030",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/EgoExoBench/utils.py",
+    "source_sha256": "7213c7821f2459f58c015397b9afa9124412f81f43a3f3ee42afc81ba86fa3f8",
+    "export_sha256": "7213c7821f2459f58c015397b9afa9124412f81f43a3f3ee42afc81ba86fa3f8",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/GUI/__init__.py",
+    "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "export_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/GUI/screenspot.py",
+    "source_sha256": "a8bbf01a77807d1b8f0f1fba4a9f5413f8dc556b59abc922abf01c33567f9045",
+    "export_sha256": "a8bbf01a77807d1b8f0f1fba4a9f5413f8dc556b59abc922abf01c33567f9045",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/GUI/screenspot_pro.py",
+    "source_sha256": "4844538461dac896a4bea1888eb701b26938a5dab6dbc39ab34b79b66ff700cf",
+    "export_sha256": "4844538461dac896a4bea1888eb701b26938a5dab6dbc39ab34b79b66ff700cf",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/GUI/screenspot_v2.py",
+    "source_sha256": "7073ce28d4871b5344ceb5dbcf5f79caac2a25430142274710a147c155491a67",
+    "export_sha256": "7073ce28d4871b5344ceb5dbcf5f79caac2a25430142274710a147c155491a67",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/OmniDocBench/__init__.py",
+    "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "export_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/OmniDocBench/data_preprocess.py",
+    "source_sha256": "41d91bea6792e0efee79fe8c119858d0689330a36fa23474821cde6b4de08192",
+    "export_sha256": "41d91bea6792e0efee79fe8c119858d0689330a36fa23474821cde6b4de08192",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/OmniDocBench/metrics.py",
+    "source_sha256": "36a22a2695f2593248d5c9c7a96909f2a2a334e0ead6fa54282e951b81b702f5",
+    "export_sha256": "36a22a2695f2593248d5c9c7a96909f2a2a334e0ead6fa54282e951b81b702f5",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/OmniDocBench/omnidocbench.py",
+    "source_sha256": "f91a4134b4506bfef6c8b1c12c31264616302c099274767c648613e25884fe1b",
+    "export_sha256": "f91a4134b4506bfef6c8b1c12c31264616302c099274767c648613e25884fe1b",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/OmniDocBench/utils.py",
+    "source_sha256": "0e6c9994f7031996d93945b3468a5fb296974e001ac657a7e109e0cc159a7011",
+    "export_sha256": "0e6c9994f7031996d93945b3468a5fb296974e001ac657a7e109e0cc159a7011",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/__init__.py",
+    "source_sha256": "31d910a7e4307a3c480155a0b0e74b88dd5becc003676243fe4153e3afda13ec",
+    "export_sha256": "31d910a7e4307a3c480155a0b0e74b88dd5becc003676243fe4153e3afda13ec",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/cgbench.py",
+    "source_sha256": "487e602a69be063aa364fe1da7f19ab73b05d218c4575a36e9e917def50efd17",
+    "export_sha256": "487e602a69be063aa364fe1da7f19ab73b05d218c4575a36e9e917def50efd17",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/chartmimic.py",
+    "source_sha256": "cc320e539fac3e485c16bff4c94cb475f95ce76ee79c4a3ecfe7b39278ae80bf",
+    "export_sha256": "cc320e539fac3e485c16bff4c94cb475f95ce76ee79c4a3ecfe7b39278ae80bf",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/chartmuseum.py",
+    "source_sha256": "98c6a496db1d44418218f66ea2477a4e867bb2983122a1a9bd2f9d09dcf9c57f",
+    "export_sha256": "98c6a496db1d44418218f66ea2477a4e867bb2983122a1a9bd2f9d09dcf9c57f",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/chartqapro.py",
+    "source_sha256": "49fb0c09750469d69a3e6fe4389548b03b87509a3fec2c349829c7c303f90276",
+    "export_sha256": "49fb0c09750469d69a3e6fe4389548b03b87509a3fec2c349829c7c303f90276",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/charxiv.py",
+    "source_sha256": "2a2cbaf5420a69932b85e3f4b9efbda9c5b07948b76acda8c1d4f394208527fb",
+    "export_sha256": "2a2cbaf5420a69932b85e3f4b9efbda9c5b07948b76acda8c1d4f394208527fb",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/cmmmu.py",
+    "source_sha256": "82d691dbe68f3342cbd6a9a7b93213f4400f8176ace91203efcb95a2bd07cdd9",
+    "export_sha256": "82d691dbe68f3342cbd6a9a7b93213f4400f8176ace91203efcb95a2bd07cdd9",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/creation.py",
+    "source_sha256": "0688e019828defc0cb45401818773dc27413f6efcbf757475f3a9c14cff5df1c",
+    "export_sha256": "0688e019828defc0cb45401818773dc27413f6efcbf757475f3a9c14cff5df1c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/dream.py",
+    "source_sha256": "7f2c5bd7950fe907026d077f6c6e6ccd295110d4d2e84d4e1065a91c20ec4584",
+    "export_sha256": "7f2c5bd7950fe907026d077f6c6e6ccd295110d4d2e84d4e1065a91c20ec4584",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/dude.py",
+    "source_sha256": "2cda5677bc08b9ec88a500cee5214b347b018a7aa1637a7a0a59a3abd9dad940",
+    "export_sha256": "2cda5677bc08b9ec88a500cee5214b347b018a7aa1637a7a0a59a3abd9dad940",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/dynamath.py",
+    "source_sha256": "e84b4969c9e03862e82e72432d10c31aebfe577f215450e95270b69e3cc4217f",
+    "export_sha256": "e84b4969c9e03862e82e72432d10c31aebfe577f215450e95270b69e3cc4217f",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/emma.py",
+    "source_sha256": "4bce7250b778e19e074e39ace331cb732331f8cf5818cc4c493fcef45dcf6f46",
+    "export_sha256": "4bce7250b778e19e074e39ace331cb732331f8cf5818cc4c493fcef45dcf6f46",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/gobench.py",
+    "source_sha256": "de1563d737d17d94b329ca891e18c0d27a43e8123002245f882c74768386ec42",
+    "export_sha256": "de1563d737d17d94b329ca891e18c0d27a43e8123002245f882c74768386ec42",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/gsm8k_v.py",
+    "source_sha256": "c150ef284dec63258176170538d48f76b11685a5bbfa635f475e4a9ebc84621d",
+    "export_sha256": "c150ef284dec63258176170538d48f76b11685a5bbfa635f475e4a9ebc84621d",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/hipho.py",
+    "source_sha256": "c3f50b6abc34523fd57128c76dacd7e95df7918fff22e0a069e150c6a27615e5",
+    "export_sha256": "c3f50b6abc34523fd57128c76dacd7e95df7918fff22e0a069e150c6a27615e5",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/image_base.py",
+    "source_sha256": "1fc85ef92c87cfa8219df2aa6028313cc2171d24daacc2619f3419328121de25",
+    "export_sha256": "1fc85ef92c87cfa8219df2aa6028313cc2171d24daacc2619f3419328121de25",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/image_caption.py",
+    "source_sha256": "f1a8d9cf8a528350943fd94573f1944b7b0931b84118538fea03edeeaf9bbcb1",
+    "export_sha256": "f1a8d9cf8a528350943fd94573f1944b7b0931b84118538fea03edeeaf9bbcb1",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/image_ccocr.py",
+    "source_sha256": "f66bcad1954faa42ca64beb6561b469652d500487411d5c55bedf72484b42a29",
+    "export_sha256": "f66bcad1954faa42ca64beb6561b469652d500487411d5c55bedf72484b42a29",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/image_mcq.py",
+    "source_sha256": "060846257cc972c6d426fcd95a42064a67d33e26a41b5381d485558962838b61",
+    "export_sha256": "d96b2876e160c178568d2ff2fd29aa6c360c6d960257bfc6b22ce81741d28836",
+    "portable_edits": 0,
+    "additional_export_edit": "Portability, HTTPS defaults, safe parsing, or multi-image prompt preservation; see docs/ENVIRONMENT.md"
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/image_mt.py",
+    "source_sha256": "75a7f0b9a80a5245aa218a3dbdfa19acc0bf0ae5c107dacc26d0b917d07b4130",
+    "export_sha256": "75a7f0b9a80a5245aa218a3dbdfa19acc0bf0ae5c107dacc26d0b917d07b4130",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/image_shortqa.py",
+    "source_sha256": "8ac726884c2b6c9b0d6f1449ddb2f8ae6c406833288ff13bcc5e880b0173b28b",
+    "export_sha256": "8ac726884c2b6c9b0d6f1449ddb2f8ae6c406833288ff13bcc5e880b0173b28b",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/image_vqa.py",
+    "source_sha256": "177fca2b18fb506496b64eb793688d2b754e517b3dd7e0e491757efd61611a19",
+    "export_sha256": "177fca2b18fb506496b64eb793688d2b754e517b3dd7e0e491757efd61611a19",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/image_yorn.py",
+    "source_sha256": "c043da9e72cf2ecb70c40d5655df3a9de0a27faaf3c8295339fecc9d0edf7aee",
+    "export_sha256": "c043da9e72cf2ecb70c40d5655df3a9de0a27faaf3c8295339fecc9d0edf7aee",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/longvideobench.py",
+    "source_sha256": "46f4151be71556f27c675766d6bc5de3879aa5cb8b55a0514851df97a4e33d5a",
+    "export_sha256": "46f4151be71556f27c675766d6bc5de3879aa5cb8b55a0514851df97a4e33d5a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/m4bench.py",
+    "source_sha256": "d5fd5d537830d7e05d14e8c858127ed138e16798cbad7d3fac68e2d18fa9e201",
+    "export_sha256": "d5fd5d537830d7e05d14e8c858127ed138e16798cbad7d3fac68e2d18fa9e201",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/macbench.py",
+    "source_sha256": "7f61f1c70f4b09dd69efbe9558cf8124967546425b608040b5cb8d4b87b8a98c",
+    "export_sha256": "7f61f1c70f4b09dd69efbe9558cf8124967546425b608040b5cb8d4b87b8a98c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/matbench.py",
+    "source_sha256": "2458dab0371ccc7b9afb0795131b1fb2518e868d10a8545885bb3028c6dcd571",
+    "export_sha256": "2458dab0371ccc7b9afb0795131b1fb2518e868d10a8545885bb3028c6dcd571",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/medqbench_caption.py",
+    "source_sha256": "d8061c8b9dd4bd3c028447aefc599262c0c25351351c2c78649d389a7bddfe40",
+    "export_sha256": "d8061c8b9dd4bd3c028447aefc599262c0c25351351c2c78649d389a7bddfe40",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/medqbench_mcq.py",
+    "source_sha256": "5e311a23c8f1c34ea9d15ec6f4dec2b075a4061450a153fa1fc2050c97e819aa",
+    "export_sha256": "5e311a23c8f1c34ea9d15ec6f4dec2b075a4061450a153fa1fc2050c97e819aa",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/medqbench_paired_description.py",
+    "source_sha256": "2c232445cc91512272d5b300264011cf0aca5a812060e1a0fe9973f837a74a63",
+    "export_sha256": "2c232445cc91512272d5b300264011cf0aca5a812060e1a0fe9973f837a74a63",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/megabench.py",
+    "source_sha256": "ca5e33c60ec8027b8fa963477511f86a7040e0948346831859a592edeb760536",
+    "export_sha256": "ca5e33c60ec8027b8fa963477511f86a7040e0948346831859a592edeb760536",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/miabench.py",
+    "source_sha256": "e544161aac51013db60cd126ddd791bad8e997d164f39a91683983150096fa40",
+    "export_sha256": "e544161aac51013db60cd126ddd791bad8e997d164f39a91683983150096fa40",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/mlvu.py",
+    "source_sha256": "b45b728bdb08184e4d11f90979c7c130984e6cbbdbed0ef6e8e8dea2a2eb9b38",
+    "export_sha256": "b45b728bdb08184e4d11f90979c7c130984e6cbbdbed0ef6e8e8dea2a2eb9b38",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/mmalignbench.py",
+    "source_sha256": "18b6a0251db3cbd71a7bb9df1ba570bed25ba00186930a23f246524e63473871",
+    "export_sha256": "18b6a0251db3cbd71a7bb9df1ba570bed25ba00186930a23f246524e63473871",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/mmbench_video.py",
+    "source_sha256": "341917f07dd7af69abcc089f02b154387c5e8c0a153ba26fccad94991857796f",
+    "export_sha256": "341917f07dd7af69abcc089f02b154387c5e8c0a153ba26fccad94991857796f",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/mmgenbench.py",
+    "source_sha256": "f57d034d6b8507f72e514c5f86724218a677ad6f8cebfe365e78a059132e3915",
+    "export_sha256": "f57d034d6b8507f72e514c5f86724218a677ad6f8cebfe365e78a059132e3915",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/mmhelix.py",
+    "source_sha256": "1ed3d5cdc0528533935afd1908ef35b0e42c51a8482ba41eac0f00316e7c7085",
+    "export_sha256": "1ed3d5cdc0528533935afd1908ef35b0e42c51a8482ba41eac0f00316e7c7085",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/mmifeval.py",
+    "source_sha256": "882b2c3447e9124dde0c6e3b2d898c0d126ace69566e0307826171ae0e65df30",
+    "export_sha256": "882b2c3447e9124dde0c6e3b2d898c0d126ace69566e0307826171ae0e65df30",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/mmlongbench.py",
+    "source_sha256": "bd4ba73d3ee20b6a7801f16cef9af7ed87a897f9bb950eba912cd5e1fef95986",
+    "export_sha256": "bd4ba73d3ee20b6a7801f16cef9af7ed87a897f9bb950eba912cd5e1fef95986",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/mmmath.py",
+    "source_sha256": "f0fac05fb579d256af9ee404c37751855f7e7d5dbcb8edd5f7b1fd3365c837a9",
+    "export_sha256": "f0fac05fb579d256af9ee404c37751855f7e7d5dbcb8edd5f7b1fd3365c837a9",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/mmreason.py",
+    "source_sha256": "9e607b1496cc2540b7be15178e26cfea60b0b117962f7dd66d7ea6f84d807096",
+    "export_sha256": "9e607b1496cc2540b7be15178e26cfea60b0b117962f7dd66d7ea6f84d807096",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/moat.py",
+    "source_sha256": "8d48368711d48d0458b4697ede9e3f2e8076f6a890047209fce7c40d41dc3cc8",
+    "export_sha256": "8d48368711d48d0458b4697ede9e3f2e8076f6a890047209fce7c40d41dc3cc8",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/moviechat1k.py",
+    "source_sha256": "d9d196a94bac2389c4f22f819317db616a26866711552bf0e030b8b20b679ddc",
+    "export_sha256": "d9d196a94bac2389c4f22f819317db616a26866711552bf0e030b8b20b679ddc",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/mvbench.py",
+    "source_sha256": "2edc886c31859e3bf61ede78b10f7e1bc5e566d513e82b89144a0b93a20ec7e2",
+    "export_sha256": "2edc886c31859e3bf61ede78b10f7e1bc5e566d513e82b89144a0b93a20ec7e2",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/oceanocr.py",
+    "source_sha256": "4735d1ae6e7ee33471a448fca7db7fd2afb95c9ef6a418f66c8a82ab100ec04b",
+    "export_sha256": "4735d1ae6e7ee33471a448fca7db7fd2afb95c9ef6a418f66c8a82ab100ec04b",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/olmOCRBench/evaluator.py",
+    "source_sha256": "37b8e34c0558e2cc3e01801827075f7f7459948175b0d9593dcb8c3e87e822f8",
+    "export_sha256": "37b8e34c0558e2cc3e01801827075f7f7459948175b0d9593dcb8c3e87e822f8",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/olmOCRBench/katex/__init__.py",
+    "source_sha256": "dc168cb576c0a62f3b173016bb02d5f4f11d0fcf373f23ac20e168d1261aa5c9",
+    "export_sha256": "dc168cb576c0a62f3b173016bb02d5f4f11d0fcf373f23ac20e168d1261aa5c9",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/olmOCRBench/katex/render.py",
+    "source_sha256": "93be767ef14598b7e1c66a67b7699e65ef50c162b9de5220ae071e6da6e260ca",
+    "export_sha256": "93be767ef14598b7e1c66a67b7699e65ef50c162b9de5220ae071e6da6e260ca",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/olmOCRBench/olmocrbench.py",
+    "source_sha256": "e285073e3b3deaf90bcc2d021e80f62ae7753f9dc1d5acda6417b81856077d69",
+    "export_sha256": "e285073e3b3deaf90bcc2d021e80f62ae7753f9dc1d5acda6417b81856077d69",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/olmOCRBench/repeatdetect.py",
+    "source_sha256": "39bb4d6e96066de64a7a93bea8a7236afb7652a0291bfa5bee357dd19ff9a8b8",
+    "export_sha256": "39bb4d6e96066de64a7a93bea8a7236afb7652a0291bfa5bee357dd19ff9a8b8",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/olmOCRBench/tests.py",
+    "source_sha256": "0f9b1205b68c2d84c8a5c1e0497df6c1ef53a136c39eadaa8d31fc0014298843",
+    "export_sha256": "0f9b1205b68c2d84c8a5c1e0497df6c1ef53a136c39eadaa8d31fc0014298843",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/olmOCRBench/utils.py",
+    "source_sha256": "68c99345e413c0e23c05b1731f4aa4e58a7c57eccdc7f49797a5456723aa2acf",
+    "export_sha256": "68c99345e413c0e23c05b1731f4aa4e58a7c57eccdc7f49797a5456723aa2acf",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/ost_bench.py",
+    "source_sha256": "4a8cc25b5385f142f91d4cb2bf159dc7b05aa10ff8f4b9f4479b2be53f85493a",
+    "export_sha256": "4a8cc25b5385f142f91d4cb2bf159dc7b05aa10ff8f4b9f4479b2be53f85493a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/qbench_video.py",
+    "source_sha256": "aba95692dfea76da65ee08a47873ec7d06462924af61dff3785cd2d7a0fa555e",
+    "export_sha256": "aba95692dfea76da65ee08a47873ec7d06462924af61dff3785cd2d7a0fa555e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/reasonmap_plus.py",
+    "source_sha256": "2c0c6997c4fdb5c97558e921bee3816ad71d56f0e3f5ef1154b993c7d84aaa8c",
+    "export_sha256": "2c0c6997c4fdb5c97558e921bee3816ad71d56f0e3f5ef1154b993c7d84aaa8c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/refcoco.py",
+    "source_sha256": "9bf29f56385524cde0c90a7957fcc3e4f8b62915c4fbdc0779fe66b00289e09c",
+    "export_sha256": "9bf29f56385524cde0c90a7957fcc3e4f8b62915c4fbdc0779fe66b00289e09c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/sarena_mini.py",
+    "source_sha256": "2d2298ef5eba9bf992dbe731997e5e2ce56be34088a2af984c1d9d548758288e",
+    "export_sha256": "2d2298ef5eba9bf992dbe731997e5e2ce56be34088a2af984c1d9d548758288e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/sfebench.py",
+    "source_sha256": "cc4a45828547efc249af8c7be791be2c6f77246f28fe541cdf354384b1c59464",
+    "export_sha256": "cc4a45828547efc249af8c7be791be2c6f77246f28fe541cdf354384b1c59464",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/simplevqa.py",
+    "source_sha256": "c3373a857ac2b05d6a752191e79eafaaee3d46fb99664393313e6f7ac0b78a83",
+    "export_sha256": "c3373a857ac2b05d6a752191e79eafaaee3d46fb99664393313e6f7ac0b78a83",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/slidevqa.py",
+    "source_sha256": "f8db9d13c98db14613fd65b4cdcb6a6d105715c7d4570397c73909c30669c6e6",
+    "export_sha256": "f8db9d13c98db14613fd65b4cdcb6a6d105715c7d4570397c73909c30669c6e6",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/spatial457.py",
+    "source_sha256": "a3c7be6c13d1f591a4cec686a684461c654cd20c5fb41363e89a9bb2a1f324cd",
+    "export_sha256": "a3c7be6c13d1f591a4cec686a684461c654cd20c5fb41363e89a9bb2a1f324cd",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/tamperbench.py",
+    "source_sha256": "6d2e3d8f6a3a7e1214dde7579af9d369f8cedb1df29fc24962deeddc1894cd4b",
+    "export_sha256": "6d2e3d8f6a3a7e1214dde7579af9d369f8cedb1df29fc24962deeddc1894cd4b",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/tempcompass.py",
+    "source_sha256": "13662f54f476eda2ab904a0b60e4355b43228e03be944b77a6f380c5ea48a035",
+    "export_sha256": "13662f54f476eda2ab904a0b60e4355b43228e03be944b77a6f380c5ea48a035",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/text_base.py",
+    "source_sha256": "34277f3e63ab78a8771308a3ed98fe683254e9a4c451b4181e29299323f437f6",
+    "export_sha256": "34277f3e63ab78a8771308a3ed98fe683254e9a4c451b4181e29299323f437f6",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/text_mcq.py",
+    "source_sha256": "b3d78b5c77470fe2679792100825c144085a6a3268c2f00c6d00fc6fc67f6839",
+    "export_sha256": "b3d78b5c77470fe2679792100825c144085a6a3268c2f00c6d00fc6fc67f6839",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/uni_svg.py",
+    "source_sha256": "a19382f6730d1e13c830b1c7ee3bfdd4b854565b5c64088523e0d0aee2f7a4d9",
+    "export_sha256": "a19382f6730d1e13c830b1c7ee3bfdd4b854565b5c64088523e0d0aee2f7a4d9",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/Ocrbench_v2/IoUscore_metric.py",
+    "source_sha256": "c1111ce140965c95e7f4206a1865b19315c0864651c2aedec9f96e528d065d4c",
+    "export_sha256": "c1111ce140965c95e7f4206a1865b19315c0864651c2aedec9f96e528d065d4c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/Ocrbench_v2/TEDS_metric.py",
+    "source_sha256": "0c5cbd6918e2f4d6c7622fcf9925f094e8b8093b5c8b3c0beebdf0470228b481",
+    "export_sha256": "0c5cbd6918e2f4d6c7622fcf9925f094e8b8093b5c8b3c0beebdf0470228b481",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/Ocrbench_v2/page_ocr_metric.py",
+    "source_sha256": "da46ee9b0756774bea49a389d4f5dda0bb1f60a79d5a1acd9ab1e08c144a892a",
+    "export_sha256": "da46ee9b0756774bea49a389d4f5dda0bb1f60a79d5a1acd9ab1e08c144a892a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/Ocrbench_v2/parallel.py",
+    "source_sha256": "6a4f8d499d466284430acdf91fb0d6831c69c21eb1e1e5364438f793affc7625",
+    "export_sha256": "6a4f8d499d466284430acdf91fb0d6831c69c21eb1e1e5364438f793affc7625",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/Ocrbench_v2/spotting_eval/rrc_evaluation_funcs_1_1.py",
+    "source_sha256": "c3087469e33aff2ea7aeae5cc97ff2d2217b944fb2be0a886ffe1e330450204a",
+    "export_sha256": "c3087469e33aff2ea7aeae5cc97ff2d2217b944fb2be0a886ffe1e330450204a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/Ocrbench_v2/spotting_eval/script.py",
+    "source_sha256": "b760921a8544ca66d4b97884bbcf69a9f1b5adca560291754ff6feeb2fe7f10e",
+    "export_sha256": "b760921a8544ca66d4b97884bbcf69a9f1b5adca560291754ff6feeb2fe7f10e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/Ocrbench_v2/spotting_metric.py",
+    "source_sha256": "2d4c8785c2fbdaa437169371c978257e4c06ccb940231fc922be39edf38fd382",
+    "export_sha256": "2d4c8785c2fbdaa437169371c978257e4c06ccb940231fc922be39edf38fd382",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/Ocrbench_v2/vqa_metric.py",
+    "source_sha256": "46cf354b294d2470ee12def5a51f75dbf0ddf21d69965b80e1cf6d8748452ad7",
+    "export_sha256": "46cf354b294d2470ee12def5a51f75dbf0ddf21d69965b80e1cf6d8748452ad7",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/SArena/CLIP_Score.py",
+    "source_sha256": "fbdec1b39215210e63b37dfca359c3c76d4b4ba0a37dddf0ec22b356cb6b96ee",
+    "export_sha256": "fbdec1b39215210e63b37dfca359c3c76d4b4ba0a37dddf0ec22b356cb6b96ee",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/SArena/DINO_Score.py",
+    "source_sha256": "4d12aafee0d2aa37f88ff9781b9da15669433cb1cb6bb6d75c068cf791e2ee0a",
+    "export_sha256": "4d12aafee0d2aa37f88ff9781b9da15669433cb1cb6bb6d75c068cf791e2ee0a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/SArena/FID.py",
+    "source_sha256": "b02038c89d4e6352adeec53efc43c788a897556edc0f1f6ba1589995a477d9be",
+    "export_sha256": "b02038c89d4e6352adeec53efc43c788a897556edc0f1f6ba1589995a477d9be",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/SArena/LPIPS.py",
+    "source_sha256": "690a9672572c4b3f5d06a0ebbfd7349c6cef41f533a6c99ce57d9e1f5ec87118",
+    "export_sha256": "690a9672572c4b3f5d06a0ebbfd7349c6cef41f533a6c99ce57d9e1f5ec87118",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/SArena/PSNR.py",
+    "source_sha256": "78752a857db7951b92271750ad970514e1224960339988fc91218607a384524c",
+    "export_sha256": "78752a857db7951b92271750ad970514e1224960339988fc91218607a384524c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/SArena/SSIM.py",
+    "source_sha256": "1a3a41f9f64c9bfc9d89e78b39e01aef57857c95f058de90965634316a3efa90",
+    "export_sha256": "1a3a41f9f64c9bfc9d89e78b39e01aef57857c95f058de90965634316a3efa90",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/SArena/__init__.py",
+    "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "export_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/SArena/average_meter.py",
+    "source_sha256": "81450dec8a7076231e827a58128a0dd162ab74b6f9f88206af868b1414f4055d",
+    "export_sha256": "81450dec8a7076231e827a58128a0dd162ab74b6f9f88206af868b1414f4055d",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/SArena/base_metric.py",
+    "source_sha256": "2dc8917c3879e8c574ad9c3bd39bc8f5a6631ef7bf6b196ecefec13ae05dcc07",
+    "export_sha256": "2dc8917c3879e8c574ad9c3bd39bc8f5a6631ef7bf6b196ecefec13ae05dcc07",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/SArena/inception.py",
+    "source_sha256": "04434cffc9cb0fd42dd94b29302a92b6e9dd3dc793bc38521a128ac80d5da238",
+    "export_sha256": "04434cffc9cb0fd42dd94b29302a92b6e9dd3dc793bc38521a128ac80d5da238",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/SArena/metrics.py",
+    "source_sha256": "449eea0509be8c6b33963b5f1fb26acfed7b67b10629f7cc78784d06242c9a89",
+    "export_sha256": "449eea0509be8c6b33963b5f1fb26acfed7b67b10629f7cc78784d06242c9a89",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/SArena/token_length.py",
+    "source_sha256": "b95625605142c2b6964146192d3a1740bc6f0351b7ca083ae0ff6e4d9564ffc1",
+    "export_sha256": "b95625605142c2b6964146192d3a1740bc6f0351b7ca083ae0ff6e4d9564ffc1",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/SArena/utils/__init__.py",
+    "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "export_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/SArena/utils/raster_svg.py",
+    "source_sha256": "af9d3add9400606ff84ccb3176a1ffaaacc7e50761bae1222abd561f71d61973",
+    "export_sha256": "af9d3add9400606ff84ccb3176a1ffaaacc7e50761bae1222abd561f71d61973",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/__init__.py",
+    "source_sha256": "836cd2ea79c813e22dd55437f096203edf1d81d06aed104dbb8887e71e243243",
+    "export_sha256": "836cd2ea79c813e22dd55437f096203edf1d81d06aed104dbb8887e71e243243",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/ayavision.py",
+    "source_sha256": "77203e47db2bb1fba9185f7c1e1b3012c2361b9c3330a77c979ae18a861a65ee",
+    "export_sha256": "77203e47db2bb1fba9185f7c1e1b3012c2361b9c3330a77c979ae18a861a65ee",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/bmmr.py",
+    "source_sha256": "9f80337c60f43101bdcc9655ee7518be510ff23b87f4c428285e14b91740a781",
+    "export_sha256": "9f80337c60f43101bdcc9655ee7518be510ff23b87f4c428285e14b91740a781",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/bmmr_grade.py",
+    "source_sha256": "f0212d3b9329a1d38ac3e98ff1786fa58e7502fa64a2bd0ba14c46179bfcf7b3",
+    "export_sha256": "f0212d3b9329a1d38ac3e98ff1786fa58e7502fa64a2bd0ba14c46179bfcf7b3",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/ccocr_evaluator/__init__.py",
+    "source_sha256": "26ced3a481dd352b63ffdd5688490f596850d3849e9fe4ceca5fee0a7fd7297f",
+    "export_sha256": "26ced3a481dd352b63ffdd5688490f596850d3849e9fe4ceca5fee0a7fd7297f",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/ccocr_evaluator/common.py",
+    "source_sha256": "acced6ec43e9b5658b26011de653f77327f63469a80febfd0cf5029d48a7495e",
+    "export_sha256": "acced6ec43e9b5658b26011de653f77327f63469a80febfd0cf5029d48a7495e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/ccocr_evaluator/doc_parsing_evaluator.py",
+    "source_sha256": "237c6c9e9b99028e1b850eb89fc1e01be3f68583c1725987efd5123f64a01bdd",
+    "export_sha256": "237c6c9e9b99028e1b850eb89fc1e01be3f68583c1725987efd5123f64a01bdd",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/ccocr_evaluator/kie_evaluator.py",
+    "source_sha256": "92f8f208c621a7eaaae5174353fac4c501ba14a709101075fd37c4f2d06fb1ae",
+    "export_sha256": "92f8f208c621a7eaaae5174353fac4c501ba14a709101075fd37c4f2d06fb1ae",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/ccocr_evaluator/ocr_evaluator.py",
+    "source_sha256": "401af71621687299d34d05c512dad59199c9ff81f4324579aae3f655d8474bb8",
+    "export_sha256": "401af71621687299d34d05c512dad59199c9ff81f4324579aae3f655d8474bb8",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/cgbench.py",
+    "source_sha256": "c29364e7d317419b1d0534a5f092db8e85d958b3b1f12161d03fbf0bb58910c8",
+    "export_sha256": "c29364e7d317419b1d0534a5f092db8e85d958b3b1f12161d03fbf0bb58910c8",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/chartmimic/__init__.py",
+    "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "export_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/chartmimic/eval_configs/__init__.py",
+    "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "export_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/chartmimic/eval_configs/global_config.py",
+    "source_sha256": "384c67d51708ce86223e53b445df09bb0f9aaf74aca203dc49c95622a939c0b0",
+    "export_sha256": "384c67d51708ce86223e53b445df09bb0f9aaf74aca203dc49c95622a939c0b0",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/chartmimic/evaluator/__init__.py",
+    "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "export_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/chartmimic/evaluator/chart_type_and_color.py",
+    "source_sha256": "bfdeb49cd551daa4354bbdfd85d32a25ec261425151592c2e29761ec0f269db9",
+    "export_sha256": "bfdeb49cd551daa4354bbdfd85d32a25ec261425151592c2e29761ec0f269db9",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/chartmimic/evaluator/chart_type_evaluator.py",
+    "source_sha256": "4b44cf508ab8fe3d1dc2b336d762be0cd4ca34e86043b70982375a9cd53f8cac",
+    "export_sha256": "4b44cf508ab8fe3d1dc2b336d762be0cd4ca34e86043b70982375a9cd53f8cac",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/chartmimic/evaluator/chart_type_evaluator_prefix.py",
+    "source_sha256": "92b4a3228d6ee3e1ad33e5f742543abdc88946e58a184aad32fbe9fdd10b94b5",
+    "export_sha256": "92b4a3228d6ee3e1ad33e5f742543abdc88946e58a184aad32fbe9fdd10b94b5",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/chartmimic/evaluator/color_evaluator.py",
+    "source_sha256": "1e0c257574bb331f1c8f2369e689a212555be9b5eb2ec7eb455e8c2419318c6d",
+    "export_sha256": "1e0c257574bb331f1c8f2369e689a212555be9b5eb2ec7eb455e8c2419318c6d",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/chartmimic/evaluator/color_evaluator_prefix.py",
+    "source_sha256": "b555c2ab9a621e461108795bb75fe628b48df77ff767802efca3c8a1edcf0eed",
+    "export_sha256": "b555c2ab9a621e461108795bb75fe628b48df77ff767802efca3c8a1edcf0eed",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/chartmimic/evaluator/color_utils.py",
+    "source_sha256": "5df0bb1766e196d308d9c362e830ec5cf7b290b0fd76b3b3d89227acc59cc091",
+    "export_sha256": "5df0bb1766e196d308d9c362e830ec5cf7b290b0fd76b3b3d89227acc59cc091",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/chartmimic/evaluator/grid_evaluator.py",
+    "source_sha256": "603683dd264570a6aa4320eff3539564801c7c4dd4fd5dc5ef4a90ed341568b5",
+    "export_sha256": "603683dd264570a6aa4320eff3539564801c7c4dd4fd5dc5ef4a90ed341568b5",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/chartmimic/evaluator/layout_evaluator.py",
+    "source_sha256": "bce068118d76c66e94d72e9dddc2ed9e466d461ce5f3f50c4113e69e7ddfe039",
+    "export_sha256": "bce068118d76c66e94d72e9dddc2ed9e466d461ce5f3f50c4113e69e7ddfe039",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/chartmimic/evaluator/legend_evaluator.py",
+    "source_sha256": "e2a8dd5f48eed5a53500ce6d904917fbd78e2f9cc4e34d3069a7baa3f65c20a1",
+    "export_sha256": "e2a8dd5f48eed5a53500ce6d904917fbd78e2f9cc4e34d3069a7baa3f65c20a1",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/chartmimic/evaluator/text_evaluator.py",
+    "source_sha256": "0acd6b894dc5d7229d2e6234e40da0aede22eb95b216cb09c11f966a2384fe3a",
+    "export_sha256": "0acd6b894dc5d7229d2e6234e40da0aede22eb95b216cb09c11f966a2384fe3a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/chartmimic/mp_util.py",
+    "source_sha256": "4a3229353a9a7d3873d02ced90c709f52393e466e51caa508cc47d1bde8b9de5",
+    "export_sha256": "4a3229353a9a7d3873d02ced90c709f52393e466e51caa508cc47d1bde8b9de5",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/chartqapro.py",
+    "source_sha256": "4a95e0d12bfbe6cdbaf4b52df6bb38db6a83978e86f59253def593e3b48cbaf5",
+    "export_sha256": "4a95e0d12bfbe6cdbaf4b52df6bb38db6a83978e86f59253def593e3b48cbaf5",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/crpe.py",
+    "source_sha256": "4d050c4dbc53bace288f66a8f20b0454ba08ad8d94dd8da54117ea9ced715ee7",
+    "export_sha256": "4d050c4dbc53bace288f66a8f20b0454ba08ad8d94dd8da54117ea9ced715ee7",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/gsm8k_v.py",
+    "source_sha256": "ed8942119dc8338a246ee17786913cc6f4a00411fb730ffc65e743fe096b24f5",
+    "export_sha256": "ed8942119dc8338a246ee17786913cc6f4a00411fb730ffc65e743fe096b24f5",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/hipho_prompt_inference.py",
+    "source_sha256": "b3efec349fb02528fddb13aaca59110d4c6d60c1998333e28b5ff71e79aaba20",
+    "export_sha256": "b3efec349fb02528fddb13aaca59110d4c6d60c1998333e28b5ff71e79aaba20",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/hipho_verifier.py",
+    "source_sha256": "755cbf1743e30a82825e15ea27e58c9d38d32dab7e718bce65c20bf1a493f9c6",
+    "export_sha256": "755cbf1743e30a82825e15ea27e58c9d38d32dab7e718bce65c20bf1a493f9c6",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/hrbench.py",
+    "source_sha256": "83173385dc749736723abd62b7a3d71b99ce7c64d8403f16adea4bbb01ee841a",
+    "export_sha256": "83173385dc749736723abd62b7a3d71b99ce7c64d8403f16adea4bbb01ee841a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/judge_util.py",
+    "source_sha256": "295ba4648383339e0210a8ad896bd869eb0ff916c94488f4a4b128f87b0f5029",
+    "export_sha256": "295ba4648383339e0210a8ad896bd869eb0ff916c94488f4a4b128f87b0f5029",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/llavabench.py",
+    "source_sha256": "43efc3d2777cdeabafca118763c3a08d68210d67a4556bd5be4fde42970426f5",
+    "export_sha256": "43efc3d2777cdeabafca118763c3a08d68210d67a4556bd5be4fde42970426f5",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/logicvista.py",
+    "source_sha256": "4b37c28cea97935ca6fe78df04682e6501cba5680978c23648e113030716eea5",
+    "export_sha256": "4b37c28cea97935ca6fe78df04682e6501cba5680978c23648e113030716eea5",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/longvideobench.py",
+    "source_sha256": "d23fbb3f12fa9e33cda72d30f6ee1d19c8edb5067f96c9ae9130ad6992d06f3f",
+    "export_sha256": "d23fbb3f12fa9e33cda72d30f6ee1d19c8edb5067f96c9ae9130ad6992d06f3f",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mathcanvas.py",
+    "source_sha256": "9fb0371a8675d6492392b98f4bbeedd833a7d98da44fbd373375416a7e51c234",
+    "export_sha256": "9fb0371a8675d6492392b98f4bbeedd833a7d98da44fbd373375416a7e51c234",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mathv.py",
+    "source_sha256": "796635f745f3620c18f5d184e593d11853f37eed0732ce1fcb000d2c1f307ab1",
+    "export_sha256": "796635f745f3620c18f5d184e593d11853f37eed0732ce1fcb000d2c1f307ab1",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mathverse.py",
+    "source_sha256": "06cc8f71478e71410514059677a0957690fc7e98261d1986c5caa8abfa62b1e0",
+    "export_sha256": "06cc8f71478e71410514059677a0957690fc7e98261d1986c5caa8abfa62b1e0",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mathvista.py",
+    "source_sha256": "61e05dbb08ecca4384a33ce58af7dd29be34b8e7508066d855316b6a4d1d0b19",
+    "export_sha256": "61e05dbb08ecca4384a33ce58af7dd29be34b8e7508066d855316b6a4d1d0b19",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/__init__.py",
+    "source_sha256": "be7b16241e103b26b04ec038ab99534da5921acb45defe63c3f11c2f719cb71c",
+    "export_sha256": "be7b16241e103b26b04ec038ab99534da5921acb45defe63c3f11c2f719cb71c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/aggregation/mean_agg.py",
+    "source_sha256": "ab0fca23062cbbd8d917ec1d0de9cf5267711ad7cd1ca4bd124089bbe31b8c5c",
+    "export_sha256": "ab0fca23062cbbd8d917ec1d0de9cf5267711ad7cd1ca4bd124089bbe31b8c5c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/aggregation/min_agg.py",
+    "source_sha256": "5d63265df6d9bf936efe0ed502a27ae11bf7c792adf496fd2ce3ddc94b157ef7",
+    "export_sha256": "5d63265df6d9bf936efe0ed502a27ae11bf7c792adf496fd2ce3ddc94b157ef7",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/aggregation/unsupported_agg.py",
+    "source_sha256": "e48c4cb868e98e80a4a0ee3111d17c6cd2eee55d139f28191bbafe407f82601a",
+    "export_sha256": "e48c4cb868e98e80a4a0ee3111d17c6cd2eee55d139f28191bbafe407f82601a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/aggregation_type.py",
+    "source_sha256": "5cb5e59b223caf3657f292b98e232296b5936af2a6eb5c49845a6fae14713419",
+    "export_sha256": "5cb5e59b223caf3657f292b98e232296b5936af2a6eb5c49845a6fae14713419",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/evaluator.py",
+    "source_sha256": "ff1422d7f7051971273b99269753320a0d80fd034cf9a172e1bde0ccbb8f588c",
+    "export_sha256": "ff1422d7f7051971273b99269753320a0d80fd034cf9a172e1bde0ccbb8f588c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/metric_type.py",
+    "source_sha256": "1716f88960bbefa81bd3f7fc00526eeb1ba6fb48009a80f6603bbc5067ea7f1d",
+    "export_sha256": "1716f88960bbefa81bd3f7fc00526eeb1ba6fb48009a80f6603bbc5067ea7f1d",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/parsing/answer_str_parse.py",
+    "source_sha256": "d4289ba3b1a613ff60edba34d120dec2b6e31a65b07bd2667499cc353ea6d00d",
+    "export_sha256": "d4289ba3b1a613ff60edba34d120dec2b6e31a65b07bd2667499cc353ea6d00d",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/parsing/common/parsers.py",
+    "source_sha256": "60cfb76e233a0bb83a80b18bf759dbc6f28091a7f22ebaf98ccc397c9156e2fb",
+    "export_sha256": "60cfb76e233a0bb83a80b18bf759dbc6f28091a7f22ebaf98ccc397c9156e2fb",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/parsing/common/utils.py",
+    "source_sha256": "5321c60933f3460e718d5d2e7bc41cdb015b41dc6ef6adb78ab0321d63481383",
+    "export_sha256": "5321c60933f3460e718d5d2e7bc41cdb015b41dc6ef6adb78ab0321d63481383",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/parsing/dummy_parse.py",
+    "source_sha256": "91409ca848bf2cd26b9c725647b863d9c1beb57d5396a1671076073cb436ef9c",
+    "export_sha256": "91409ca848bf2cd26b9c725647b863d9c1beb57d5396a1671076073cb436ef9c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/parsing/json_parse.py",
+    "source_sha256": "db66f6786fd5989d9be7b3715d1197b0b402b4652def24ccc83f22560f42d07a",
+    "export_sha256": "db66f6786fd5989d9be7b3715d1197b0b402b4652def24ccc83f22560f42d07a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/response_parse_type.py",
+    "source_sha256": "b242b485efe10f9c353786da9d30aad2ebb6cb65b98bc1227c8161544887b965",
+    "export_sha256": "b242b485efe10f9c353786da9d30aad2ebb6cb65b98bc1227c8161544887b965",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/ascii_art_gpt4o_judge.py",
+    "source_sha256": "a80cc4e2964a14415972a2c6e110231478450189de20e81263b9ace7ebe42f46",
+    "export_sha256": "a80cc4e2964a14415972a2c6e110231478450189de20e81263b9ace7ebe42f46",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/chess_jaccard.py",
+    "source_sha256": "71c0bc1aea8300dea9612592e77fed32bf9f701d70f44a92b5a13629706d54a3",
+    "export_sha256": "71c0bc1aea8300dea9612592e77fed32bf9f701d70f44a92b5a13629706d54a3",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/common/conversions.py",
+    "source_sha256": "e65171f80ee7b6f6f4562447961d6d818a4b22ef0bfa5cb8b99add486c4dc185",
+    "export_sha256": "e65171f80ee7b6f6f4562447961d6d818a4b22ef0bfa5cb8b99add486c4dc185",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/common/metrics.py",
+    "source_sha256": "9f77f092574c22f04aacaf1a418dff620b0cf03b59c04438ca654414778b23d1",
+    "export_sha256": "9f77f092574c22f04aacaf1a418dff620b0cf03b59c04438ca654414778b23d1",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/common/transformations.py",
+    "source_sha256": "bcd7a0055a596437c0d281e83141048350b19fedcc97ef4c960bfcaae039fa0f",
+    "export_sha256": "bcd7a0055a596437c0d281e83141048350b19fedcc97ef4c960bfcaae039fa0f",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/constrained_generation.py",
+    "source_sha256": "33567197f21fb127e498c7d809276b1da31ad2839fc810ea321ab6c8fbdeedad",
+    "export_sha256": "33567197f21fb127e498c7d809276b1da31ad2839fc810ea321ab6c8fbdeedad",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/coordinate_sequence_match.py",
+    "source_sha256": "96b852d2382e424b4527ef896b7e7e0d008292e9293da2115c76b221b7b08ca7",
+    "export_sha256": "96b852d2382e424b4527ef896b7e7e0d008292e9293da2115c76b221b7b08ca7",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/dict_equality.py",
+    "source_sha256": "34845859d03b521ee41b6b3c0de11af4c7e71d4290849c59c381e4915e09d1af",
+    "export_sha256": "34845859d03b521ee41b6b3c0de11af4c7e71d4290849c59c381e4915e09d1af",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/dict_exact_match_agg_recall.py",
+    "source_sha256": "8f56f4dacd3e9d73e2a129920a8288f55b857fcbf5cb4e88d01d4b0c704e2211",
+    "export_sha256": "8f56f4dacd3e9d73e2a129920a8288f55b857fcbf5cb4e88d01d4b0c704e2211",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/dict_jaccard_agg_jaccard.py",
+    "source_sha256": "9501c02e75621a723b9475f9c008cde77d3162c3c63ece4f117731ec82d0a99b",
+    "export_sha256": "9501c02e75621a723b9475f9c008cde77d3162c3c63ece4f117731ec82d0a99b",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/dict_nbbox_iou_tuple_agg_jaccard.py",
+    "source_sha256": "7306c519dd27246b727d01cc3259c4a238a5d24c4a66266952252ccc50c67979",
+    "export_sha256": "7306c519dd27246b727d01cc3259c4a238a5d24c4a66266952252ccc50c67979",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/dict_set_equality_agg_jaccard.py",
+    "source_sha256": "4c4ab693fb93a9160d452c14efa37eb3c56ba8c91364fc1453378ca8c58ee2ca",
+    "export_sha256": "4c4ab693fb93a9160d452c14efa37eb3c56ba8c91364fc1453378ca8c58ee2ca",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/exact_str_match.py",
+    "source_sha256": "9a0c7c4bbe6f8c62913d649bcffff8b3be99439aa641744aed00598e45ae8350",
+    "export_sha256": "9a0c7c4bbe6f8c62913d649bcffff8b3be99439aa641744aed00598e45ae8350",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/exact_str_match_case_insensitive.py",
+    "source_sha256": "047d5fe271da876bd0713db351d70738a9bfcc45410524ee7836bd0d513072dd",
+    "export_sha256": "047d5fe271da876bd0713db351d70738a9bfcc45410524ee7836bd0d513072dd",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/general_numerical_match.py",
+    "source_sha256": "be7dd4f28e29dc8b1819ef2e352054bb67925dcfda585dabd9fb887a6973c9fb",
+    "export_sha256": "be7dd4f28e29dc8b1819ef2e352054bb67925dcfda585dabd9fb887a6973c9fb",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/geo_proximity.py",
+    "source_sha256": "03e3e9960539759549250bbddadc290378d2c7330888262ecc0a413ec412ecda",
+    "export_sha256": "03e3e9960539759549250bbddadc290378d2c7330888262ecc0a413ec412ecda",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/gleu.py",
+    "source_sha256": "40d80d7cce0daa94b0dd265c0d132297b734eed3be3a140d175be13392e99db1",
+    "export_sha256": "40d80d7cce0daa94b0dd265c0d132297b734eed3be3a140d175be13392e99db1",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/jaccard.py",
+    "source_sha256": "4f8b38503b2b14cbd29fa4ae9be9d225a1d612455601e63eaf54bdc1186a76e9",
+    "export_sha256": "4f8b38503b2b14cbd29fa4ae9be9d225a1d612455601e63eaf54bdc1186a76e9",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/latex_expr_equality.py",
+    "source_sha256": "e68ee8419f9f56fc2967e1cb215ae6a7b65da073712e8d4963a47c38efd36d49",
+    "export_sha256": "e68ee8419f9f56fc2967e1cb215ae6a7b65da073712e8d4963a47c38efd36d49",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/longest_common_list_prefix_ratio.py",
+    "source_sha256": "ed1285aaad1837cb787ac54e3bf05c90c816f524b53f103337dedd3bc6b425cc",
+    "export_sha256": "ed1285aaad1837cb787ac54e3bf05c90c816f524b53f103337dedd3bc6b425cc",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/mse.py",
+    "source_sha256": "6d9921f3e349c86eba22b7abf09ef66f8e69619b0e83d7bfb4a9ac11cdff260a",
+    "export_sha256": "6d9921f3e349c86eba22b7abf09ef66f8e69619b0e83d7bfb4a9ac11cdff260a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/multi_ref_phrase.py",
+    "source_sha256": "d4b5d3107c1967ea5531a91a367a99d109265b5548d28907363b796317c297ba",
+    "export_sha256": "d4b5d3107c1967ea5531a91a367a99d109265b5548d28907363b796317c297ba",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/nbbox_iou.py",
+    "source_sha256": "0240e16d9b2b027f6a8a3743c1f09643ba3208aa7d46bc259bc4f92d3ee6bbcc",
+    "export_sha256": "0240e16d9b2b027f6a8a3743c1f09643ba3208aa7d46bc259bc4f92d3ee6bbcc",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/near_str_match.py",
+    "source_sha256": "7b1e9164fd7b6480395cd6b1591e926dbd0e490256b0cc8f791613e7286c66c1",
+    "export_sha256": "7b1e9164fd7b6480395cd6b1591e926dbd0e490256b0cc8f791613e7286c66c1",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/nli_entailment.py",
+    "source_sha256": "d28054dfa936028d059779fa424e0fd74d078b5c9f9b8f84d4afff5d0bc0072e",
+    "export_sha256": "d28054dfa936028d059779fa424e0fd74d078b5c9f9b8f84d4afff5d0bc0072e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/normalized_similarity_damerau_levenshtein.py",
+    "source_sha256": "36e3d270e457e6f6a80e5d8432d2de2234a8281f777632e6d610cdd4ac521f1e",
+    "export_sha256": "36e3d270e457e6f6a80e5d8432d2de2234a8281f777632e6d610cdd4ac521f1e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/number_rel_diff_ratio.py",
+    "source_sha256": "ac3c1ef12515939a29d1403051cae0bd34e5f0742822e4efd1507cab9f9de209",
+    "export_sha256": "ac3c1ef12515939a29d1403051cae0bd34e5f0742822e4efd1507cab9f9de209",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/positive_int_match.py",
+    "source_sha256": "7d5add390779e5cae6ed985097c8eb46e7fc5a36b0d30ad81790d635344587b1",
+    "export_sha256": "7d5add390779e5cae6ed985097c8eb46e7fc5a36b0d30ad81790d635344587b1",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/program_judge.py",
+    "source_sha256": "e6c64737fd144cf83b66e13b2e4cf6cd8c0f407a69ab34e8a8a45930535eae72",
+    "export_sha256": "e6c64737fd144cf83b66e13b2e4cf6cd8c0f407a69ab34e8a8a45930535eae72",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/sacrebleu_bleu.py",
+    "source_sha256": "7ff9401ac5239c2b7b1a49612d2d91ad13eb8e9586c34a5306b3b04903c13b25",
+    "export_sha256": "7ff9401ac5239c2b7b1a49612d2d91ad13eb8e9586c34a5306b3b04903c13b25",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/sequence_equality.py",
+    "source_sha256": "f82f1e9982813c1ae03223e91bcd3e967a025c25837dea3297d869b0f2826efd",
+    "export_sha256": "f82f1e9982813c1ae03223e91bcd3e967a025c25837dea3297d869b0f2826efd",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/set_equality.py",
+    "source_sha256": "c62f0c9b0db039ecddcda98b8d5f7c5d879e85858b3d53827256ae234b49d626",
+    "export_sha256": "c62f0c9b0db039ecddcda98b8d5f7c5d879e85858b3d53827256ae234b49d626",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/set_precision.py",
+    "source_sha256": "34f15e8bb4ccace09ef2db949599a3b3cf8825a111079472a299c0b3bf044dae",
+    "export_sha256": "34f15e8bb4ccace09ef2db949599a3b3cf8825a111079472a299c0b3bf044dae",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/simple_str_match.py",
+    "source_sha256": "30b9a6413183e17efd93a3ab771c95b0c928bb1bb30d9494a6e98e3b054cce7b",
+    "export_sha256": "30b9a6413183e17efd93a3ab771c95b0c928bb1bb30d9494a6e98e3b054cce7b",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/symbolic_planning.py",
+    "source_sha256": "380209ef43cf10d1eb8524c879a97e7a6d4d79726884b186ff9a17ca2d6e0524",
+    "export_sha256": "380209ef43cf10d1eb8524c879a97e7a6d4d79726884b186ff9a17ca2d6e0524",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/unsupported_scoring.py",
+    "source_sha256": "8b2b764549f6963a0c68514b1608ffff485e2e7d82615bb7b7b5017d483cb985",
+    "export_sha256": "8b2b764549f6963a0c68514b1608ffff485e2e7d82615bb7b7b5017d483cb985",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/vlm_as_judge.py",
+    "source_sha256": "e79b3c20e35d9544a0fda94df43253f1fa35afc95115b9c5f2a113791ae0daa6",
+    "export_sha256": "e79b3c20e35d9544a0fda94df43253f1fa35afc95115b9c5f2a113791ae0daa6",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/xml_nbbox_iou.py",
+    "source_sha256": "bed58f78749a2aa819efaacd8ad9553f52031ab0833f94b68f56d99369300b87",
+    "export_sha256": "bed58f78749a2aa819efaacd8ad9553f52031ab0833f94b68f56d99369300b87",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/xml_norm_point_distance.py",
+    "source_sha256": "44bc7ddbba9892ebfcc577f7738012fb5626a3eadd61adaa72fcdacc8baba5fb",
+    "export_sha256": "44bc7ddbba9892ebfcc577f7738012fb5626a3eadd61adaa72fcdacc8baba5fb",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/scoring/xml_norm_point_in_bbox.py",
+    "source_sha256": "e9a14ed1efd29c1c7ab11466924cc656284037ff4a0cf55a0f00288cf9e83749",
+    "export_sha256": "e9a14ed1efd29c1c7ab11466924cc656284037ff4a0cf55a0f00288cf9e83749",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/tools/analysis_utils.py",
+    "source_sha256": "653ca154bf2436631b4267e667ef6b48dc5049a88da337d03c0a51f6278c3bb0",
+    "export_sha256": "653ca154bf2436631b4267e667ef6b48dc5049a88da337d03c0a51f6278c3bb0",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/tools/derive_breakdown_results.py",
+    "source_sha256": "57e3900cb1029bbda582ce8bd98f8fb1985c41dbf458bab831b9ccb85a77fdb6",
+    "export_sha256": "57e3900cb1029bbda582ce8bd98f8fb1985c41dbf458bab831b9ccb85a77fdb6",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/tools/get_si_subset_from_full.py",
+    "source_sha256": "0f036700cb47275353cb26321e84c315371505028ffa7a0fd6590273b3af9fd1",
+    "export_sha256": "0f036700cb47275353cb26321e84c315371505028ffa7a0fd6590273b3af9fd1",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/megabench/utils.py",
+    "source_sha256": "51f934a23f4fc33ab7e70877f37f98b22e5778e71200e6ac746552ddfd734e00",
+    "export_sha256": "51f934a23f4fc33ab7e70877f37f98b22e5778e71200e6ac746552ddfd734e00",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mlvu.py",
+    "source_sha256": "89f5c07db38a3a51fb4d5dfd449dcd9dd0b52169da023f9a4e56d9ab5990bca9",
+    "export_sha256": "89f5c07db38a3a51fb4d5dfd449dcd9dd0b52169da023f9a4e56d9ab5990bca9",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmbench_video.py",
+    "source_sha256": "050a1e4809971147761334dff3365bd3f502a8582f13b1e2c6ff5a6177e40ef7",
+    "export_sha256": "050a1e4809971147761334dff3365bd3f502a8582f13b1e2c6ff5a6177e40ef7",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmdu.py",
+    "source_sha256": "63d29c85547fb0047dd6d7ffeff26c0124b8d4de589a292d47f1c06abfb2b039",
+    "export_sha256": "63d29c85547fb0047dd6d7ffeff26c0124b8d4de589a292d47f1c06abfb2b039",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mme_reasoning.py",
+    "source_sha256": "62c83eaab2cf19325977f5337a649386b04e67979cb37501303d0f248599a5ce",
+    "export_sha256": "62c83eaab2cf19325977f5337a649386b04e67979cb37501303d0f248599a5ce",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluator.py",
+    "source_sha256": "c4bb4486f66fe5d60aadec2144c66ba3d1f8ecf64fb471fdd53c2e0fcc210404",
+    "export_sha256": "c4bb4486f66fe5d60aadec2144c66ba3d1f8ecf64fb471fdd53c2e0fcc210404",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/aquarium_eval.py",
+    "source_sha256": "cd4b075af457ef7006e05973019babd1453413c840e992fdc19475ad031c3e12",
+    "export_sha256": "cd4b075af457ef7006e05973019babd1453413c840e992fdc19475ad031c3e12",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/binario_eval.py",
+    "source_sha256": "28ccaf49aead96bd2cba84a3bdb2cdc7eec647913b17724253b9f867eaaddafc",
+    "export_sha256": "28ccaf49aead96bd2cba84a3bdb2cdc7eec647913b17724253b9f867eaaddafc",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/bridges_eval.py",
+    "source_sha256": "67e032990c5778b8cf9d71ca25355ef57120951338eb6ef33934e9acc5baf26d",
+    "export_sha256": "67e032990c5778b8cf9d71ca25355ef57120951338eb6ef33934e9acc5baf26d",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/calcudoku_eval.py",
+    "source_sha256": "4aed55c930c111bcf7986c25ca474f50cb2f4994ab981325005c00baf9df9fdd",
+    "export_sha256": "4aed55c930c111bcf7986c25ca474f50cb2f4994ab981325005c00baf9df9fdd",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/campsite_eval.py",
+    "source_sha256": "b5e51384d564212d25ac372e7577c9fbab2d1b53d1f32b586d1f2d54975de2c1",
+    "export_sha256": "b5e51384d564212d25ac372e7577c9fbab2d1b53d1f32b586d1f2d54975de2c1",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/cryptomath_eval.py",
+    "source_sha256": "470975f733d24e81c5da8702e40cde5f67a8bc2aaf67db058c5e817ca817376e",
+    "export_sha256": "470975f733d24e81c5da8702e40cde5f67a8bc2aaf67db058c5e817ca817376e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/eulero_eval.py",
+    "source_sha256": "0a96e41c028a5dc8c3ffd172acf84f0912a377110e97ca784dc8d09b3b3bad76",
+    "export_sha256": "0a96e41c028a5dc8c3ffd172acf84f0912a377110e97ca784dc8d09b3b3bad76",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/futoshiki_eval.py",
+    "source_sha256": "f812ae1ced790471e404764f1c30dc9bcb27e1d763df9f86d822fec104a0fdab",
+    "export_sha256": "f812ae1ced790471e404764f1c30dc9bcb27e1d763df9f86d822fec104a0fdab",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/graph_problems_eval.py",
+    "source_sha256": "00f27f97de206f566b1b4cde68303d83975759cc2e0c48807db105e863bb0473",
+    "export_sha256": "00f27f97de206f566b1b4cde68303d83975759cc2e0c48807db105e863bb0473",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/hanoi_eval.py",
+    "source_sha256": "862f9d56e3d9e099dfaca4de94eb4e54271e48fc6056dfa63cb03db12e862858",
+    "export_sha256": "862f9d56e3d9e099dfaca4de94eb4e54271e48fc6056dfa63cb03db12e862858",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/hitori_eval.py",
+    "source_sha256": "65bcb5239146954be2b4cbe04444be8e1b12b34fd7f83516c7d89675b189d56d",
+    "export_sha256": "65bcb5239146954be2b4cbe04444be8e1b12b34fd7f83516c7d89675b189d56d",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/kakuro_eval.py",
+    "source_sha256": "628910e743644863d755b201a2f0255ef930313f81f86ce2e21e3942a60586f2",
+    "export_sha256": "628910e743644863d755b201a2f0255ef930313f81f86ce2e21e3942a60586f2",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/kukurasu_eval.py",
+    "source_sha256": "56f51085ffd8cb2082ae581344261881b141a75e879be631f63f054f5aa0b665",
+    "export_sha256": "56f51085ffd8cb2082ae581344261881b141a75e879be631f63f054f5aa0b665",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/maze_eval.py",
+    "source_sha256": "205f215f6da69aa784053a1b4e02e06eb68f3847d65a2be080babdce4a22ee0c",
+    "export_sha256": "205f215f6da69aa784053a1b4e02e06eb68f3847d65a2be080babdce4a22ee0c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/minesweeper_eval.py",
+    "source_sha256": "9a1c097fc0e01c691cd53e1f84369cc3f17df44b95ba63a4e40b615829847d49",
+    "export_sha256": "9a1c097fc0e01c691cd53e1f84369cc3f17df44b95ba63a4e40b615829847d49",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/nibbles_eval.py",
+    "source_sha256": "62f0daa9b372d68c906652897c35cbac3c7f54d5b8a6a1be6468002160df2726",
+    "export_sha256": "62f0daa9b372d68c906652897c35cbac3c7f54d5b8a6a1be6468002160df2726",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/nonogram_eval.py",
+    "source_sha256": "2da762ad0ce06d16613cd680586498895fca85b58ef9ac57196f9adf3c854451",
+    "export_sha256": "2da762ad0ce06d16613cd680586498895fca85b58ef9ac57196f9adf3c854451",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/numbrix_eval.py",
+    "source_sha256": "d4094c0ba7689413e0f76b2957d095affcda7b986327036da701da8f71698fc7",
+    "export_sha256": "d4094c0ba7689413e0f76b2957d095affcda7b986327036da701da8f71698fc7",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/shingoki_eval.py",
+    "source_sha256": "712914a035bb9f1ba0947d5047f1a61271ab18b1b2941df876da8d10df75e057",
+    "export_sha256": "712914a035bb9f1ba0947d5047f1a61271ab18b1b2941df876da8d10df75e057",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/skyscrapers_evaluator.py",
+    "source_sha256": "21d2e271dca3b75b2e58d52f9aee6535beeaa31f552a380b994e3457ec7a9588",
+    "export_sha256": "21d2e271dca3b75b2e58d52f9aee6535beeaa31f552a380b994e3457ec7a9588",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/slidingpuzzle_eval.py",
+    "source_sha256": "6d406da87d456062a2c9c54bf9d2d4d248e89ee031a8f0e55571bb958102ecb4",
+    "export_sha256": "6d406da87d456062a2c9c54bf9d2d4d248e89ee031a8f0e55571bb958102ecb4",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/snake_eval.py",
+    "source_sha256": "86fe977e4b92b6ce564598e3499c5247a6ffccbaebaca81c6908e15aaf924fdd",
+    "export_sha256": "86fe977e4b92b6ce564598e3499c5247a6ffccbaebaca81c6908e15aaf924fdd",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/sokoban_eval.py",
+    "source_sha256": "994297eb1c02abde7ec4a60e64a3185684e0aca1757271b3b663d3be3f2c59a4",
+    "export_sha256": "994297eb1c02abde7ec4a60e64a3185684e0aca1757271b3b663d3be3f2c59a4",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/sudoku_evaluator.py",
+    "source_sha256": "ea61041e86f0e5ea94522cdba7cc02faff50395203b272934023089e4ea211ce",
+    "export_sha256": "ea61041e86f0e5ea94522cdba7cc02faff50395203b272934023089e4ea211ce",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/tapa_eval.py",
+    "source_sha256": "d5c8c449a2b6b5953ad1199461199dadda6f58d1a66c99e4dd9644b58072ab2d",
+    "export_sha256": "d5c8c449a2b6b5953ad1199461199dadda6f58d1a66c99e4dd9644b58072ab2d",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/twentyfourpoints_evaluator.py",
+    "source_sha256": "1df25473b6b48e7437e5149e0937ad5b6e1b801559b7a29bf1fc529981f9b04a",
+    "export_sha256": "1df25473b6b48e7437e5149e0937ad5b6e1b801559b7a29bf1fc529981f9b04a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/wordladder_eval.py",
+    "source_sha256": "b3cdd0098c14da15ce49372d7bb572f884771aee5596c116403cfd2268317658",
+    "export_sha256": "b3cdd0098c14da15ce49372d7bb572f884771aee5596c116403cfd2268317658",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/evaluators/wordsearch_eval.py",
+    "source_sha256": "9d0e64692e3e210ef4a26785d75cb356dd38df03a67e0e136d871f99b4ccdc82",
+    "export_sha256": "9d0e64692e3e210ef4a26785d75cb356dd38df03a67e0e136d871f99b4ccdc82",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/metrics.py",
+    "source_sha256": "af5b7c5e49d5349bea0b0200f2c81a0c48d0d91b89d9915cf6a3a168684d7231",
+    "export_sha256": "af5b7c5e49d5349bea0b0200f2c81a0c48d0d91b89d9915cf6a3a168684d7231",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/parser.py",
+    "source_sha256": "ddfe556558def2de2d35daa95ea997aee8d2b55b01c18268a4e497b724fe22bb",
+    "export_sha256": "ddfe556558def2de2d35daa95ea997aee8d2b55b01c18268a4e497b724fe22bb",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/utils/constants.py",
+    "source_sha256": "2d40d54cf9b812de1d7479052a08e914313d73c5a99436154df3afd1e2e57aa6",
+    "export_sha256": "2d40d54cf9b812de1d7479052a08e914313d73c5a99436154df3afd1e2e57aa6",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmhelix/utils/validation.py",
+    "source_sha256": "d7ca88b6605050ca6ba294c890cf6f5035df4d29833140c2484c8cb909807e15",
+    "export_sha256": "d7ca88b6605050ca6ba294c890cf6f5035df4d29833140c2484c8cb909807e15",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmif/__init__.py",
+    "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "export_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmif/function_and_compare.py",
+    "source_sha256": "79beedd5c55b922807ba5a572c049f0c91a27f25ebbd9ee3d916de8e32c10098",
+    "export_sha256": "79beedd5c55b922807ba5a572c049f0c91a27f25ebbd9ee3d916de8e32c10098",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmniah.py",
+    "source_sha256": "e3631a5852652f176a175254e161393fc5c4fb5c4c22ee71be4cd232dc16aaee",
+    "export_sha256": "e3631a5852652f176a175254e161393fc5c4fb5c4c22ee71be4cd232dc16aaee",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmsci.py",
+    "source_sha256": "1a2274475ae33085488c9f5f40593772bc013a26c7a540682ccbf633121f18ed",
+    "export_sha256": "1a2274475ae33085488c9f5f40593772bc013a26c7a540682ccbf633121f18ed",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mmvet.py",
+    "source_sha256": "dc4ca64bb7f6865ae57e007c5a7e89b953dfd1a413b2e6b74ec64e59eac54fc7",
+    "export_sha256": "dc4ca64bb7f6865ae57e007c5a7e89b953dfd1a413b2e6b74ec64e59eac54fc7",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/moviechat1k.py",
+    "source_sha256": "d6375140139dcc6b7831edec6cb4c6961651dbc17442e3bf3d235f016ecf2edf",
+    "export_sha256": "d6375140139dcc6b7831edec6cb4c6961651dbc17442e3bf3d235f016ecf2edf",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/multiple_choice.py",
+    "source_sha256": "fa11946215673879cf48479d01ec5a22918bf3f7ee22f88c6ed1e522e3ab89ae",
+    "export_sha256": "fa11946215673879cf48479d01ec5a22918bf3f7ee22f88c6ed1e522e3ab89ae",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/mvbench.py",
+    "source_sha256": "269c42abae6daa281b55e0ff66331e77c47d91cbbb4f109c4976146aa5271198",
+    "export_sha256": "269c42abae6daa281b55e0ff66331e77c47d91cbbb4f109c4976146aa5271198",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/naturalbench.py",
+    "source_sha256": "faec69de264d8a12d157a97c9fc3072d13d27209159500d30a4f15bcc34decf3",
+    "export_sha256": "faec69de264d8a12d157a97c9fc3072d13d27209159500d30a4f15bcc34decf3",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/ocr_reasoning.py",
+    "source_sha256": "e4fa835a637fca884b3948d5b0706413b58e03d7c8e0e0cd7935bd5011f40fa3",
+    "export_sha256": "e4fa835a637fca884b3948d5b0706413b58e03d7c8e0e0cd7935bd5011f40fa3",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/ocrbench.py",
+    "source_sha256": "7c57a7d93a97bd268e3de42fe27acccd89b8965a1c08a87aaae515430d77697b",
+    "export_sha256": "7c57a7d93a97bd268e3de42fe27acccd89b8965a1c08a87aaae515430d77697b",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/ocrbrnch_v2_eval.py",
+    "source_sha256": "86b9687594646d8efdee048ee837c7415b6e61280dc18758e62ba6effe449ffa",
+    "export_sha256": "86b9687594646d8efdee048ee837c7415b6e61280dc18758e62ba6effe449ffa",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/olympiadbench.py",
+    "source_sha256": "63de8f8767c96ed88124250fa8f16d5fff6328b010569c8b0ab47b983cf8a511",
+    "export_sha256": "63de8f8767c96ed88124250fa8f16d5fff6328b010569c8b0ab47b983cf8a511",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/omni3dbench.py",
+    "source_sha256": "4b44aae78f5db24a80dd73c31a1110fb2b4e7856d275e6ab7eccd75e74c39059",
+    "export_sha256": "4b44aae78f5db24a80dd73c31a1110fb2b4e7856d275e6ab7eccd75e74c39059",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/omni_verifier.py",
+    "source_sha256": "fbf2612a3589fa8359d0eb675240884e2c183786d58aa4bad2600e70d9396bf3",
+    "export_sha256": "fbf2612a3589fa8359d0eb675240884e2c183786d58aa4bad2600e70d9396bf3",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/physic.py",
+    "source_sha256": "561fa3909cb8b82917b0cf27716f93a6f524f59a69286ef34fd77e76286bcc9e",
+    "export_sha256": "561fa3909cb8b82917b0cf27716f93a6f524f59a69286ef34fd77e76286bcc9e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/physics_eval_utils.py",
+    "source_sha256": "e0b99182f663dcf5663c3280f0e0fb7552167562d85906b8748e5b1e040d10cd",
+    "export_sha256": "e0b99182f663dcf5663c3280f0e0fb7552167562d85906b8748e5b1e040d10cd",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/phyx.py",
+    "source_sha256": "24fc60da4b06ec1d9755668cc9f09c1889dea633c8a0dd2dc83d94f23976c3ed",
+    "export_sha256": "24fc60da4b06ec1d9755668cc9f09c1889dea633c8a0dd2dc83d94f23976c3ed",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/qbench_video.py",
+    "source_sha256": "5b564cdc3b4af0484eace205fa9bb6c14db86580b63dedf2532b89794e5d293e",
+    "export_sha256": "5b564cdc3b4af0484eace205fa9bb6c14db86580b63dedf2532b89794e5d293e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/qspatial.py",
+    "source_sha256": "f9ccb46b742185ed69e62efef2e69652a74fdc355cdc13793cd8fe073b4f20de",
+    "export_sha256": "f9ccb46b742185ed69e62efef2e69652a74fdc355cdc13793cd8fe073b4f20de",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/sarena_mini.py",
+    "source_sha256": "95231b5949bbb2e51263a1308e29524168d4ec257e3d5f6e54325376efae9cda",
+    "export_sha256": "95231b5949bbb2e51263a1308e29524168d4ec257e3d5f6e54325376efae9cda",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/seephys.py",
+    "source_sha256": "59b55a72050c33ce9071da8233120fccf243ea63ce16659acbea8a94cc9e2869",
+    "export_sha256": "59b55a72050c33ce9071da8233120fccf243ea63ce16659acbea8a94cc9e2869",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/shortqa.py",
+    "source_sha256": "8d1562595689e20ae92db5570b2ca34567c5f6f0ac92af425dcf3c35ad8625fd",
+    "export_sha256": "8d1562595689e20ae92db5570b2ca34567c5f6f0ac92af425dcf3c35ad8625fd",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/simplevqa.py",
+    "source_sha256": "9ce53e2ead52e85c9418662789c32b3d7c9fbabe87e37b3c3440c41ab7e2b37d",
+    "export_sha256": "9ce53e2ead52e85c9418662789c32b3d7c9fbabe87e37b3c3440c41ab7e2b37d",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/spatial457.py",
+    "source_sha256": "3eeadc104f516c2ded14c3683f762f0e9afe16faf8322871dd9228746d117e3a",
+    "export_sha256": "3eeadc104f516c2ded14c3683f762f0e9afe16faf8322871dd9228746d117e3a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/tablevqabench.py",
+    "source_sha256": "858462eb5b0583ff97ab8c8c8c41d44dbc676e4571fd57ec6f06e86dc4970c62",
+    "export_sha256": "858462eb5b0583ff97ab8c8c8c41d44dbc676e4571fd57ec6f06e86dc4970c62",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/tallyqa.py",
+    "source_sha256": "4c3ff0047df965c39ea46725200bcf753c1c691e2fb1d1fbde0dfcb10ff140b9",
+    "export_sha256": "4c3ff0047df965c39ea46725200bcf753c1c691e2fb1d1fbde0dfcb10ff140b9",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/tamperbench.py",
+    "source_sha256": "7768b9aaedb0478b6dbe2c6fd028bc2307ce3b99e16af47e868017c7fe80b73a",
+    "export_sha256": "7768b9aaedb0478b6dbe2c6fd028bc2307ce3b99e16af47e868017c7fe80b73a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/tdbench.py",
+    "source_sha256": "f2c28407a84700ca3a1bc28fb9995387161ccb49013b8e43a1355746c9879b51",
+    "export_sha256": "f2c28407a84700ca3a1bc28fb9995387161ccb49013b8e43a1355746c9879b51",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/tempcompass.py",
+    "source_sha256": "ad30e37ee4df82248aa70b330f07cd8705904ecd72175750bdb7c4d81c8bb120",
+    "export_sha256": "ad30e37ee4df82248aa70b330f07cd8705904ecd72175750bdb7c4d81c8bb120",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/treebench.py",
+    "source_sha256": "0674ffb5e4f24d2ee0f152997418d44e3ce8851019a9fff6024471e538223f4e",
+    "export_sha256": "0674ffb5e4f24d2ee0f152997418d44e3ce8851019a9fff6024471e538223f4e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/uni_svg.py",
+    "source_sha256": "6763ec8759b178bfaa3540bea4a6ec098521e19f8f4c9b9e812ec89af952794e",
+    "export_sha256": "6763ec8759b178bfaa3540bea4a6ec098521e19f8f4c9b9e812ec89af952794e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vcrbench/cau_acc.py",
+    "source_sha256": "d48798adedd4afb85c099d2e49f4ddbf87139f95b27233410bae9e603ca49439",
+    "export_sha256": "d48798adedd4afb85c099d2e49f4ddbf87139f95b27233410bae9e603ca49439",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vcrbench/cau_total.py",
+    "source_sha256": "964bf3179d45b27b7f617839b734d3db34b79b245207537c6c0894964979f30f",
+    "export_sha256": "964bf3179d45b27b7f617839b734d3db34b79b245207537c6c0894964979f30f",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vcrbench/eval.py",
+    "source_sha256": "e73ac2728641bf08243ec6dd40923b50d7f0b5a5c95b2f0f1e98ba030d75dd7f",
+    "export_sha256": "e73ac2728641bf08243ec6dd40923b50d7f0b5a5c95b2f0f1e98ba030d75dd7f",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vcrbench/prompt.py",
+    "source_sha256": "b6ab60630b2cf4c3ad9c27cbb984cf445783201c21c73077dba21d8eb41ca049",
+    "export_sha256": "b6ab60630b2cf4c3ad9c27cbb984cf445783201c21c73077dba21d8eb41ca049",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vdc.py",
+    "source_sha256": "37327ef7ccd283a96071ed22f130139aab6d040651b8dbf7c9e12c618c68bb9d",
+    "export_sha256": "37327ef7ccd283a96071ed22f130139aab6d040651b8dbf7c9e12c618c68bb9d",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/verifier.py",
+    "source_sha256": "042f2cb6fbdbd83f8fc71513c6d0c8cefbb120fb258093ee7fc2c30bd4861807",
+    "export_sha256": "042f2cb6fbdbd83f8fc71513c6d0c8cefbb120fb258093ee7fc2c30bd4861807",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/__init__.py",
+    "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "export_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/configs/formating-prompt/aquarium/filter_prompt.json",
+    "source_sha256": "b2085811a52811de69ee5954f01c77a71432ec24669ccf598ce58f6b2594e9e1",
+    "export_sha256": "b2085811a52811de69ee5954f01c77a71432ec24669ccf598ce58f6b2594e9e1",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/configs/formating-prompt/battleships/filter_prompt.json",
+    "source_sha256": "198af32f81d58290462862adef3c940aa53480f9bf2d2362c8f9052b13049be5",
+    "export_sha256": "198af32f81d58290462862adef3c940aa53480f9bf2d2362c8f9052b13049be5",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/configs/formating-prompt/binairo/filter_prompt.json",
+    "source_sha256": "36b296b0b0bb2744830d8cdb36dcb79e08ca0f929e8cc9302835da6c7f4561aa",
+    "export_sha256": "36b296b0b0bb2744830d8cdb36dcb79e08ca0f929e8cc9302835da6c7f4561aa",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/configs/formating-prompt/coloredsudoku/filter_prompt.json",
+    "source_sha256": "fdef52a47e3ff82153179a7cda7039279494cc100e1a701307b4bc0ca15d59bf",
+    "export_sha256": "fdef52a47e3ff82153179a7cda7039279494cc100e1a701307b4bc0ca15d59bf",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/configs/formating-prompt/fieldexplore/filter_prompt.json",
+    "source_sha256": "9c47a1fc0539b06827fab7116a7289e7d7293bd0ee773b9316d5cde4acf2586e",
+    "export_sha256": "9c47a1fc0539b06827fab7116a7289e7d7293bd0ee773b9316d5cde4acf2586e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/configs/formating-prompt/futoshiki/filter_prompt.json",
+    "source_sha256": "fdef52a47e3ff82153179a7cda7039279494cc100e1a701307b4bc0ca15d59bf",
+    "export_sha256": "fdef52a47e3ff82153179a7cda7039279494cc100e1a701307b4bc0ca15d59bf",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/configs/formating-prompt/hitori/filter_prompt.json",
+    "source_sha256": "effbbed194167dce97b806dab4291ae609470a234d5a5d25950335488098fda2",
+    "export_sha256": "effbbed194167dce97b806dab4291ae609470a234d5a5d25950335488098fda2",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/configs/formating-prompt/jigsawsudoku/filter_prompt.json",
+    "source_sha256": "fdef52a47e3ff82153179a7cda7039279494cc100e1a701307b4bc0ca15d59bf",
+    "export_sha256": "fdef52a47e3ff82153179a7cda7039279494cc100e1a701307b4bc0ca15d59bf",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/configs/formating-prompt/kakurasu/filter_prompt.json",
+    "source_sha256": "63e94c796ac5a2c319db334cb2819c537eeae91a76b1d889f98f7f0f7f7914a6",
+    "export_sha256": "63e94c796ac5a2c319db334cb2819c537eeae91a76b1d889f98f7f0f7f7914a6",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/configs/formating-prompt/kakuro/filter_prompt.json",
+    "source_sha256": "dfa4a11b0dc42181783b46f6c9be165b05c4b692c46584eeded0c5d615df00de",
+    "export_sha256": "dfa4a11b0dc42181783b46f6c9be165b05c4b692c46584eeded0c5d615df00de",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/configs/formating-prompt/killersudoku/filter_prompt.json",
+    "source_sha256": "82b8dfce595673d625f33bca6d608ff702bcc509389c2758b30064c8bea33456",
+    "export_sha256": "82b8dfce595673d625f33bca6d608ff702bcc509389c2758b30064c8bea33456",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/configs/formating-prompt/lightup/filter_prompt.json",
+    "source_sha256": "b777bc0a35d4e42bb8885d64a3abc82f2f28f6c3a38019aefae3a1c2fbb10c8b",
+    "export_sha256": "b777bc0a35d4e42bb8885d64a3abc82f2f28f6c3a38019aefae3a1c2fbb10c8b",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/configs/formating-prompt/nonogram/filter_prompt.json",
+    "source_sha256": "7ebb1f17ba7101ed689b716f5140ca2c06815b657bcadcbd7627dd833cfdeb00",
+    "export_sha256": "7ebb1f17ba7101ed689b716f5140ca2c06815b657bcadcbd7627dd833cfdeb00",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/configs/formating-prompt/oddevensudoku/filter_prompt.json",
+    "source_sha256": "fdef52a47e3ff82153179a7cda7039279494cc100e1a701307b4bc0ca15d59bf",
+    "export_sha256": "fdef52a47e3ff82153179a7cda7039279494cc100e1a701307b4bc0ca15d59bf",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/configs/formating-prompt/renzoku/filter_prompt.json",
+    "source_sha256": "fdef52a47e3ff82153179a7cda7039279494cc100e1a701307b4bc0ca15d59bf",
+    "export_sha256": "fdef52a47e3ff82153179a7cda7039279494cc100e1a701307b4bc0ca15d59bf",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/configs/formating-prompt/skyscraper/filter_prompt.json",
+    "source_sha256": "fdef52a47e3ff82153179a7cda7039279494cc100e1a701307b4bc0ca15d59bf",
+    "export_sha256": "fdef52a47e3ff82153179a7cda7039279494cc100e1a701307b4bc0ca15d59bf",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/configs/formating-prompt/starbattle/filter_prompt.json",
+    "source_sha256": "3b9f23dc9a6993270d8ffc08222f3ac5bccb9b1fe3d41b23d6d1a905e8b944ad",
+    "export_sha256": "3b9f23dc9a6993270d8ffc08222f3ac5bccb9b1fe3d41b23d6d1a905e8b944ad",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/configs/formating-prompt/sudoku/filter_prompt.json",
+    "source_sha256": "fdef52a47e3ff82153179a7cda7039279494cc100e1a701307b4bc0ca15d59bf",
+    "export_sha256": "fdef52a47e3ff82153179a7cda7039279494cc100e1a701307b4bc0ca15d59bf",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/configs/formating-prompt/thermometers/filter_prompt.json",
+    "source_sha256": "e938ef12537340808ee90895771b64271d33b2e539e385fb9519b14c99ced55b",
+    "export_sha256": "e938ef12537340808ee90895771b64271d33b2e539e385fb9519b14c99ced55b",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/configs/formating-prompt/treesandtents/filter_prompt.json",
+    "source_sha256": "5a9039ded6583e40681d82b51a6ad86dc82b156aa4d4c6c14777a2f181b5a31b",
+    "export_sha256": "5a9039ded6583e40681d82b51a6ad86dc82b156aa4d4c6c14777a2f181b5a31b",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/evaluation.py",
+    "source_sha256": "77cd0e81b8c95b26b5f8d05c02c2487928babdb04313187fc1beb7173e4aff17",
+    "export_sha256": "77cd0e81b8c95b26b5f8d05c02c2487928babdb04313187fc1beb7173e4aff17",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/aquarium.py",
+    "source_sha256": "a249027e5080df32b051686eda1a45db09268fb7796a71776d003622327d277b",
+    "export_sha256": "a249027e5080df32b051686eda1a45db09268fb7796a71776d003622327d277b",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/battleships.py",
+    "source_sha256": "696646de80158e41011d09efe0179a00be4e1b39329609425c5cc7670310dd01",
+    "export_sha256": "696646de80158e41011d09efe0179a00be4e1b39329609425c5cc7670310dd01",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/binairo.py",
+    "source_sha256": "6db640e024d0cbc510a6f2541aff0039f481ae4a28dae99f92bccb052f4ca99e",
+    "export_sha256": "6db640e024d0cbc510a6f2541aff0039f481ae4a28dae99f92bccb052f4ca99e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/coloredsudoku.py",
+    "source_sha256": "925abc630f2abc2d9579137b790ae1e0e346a1acf31c0a5d50ddfcf92ae3b98c",
+    "export_sha256": "925abc630f2abc2d9579137b790ae1e0e346a1acf31c0a5d50ddfcf92ae3b98c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/common_constriants.py",
+    "source_sha256": "71ef8c951b407e2da8eca945a3269e6113e377cc0c62fd099502ffb3c7b21130",
+    "export_sha256": "71ef8c951b407e2da8eca945a3269e6113e377cc0c62fd099502ffb3c7b21130",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/common_get_game_factory.py",
+    "source_sha256": "f042252ac344dbbd040ce266790a81695e46ffd8f158ec55180636f69f4cf0ee",
+    "export_sha256": "f042252ac344dbbd040ce266790a81695e46ffd8f158ec55180636f69f4cf0ee",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/common_get_prompt.py",
+    "source_sha256": "17400a696e9bd743b8e344abf73e9e6df946818698f72227d98151711d65087b",
+    "export_sha256": "17400a696e9bd743b8e344abf73e9e6df946818698f72227d98151711d65087b",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/common_puzzle_factory.py",
+    "source_sha256": "ff4b10ca920fc91a66342b055c941ed8bd2de683a6b85be5b1a75db082e2e99f",
+    "export_sha256": "ff4b10ca920fc91a66342b055c941ed8bd2de683a6b85be5b1a75db082e2e99f",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/fieldexplore.py",
+    "source_sha256": "b4b60334fa9e52dcbe1bbed9c4a17884bd143e21b9515817568a93b284000ca1",
+    "export_sha256": "b4b60334fa9e52dcbe1bbed9c4a17884bd143e21b9515817568a93b284000ca1",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/futoshiki.py",
+    "source_sha256": "35c90d57f55af78006e6c8d78e6676ded2d664714ccf2506db0b34b2d6105d74",
+    "export_sha256": "35c90d57f55af78006e6c8d78e6676ded2d664714ccf2506db0b34b2d6105d74",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/hitori.py",
+    "source_sha256": "159f2e93ddf2259cc412576d4b64437eb6e04467960fdf82092a207ca4279b5d",
+    "export_sha256": "159f2e93ddf2259cc412576d4b64437eb6e04467960fdf82092a207ca4279b5d",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/jigsawsudoku.py",
+    "source_sha256": "51626d9dc39634298735cb1a287773ad339d02814dcc31acf24018acc897b0ad",
+    "export_sha256": "51626d9dc39634298735cb1a287773ad339d02814dcc31acf24018acc897b0ad",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/kakurasu.py",
+    "source_sha256": "67cea14a4063b15ed1de212a04e007ad05d9527d3b409156b9331dc5c0256ee4",
+    "export_sha256": "67cea14a4063b15ed1de212a04e007ad05d9527d3b409156b9331dc5c0256ee4",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/kakuro.py",
+    "source_sha256": "0ffdb641dd836827edae110c4efb3cfb7410538c10897e1a950f59921e2a32bd",
+    "export_sha256": "0ffdb641dd836827edae110c4efb3cfb7410538c10897e1a950f59921e2a32bd",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/killersudoku.py",
+    "source_sha256": "7f1fd2aa5bf11289652e9098d0d6402e463c685053a8496a2135433c569ee5a7",
+    "export_sha256": "7f1fd2aa5bf11289652e9098d0d6402e463c685053a8496a2135433c569ee5a7",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/lightup.py",
+    "source_sha256": "7acd7e3836e3aa3995178033a25495985693fd309db1f63c65e2ce0b9eb446d1",
+    "export_sha256": "7acd7e3836e3aa3995178033a25495985693fd309db1f63c65e2ce0b9eb446d1",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/nonogram.py",
+    "source_sha256": "35af1ba8ea1cf5146acf2a94d95252150bea35c7f04c61171bfd3a17c8dda69a",
+    "export_sha256": "35af1ba8ea1cf5146acf2a94d95252150bea35c7f04c61171bfd3a17c8dda69a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/oddevensudoku.py",
+    "source_sha256": "55b1e95320791065f5daee3c1cf2792895f38e0be5752290bd4b3782cdcc9f33",
+    "export_sha256": "55b1e95320791065f5daee3c1cf2792895f38e0be5752290bd4b3782cdcc9f33",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/renzoku.py",
+    "source_sha256": "a38db9aa97f17b2618639813abf39a9f866ed00d422aaa326b91a987b355cabb",
+    "export_sha256": "a38db9aa97f17b2618639813abf39a9f866ed00d422aaa326b91a987b355cabb",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/skyscraper.py",
+    "source_sha256": "0a1c6e8c6306077ee50aece1e582a258216ab7ddf327211a4d6d27b49ef2939e",
+    "export_sha256": "0a1c6e8c6306077ee50aece1e582a258216ab7ddf327211a4d6d27b49ef2939e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/starbattle.py",
+    "source_sha256": "71a8c4e2f1f65a452eb33b642cf32c7487ecc61dcaf1b7b30be2526b5882db86",
+    "export_sha256": "71a8c4e2f1f65a452eb33b642cf32c7487ecc61dcaf1b7b30be2526b5882db86",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/sudoku.py",
+    "source_sha256": "8f3417a45ac5c19c813c5f9d1c00472db8396ff093876a766a54c53ddc2feba5",
+    "export_sha256": "8f3417a45ac5c19c813c5f9d1c00472db8396ff093876a766a54c53ddc2feba5",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/thermometers.py",
+    "source_sha256": "7865ef62ce300861191257b8e65c2619343152c830470e7cbbac185d736b285c",
+    "export_sha256": "7865ef62ce300861191257b8e65c2619343152c830470e7cbbac185d736b285c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/puzzles/treesandtents.py",
+    "source_sha256": "0261a995b7632b5e8373ba5d2f5b2273676e3103847d4b1c8fda86bbc40b6574",
+    "export_sha256": "0261a995b7632b5e8373ba5d2f5b2273676e3103847d4b1c8fda86bbc40b6574",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vgrpbench/score.py",
+    "source_sha256": "abdcc98f8835476491fd97f9f0300870317552c51e853e79484c433db3dfa06a",
+    "export_sha256": "abdcc98f8835476491fd97f9f0300870317552c51e853e79484c433db3dfa06a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/video_mmlu.py",
+    "source_sha256": "2011a75efa0fcb8ea8976f3c72da7012d96c01b0e86f1903243766d6e21e5820",
+    "export_sha256": "2011a75efa0fcb8ea8976f3c72da7012d96c01b0e86f1903243766d6e21e5820",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/videoholmes.py",
+    "source_sha256": "5c50d7cfb0c23e6ca56749ee4489e3761a1181252157a8e1f682d6829920e428",
+    "export_sha256": "5c50d7cfb0c23e6ca56749ee4489e3761a1181252157a8e1f682d6829920e428",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/videomme.py",
+    "source_sha256": "ea49b56354022c7637a1b1d03a501adfdb42268b00f3bb9c5ef862d47ceeb75e",
+    "export_sha256": "ea49b56354022c7637a1b1d03a501adfdb42268b00f3bb9c5ef862d47ceeb75e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/videott.py",
+    "source_sha256": "972ed1b9fa0a3d968d31ca760121e38a400fc3263ecd624675905c4fe87fb03c",
+    "export_sha256": "972ed1b9fa0a3d968d31ca760121e38a400fc3263ecd624675905c4fe87fb03c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/visulogic.py",
+    "source_sha256": "761b003ed883052e0f4c81d645f6e1a57fd6fd9aa31d2d2c7a167bd2f85964f1",
+    "export_sha256": "761b003ed883052e0f4c81d645f6e1a57fd6fd9aa31d2d2c7a167bd2f85964f1",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vlm2bench.py",
+    "source_sha256": "167a03b8efbc92719df87d910eeb276652924bea6a9aa4297d452c0c09631d56",
+    "export_sha256": "167a03b8efbc92719df87d910eeb276652924bea6a9aa4297d452c0c09631d56",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vmcbench.py",
+    "source_sha256": "2f9b9df21f127383b1e93579cdd864bc4125ccac5dd1bc4716183df6e566224f",
+    "export_sha256": "2f9b9df21f127383b1e93579cdd864bc4125ccac5dd1bc4716183df6e566224f",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/vqa_eval.py",
+    "source_sha256": "f63c9fd539a4a2750cfb4d17ca654e9871b58358bbb943549a71c947839de3ae",
+    "export_sha256": "f63c9fd539a4a2750cfb4d17ca654e9871b58358bbb943549a71c947839de3ae",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/wemath.py",
+    "source_sha256": "1ab20cf89fb86ac22ce037b3eb6cdd70784d682047f1872e590eb1f52c89905b",
+    "export_sha256": "1ab20cf89fb86ac22ce037b3eb6cdd70784d682047f1872e590eb1f52c89905b",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/worldsense.py",
+    "source_sha256": "25eff5a2673bd81b0f77e501664b3307434e3467232277fd42ea2b0b22dc067d",
+    "export_sha256": "25eff5a2673bd81b0f77e501664b3307434e3467232277fd42ea2b0b22dc067d",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/utils/yorn.py",
+    "source_sha256": "20c9fcebb52ea3d825f43ca75476c311d6b78b0cb593ae5d36fdf2fc0b526eb3",
+    "export_sha256": "20c9fcebb52ea3d825f43ca75476c311d6b78b0cb593ae5d36fdf2fc0b526eb3",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/vcr.py",
+    "source_sha256": "b27f4421d6ffeb70c5e2464689cfc67e14db8a0444f14bb7045bb991e99df235",
+    "export_sha256": "b27f4421d6ffeb70c5e2464689cfc67e14db8a0444f14bb7045bb991e99df235",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/vcrbench.py",
+    "source_sha256": "b61b648c152c0bd3aa788c74b3ad8911998bd70b2d3c195acd37317f182123a3",
+    "export_sha256": "b61b648c152c0bd3aa788c74b3ad8911998bd70b2d3c195acd37317f182123a3",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/vdc.py",
+    "source_sha256": "df3cba443b87d8feda374b3e34591b6ffa9922ddbaa559be83d54b134ba8fe51",
+    "export_sha256": "df3cba443b87d8feda374b3e34591b6ffa9922ddbaa559be83d54b134ba8fe51",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/video_base.py",
+    "source_sha256": "68b863e05ac26f49128362e7be7bc4983e80318a5a9bd29d921a7a7b4aad467c",
+    "export_sha256": "68b863e05ac26f49128362e7be7bc4983e80318a5a9bd29d921a7a7b4aad467c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/video_concat_dataset.py",
+    "source_sha256": "e3cd38b0ee7cd85079fbcf7b3432f792f1b6b518adebaec14c2ec3f5f907989a",
+    "export_sha256": "e3cd38b0ee7cd85079fbcf7b3432f792f1b6b518adebaec14c2ec3f5f907989a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/video_dataset_config.py",
+    "source_sha256": "dfbd0e8cf2d3273ed3ccd29137e4cfa773e0d4dad3578332b92e8ebd369cc4d3",
+    "export_sha256": "dfbd0e8cf2d3273ed3ccd29137e4cfa773e0d4dad3578332b92e8ebd369cc4d3",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/video_holmes.py",
+    "source_sha256": "c81db7da2b822e4fc033e5f526d634557797c5fd868865325e839eb110d46dee",
+    "export_sha256": "c81db7da2b822e4fc033e5f526d634557797c5fd868865325e839eb110d46dee",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/video_mmlu.py",
+    "source_sha256": "a46bf6cde759cb4a90252da2301efc0821505482f3c13e1f8c56333a897e266d",
+    "export_sha256": "a46bf6cde759cb4a90252da2301efc0821505482f3c13e1f8c56333a897e266d",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/videomme.py",
+    "source_sha256": "605d4597a8a233923b4bc46d87ec15a75100da81ec5d217d311e23640bb10d65",
+    "export_sha256": "605d4597a8a233923b4bc46d87ec15a75100da81ec5d217d311e23640bb10d65",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/videommmu.py",
+    "source_sha256": "801eb6a6c0041c70e5361af7147d0f3c3bd2d7ff310f3e641d657320f811c32b",
+    "export_sha256": "801eb6a6c0041c70e5361af7147d0f3c3bd2d7ff310f3e641d657320f811c32b",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/videott.py",
+    "source_sha256": "badb94c2cd273d4af3a115eee1b2f66b9148e795809281bd58bdf613b690666a",
+    "export_sha256": "badb94c2cd273d4af3a115eee1b2f66b9148e795809281bd58bdf613b690666a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/visfactor.py",
+    "source_sha256": "cad2af10de1893c223a60e2719bbee441e7b3d3f83250b421bb663f0eccf228c",
+    "export_sha256": "cad2af10de1893c223a60e2719bbee441e7b3d3f83250b421bb663f0eccf228c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/vl_rewardbench.py",
+    "source_sha256": "88192558084515d945a85dca6a57ad7a69b9f19aa15d164ba0b2c65a84be9d5f",
+    "export_sha256": "88192558084515d945a85dca6a57ad7a69b9f19aa15d164ba0b2c65a84be9d5f",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/vlm2bench.py",
+    "source_sha256": "97484afb4111c9d610d0388c580fed5e537be309ec785ac1c95ceb069f0412bf",
+    "export_sha256": "97484afb4111c9d610d0388c580fed5e537be309ec785ac1c95ceb069f0412bf",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/vlmbias.py",
+    "source_sha256": "000aecf5de683dd48d6a7b339a94490813cbf685e73840f62853ceb5132ca0e7",
+    "export_sha256": "000aecf5de683dd48d6a7b339a94490813cbf685e73840f62853ceb5132ca0e7",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/vlrmbench.py",
+    "source_sha256": "a2290ba0aaa624d843e091829857045d0b6ea136ba4302705f84f77ef5e1855c",
+    "export_sha256": "a2290ba0aaa624d843e091829857045d0b6ea136ba4302705f84f77ef5e1855c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/vsibench.py",
+    "source_sha256": "8888c1255320b9543912ea633b911540fbc70033c30922f0ab27dc2fa18f9668",
+    "export_sha256": "8888c1255320b9543912ea633b911540fbc70033c30922f0ab27dc2fa18f9668",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/wildvision.py",
+    "source_sha256": "6c51e38b673a128a3ce3eed6a977e04a57bfd78dfb611330a7ec306bc9cb4885",
+    "export_sha256": "6c51e38b673a128a3ce3eed6a977e04a57bfd78dfb611330a7ec306bc9cb4885",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/dataset/worldsense.py",
+    "source_sha256": "f2043e373189d98fa53b5ac1a54c03b52b741e5cbd9ac935757e66cbef217778",
+    "export_sha256": "f2043e373189d98fa53b5ac1a54c03b52b741e5cbd9ac935757e66cbef217778",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/inference.py",
+    "source_sha256": "19de0b74d05b490896734f66983551bd614602859f341eabf58b730cefadc5a3",
+    "export_sha256": "19de0b74d05b490896734f66983551bd614602859f341eabf58b730cefadc5a3",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/inference_mt.py",
+    "source_sha256": "6598a05a33a760aff678cdcbc1a6c1453f93ef9d8120faeadc1e9c3daf84f1c0",
+    "export_sha256": "6598a05a33a760aff678cdcbc1a6c1453f93ef9d8120faeadc1e9c3daf84f1c0",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/inference_video.py",
+    "source_sha256": "b61379ad0ee779268d0cc4c60d2d393f808118152d6e5e8c6d48ce47eb067d7b",
+    "export_sha256": "b61379ad0ee779268d0cc4c60d2d393f808118152d6e5e8c6d48ce47eb067d7b",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/smp/__init__.py",
+    "source_sha256": "36af77c965cc353649da2cdb5eecc147694484af7c52ee3d6d98c511a2e2e2c4",
+    "export_sha256": "36af77c965cc353649da2cdb5eecc147694484af7c52ee3d6d98c511a2e2e2c4",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/smp/file.py",
+    "source_sha256": "da566d1d84084101ee6af46ca02dd68827411f2350545c70bbeba2e7fc0ed233",
+    "export_sha256": "da566d1d84084101ee6af46ca02dd68827411f2350545c70bbeba2e7fc0ed233",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/smp/log.py",
+    "source_sha256": "863937abaed83086dd8ee9626bf39afd04f134449778a074a0ffbac067f81e78",
+    "export_sha256": "863937abaed83086dd8ee9626bf39afd04f134449778a074a0ffbac067f81e78",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/smp/misc.py",
+    "source_sha256": "e65a0e0a23305ab3bd16c6d1885e8f97b08b7a8fb3c4bf90691e5432a67f7ddf",
+    "export_sha256": "e65a0e0a23305ab3bd16c6d1885e8f97b08b7a8fb3c4bf90691e5432a67f7ddf",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/smp/vlm.py",
+    "source_sha256": "69783556eb1e811b8bf1554586bef8745096ee39c52fd1107336bcab7bf6083f",
+    "export_sha256": "69783556eb1e811b8bf1554586bef8745096ee39c52fd1107336bcab7bf6083f",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/tools.py",
+    "source_sha256": "9c20b28ef416b7b066a62f9b0a729daee0ee1a2ac7a17307da92edc0d3444267",
+    "export_sha256": "9c20b28ef416b7b066a62f9b0a729daee0ee1a2ac7a17307da92edc0d3444267",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/utils/__init__.py",
+    "source_sha256": "a3e324321f61a5e28166545075dbf463afa0fa983151f21ad4b0526f41c619f2",
+    "export_sha256": "a3e324321f61a5e28166545075dbf463afa0fa983151f21ad4b0526f41c619f2",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/utils/matching_util.py",
+    "source_sha256": "03435cedaeaf6282599816aed4ba57f26dd4858f2a37399490acca98d9f8f5f2",
+    "export_sha256": "03435cedaeaf6282599816aed4ba57f26dd4858f2a37399490acca98d9f8f5f2",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/utils/mp_util.py",
+    "source_sha256": "33138fbc458a910ac8ad56f07fdfd14aa0a9e8fd391422908f7efee437b0c3b4",
+    "export_sha256": "33138fbc458a910ac8ad56f07fdfd14aa0a9e8fd391422908f7efee437b0c3b4",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/utils/result_transfer.py",
+    "source_sha256": "62b3de65ea6e093b49fe53b8b0c6bf905d7de9d358664dc143dd219655ba347c",
+    "export_sha256": "62b3de65ea6e093b49fe53b8b0c6bf905d7de9d358664dc143dd219655ba347c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/__init__.py",
+    "source_sha256": "07b6656ccac9069c0906b54804ece7050fa91c882908e33b84eb35a4a5c5764f",
+    "export_sha256": "07b6656ccac9069c0906b54804ece7050fa91c882908e33b84eb35a4a5c5764f",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/aki.py",
+    "source_sha256": "87aa3ade032fb46bdc0785fd5bdf2930967b228eb08107ff9435a9eb3606d747",
+    "export_sha256": "87aa3ade032fb46bdc0785fd5bdf2930967b228eb08107ff9435a9eb3606d747",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/aria.py",
+    "source_sha256": "cfd478d0812940584cb4724c93f62b7e38d9408b69a0b86c1a0feae56f1e61f2",
+    "export_sha256": "cfd478d0812940584cb4724c93f62b7e38d9408b69a0b86c1a0feae56f1e61f2",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/base.py",
+    "source_sha256": "f1571713af20449bce1816be483704baa002301bb57bc08744f48a71de1b9db3",
+    "export_sha256": "f1571713af20449bce1816be483704baa002301bb57bc08744f48a71de1b9db3",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/bunnyllama3.py",
+    "source_sha256": "c54a50ae52168fac3925a6a3b161c638374c94b10d7788549c6ec8cb5d70ac93",
+    "export_sha256": "c54a50ae52168fac3925a6a3b161c638374c94b10d7788549c6ec8cb5d70ac93",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/cambrian.py",
+    "source_sha256": "f0aa01691faff6e1c36bde1aa442ba019e54f350b02d55b52003f38804746089",
+    "export_sha256": "f0aa01691faff6e1c36bde1aa442ba019e54f350b02d55b52003f38804746089",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/chameleon.py",
+    "source_sha256": "494f75d8087b0c8c816e74cfafe2b8ccd3be8e75799f5274d356816b992eb477",
+    "export_sha256": "494f75d8087b0c8c816e74cfafe2b8ccd3be8e75799f5274d356816b992eb477",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/cogvlm.py",
+    "source_sha256": "a7a26ab68102e362e9a2207b063690b91cdf413b18347ab5822c1a15072b6c8e",
+    "export_sha256": "a7a26ab68102e362e9a2207b063690b91cdf413b18347ab5822c1a15072b6c8e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/cosmos.py",
+    "source_sha256": "81a2b1d3e13b74697b486e34e275708aa2ace335e921ee18a3023032191687b0",
+    "export_sha256": "81a2b1d3e13b74697b486e34e275708aa2ace335e921ee18a3023032191687b0",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/deepseek_vl.py",
+    "source_sha256": "32fbc7d57c76c6865f7dd73079ef8869bb9b6e3e6831ebb14ef2e7efb075943b",
+    "export_sha256": "32fbc7d57c76c6865f7dd73079ef8869bb9b6e3e6831ebb14ef2e7efb075943b",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/deepseek_vl2.py",
+    "source_sha256": "a39730afa714583a3817058e5574a0fc4ac330fe3325ec8d01e8ec87d9a22460",
+    "export_sha256": "a39730afa714583a3817058e5574a0fc4ac330fe3325ec8d01e8ec87d9a22460",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/eagle_x.py",
+    "source_sha256": "9cd60ad46d65928a817a9b2bc0b1e304e54cc9a8f540cec2f466ebad78973755",
+    "export_sha256": "9cd60ad46d65928a817a9b2bc0b1e304e54cc9a8f540cec2f466ebad78973755",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/emu.py",
+    "source_sha256": "c8e0cfca1b19590b4e19ef670ba5f941371ff92daa7bc4d59511907ae929d55a",
+    "export_sha256": "c8e0cfca1b19590b4e19ef670ba5f941371ff92daa7bc4d59511907ae929d55a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/falcon_vlm.py",
+    "source_sha256": "c554827523e98e3f0086dcefe2c10ad3254ccfbd2b2a7612e346abc86bb06e34",
+    "export_sha256": "c554827523e98e3f0086dcefe2c10ad3254ccfbd2b2a7612e346abc86bb06e34",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/flash_vl.py",
+    "source_sha256": "fea266c82cbb373354d75a56891c9b776897db86a188ee6c6e7e386ba3d0c460",
+    "export_sha256": "fea266c82cbb373354d75a56891c9b776897db86a188ee6c6e7e386ba3d0c460",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/gemma.py",
+    "source_sha256": "0d8ed6e0242fc8697dab8ea560d30c289fa52ae35e9b7a06a1bcce28f68319d8",
+    "export_sha256": "0d8ed6e0242fc8697dab8ea560d30c289fa52ae35e9b7a06a1bcce28f68319d8",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/granite_vision/__init__.py",
+    "source_sha256": "f7234815ce6f83dd5dbcdfde445dd7b058ed858b05b8ed2bb3f5282bdf8c1117",
+    "export_sha256": "f7234815ce6f83dd5dbcdfde445dd7b058ed858b05b8ed2bb3f5282bdf8c1117",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/granite_vision/granite_vision.py",
+    "source_sha256": "b71495f1740ce5ca04d87211d8a0526aa124dc8dc98e0f930a84e4735f5ed7ea",
+    "export_sha256": "b71495f1740ce5ca04d87211d8a0526aa124dc8dc98e0f930a84e4735f5ed7ea",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/h2ovl_mississippi.py",
+    "source_sha256": "bbab3b741f86a9f5dc48eb769c2a7dacce5ce8499651922dd512a93b63a931ab",
+    "export_sha256": "bbab3b741f86a9f5dc48eb769c2a7dacce5ce8499651922dd512a93b63a931ab",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/hawk_vl/__init__.py",
+    "source_sha256": "834a5c81c361798b644b052319bea02d06ca2135b170e11d7f3cc961f1e32303",
+    "export_sha256": "834a5c81c361798b644b052319bea02d06ca2135b170e11d7f3cc961f1e32303",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/hawk_vl/hawk/__init__.py",
+    "source_sha256": "5eec75c65a57dca609a76d76c74b4e8a5d889a7911943d4d73436ae5e60a43f9",
+    "export_sha256": "5eec75c65a57dca609a76d76c74b4e8a5d889a7911943d4d73436ae5e60a43f9",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/hawk_vl/hawk/constants.py",
+    "source_sha256": "61cf00825856003fbfbc001383aafcf0d369f94deffdcd0e5096fe8d53969663",
+    "export_sha256": "61cf00825856003fbfbc001383aafcf0d369f94deffdcd0e5096fe8d53969663",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/hawk_vl/hawk/model/__init__.py",
+    "source_sha256": "12ca657751e77cbd20dfc8b3939d2c04c24287ee103568de3ec657ced298a3a3",
+    "export_sha256": "12ca657751e77cbd20dfc8b3939d2c04c24287ee103568de3ec657ced298a3a3",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/hawk_vl/hawk/model/hawk_arch.py",
+    "source_sha256": "7633bcf1d69c47cc4a412b95d83fca100d138d008f7c467f54870f947369b97f",
+    "export_sha256": "7633bcf1d69c47cc4a412b95d83fca100d138d008f7c467f54870f947369b97f",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/hawk_vl/hawk/model/language_model/hawk_qwen.py",
+    "source_sha256": "917076b3c475ede3d97b01b8c006255b0a2dc924d2727a5a193b27b5332fdcac",
+    "export_sha256": "917076b3c475ede3d97b01b8c006255b0a2dc924d2727a5a193b27b5332fdcac",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/hawk_vl/hawk/model/multimodal_projector/builder.py",
+    "source_sha256": "d3da07ae868408abfed9cd833bc8584ce4ad2a62c2fd13561b1d7a4af0150707",
+    "export_sha256": "d3da07ae868408abfed9cd833bc8584ce4ad2a62c2fd13561b1d7a4af0150707",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/hawk_vl/hawk/model/vision_encoder/__init__.py",
+    "source_sha256": "5a93756156feef7607175383d7cf32de96f90e3422e3d183c3ec5e464d6c69e4",
+    "export_sha256": "5a93756156feef7607175383d7cf32de96f90e3422e3d183c3ec5e464d6c69e4",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/hawk_vl/hawk/model/vision_encoder/qwen_vit/__init__.py",
+    "source_sha256": "16c0e44bdb778fe9b9efbfa9ad8bde2c960d0689bd61f23e4b8dcedb0eb258c7",
+    "export_sha256": "16c0e44bdb778fe9b9efbfa9ad8bde2c960d0689bd61f23e4b8dcedb0eb258c7",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/hawk_vl/hawk/model/vision_encoder/qwen_vit/configuration_qwen_vit.py",
+    "source_sha256": "295aa12c34cf60cc2465fb61bfe957f9a379a43208f1a247ab02b78d5437c603",
+    "export_sha256": "295aa12c34cf60cc2465fb61bfe957f9a379a43208f1a247ab02b78d5437c603",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/hawk_vl/hawk/model/vision_encoder/qwen_vit/modeling_qwen_vit.py",
+    "source_sha256": "b233ba846748844a7e2847303f7938b87a9bd24fc454a417f86d0869cea0b3b8",
+    "export_sha256": "b233ba846748844a7e2847303f7938b87a9bd24fc454a417f86d0869cea0b3b8",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/hawk_vl/hawk/utils.py",
+    "source_sha256": "b3d213b1c2079fb499e696e23b8b697d119da929d5d36bc2a07397d22b3b127d",
+    "export_sha256": "b3d213b1c2079fb499e696e23b8b697d119da929d5d36bc2a07397d22b3b127d",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/hawk_vl/model.py",
+    "source_sha256": "8fdcceee340fd8e36abd08984ddcc76dc1c7f30f00c226dd3aae141771f0efa1",
+    "export_sha256": "8fdcceee340fd8e36abd08984ddcc76dc1c7f30f00c226dd3aae141771f0efa1",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/hawk_vl/prompt.py",
+    "source_sha256": "0efade5adb5639563aedbfcf07059e492de3f7a9017fb855ebdc081d00e7281f",
+    "export_sha256": "0efade5adb5639563aedbfcf07059e492de3f7a9017fb855ebdc081d00e7281f",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/idefics.py",
+    "source_sha256": "42d56a9dbbf2759fe2b3f321a6ffaac5b2a6d9a2396181829c88602b7d352b93",
+    "export_sha256": "42d56a9dbbf2759fe2b3f321a6ffaac5b2a6d9a2396181829c88602b7d352b93",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/insight_v.py",
+    "source_sha256": "526f1c9bf8a9cf2b0fbecc8ad32b041e6de4c4f44839252e117b7d467495a24c",
+    "export_sha256": "526f1c9bf8a9cf2b0fbecc8ad32b041e6de4c4f44839252e117b7d467495a24c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/instructblip.py",
+    "source_sha256": "1a7de8f960d75d0e9d54bedf9b4148767d34e2a444bd94ed590dced33fc47d94",
+    "export_sha256": "1a7de8f960d75d0e9d54bedf9b4148767d34e2a444bd94ed590dced33fc47d94",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/interns1/__init__.py",
+    "source_sha256": "ea73216155e40e8caa09f171732ce5a23d39a6c334e61c1b6061c636cfa744fb",
+    "export_sha256": "ea73216155e40e8caa09f171732ce5a23d39a6c334e61c1b6061c636cfa744fb",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/interns1/interns1_chat.py",
+    "source_sha256": "d7d74c06e9f9b05b75dcd10ca4961a264937c3680240507cfd56c36f65a7b267",
+    "export_sha256": "d7d74c06e9f9b05b75dcd10ca4961a264937c3680240507cfd56c36f65a7b267",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/internvl/__init__.py",
+    "source_sha256": "7def9eb8abbdaa6cfa68a18ef993fd7e37981465c78308457c0cf7fdd5f8eedf",
+    "export_sha256": "7def9eb8abbdaa6cfa68a18ef993fd7e37981465c78308457c0cf7fdd5f8eedf",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/internvl/gui_template.yaml",
+    "source_sha256": "0c3b27b4a7c57db3585ebc7057ad0cb88c47f8be20df7f3ebe5b84831bc55b8e",
+    "export_sha256": "0c3b27b4a7c57db3585ebc7057ad0cb88c47f8be20df7f3ebe5b84831bc55b8e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/internvl/internvl_chat.py",
+    "source_sha256": "d602188f97285b54e9bdefa27aae608ff9fefdff16e507fc1e78efd2141000ed",
+    "export_sha256": "d602188f97285b54e9bdefa27aae608ff9fefdff16e507fc1e78efd2141000ed",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/internvl/utils.py",
+    "source_sha256": "f2eac76747417dbcb236530f367a7bc158aa7c860647e198e97044016cd58691",
+    "export_sha256": "f2eac76747417dbcb236530f367a7bc158aa7c860647e198e97044016cd58691",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/janus.py",
+    "source_sha256": "f98fce7ce6364cf56367159e5bb877f208997eb4957134df55bbb610c5a706ba",
+    "export_sha256": "f98fce7ce6364cf56367159e5bb877f208997eb4957134df55bbb610c5a706ba",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/keye_vlm/__init__.py",
+    "source_sha256": "c8a3995ca5dc28b16d78ff5e618f82294775d4a70a87d362015a2a4f6d9dfe42",
+    "export_sha256": "c8a3995ca5dc28b16d78ff5e618f82294775d4a70a87d362015a2a4f6d9dfe42",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/keye_vlm/model.py",
+    "source_sha256": "a2b1d55f713dd360f947d3fa34f1ab12a97acaca45baf7e3d73550ca7bb3faef",
+    "export_sha256": "a2b1d55f713dd360f947d3fa34f1ab12a97acaca45baf7e3d73550ca7bb3faef",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/keye_vlm/prompt.py",
+    "source_sha256": "c5bfb22f76254ccdc4800dc0b42052aaec8fc986c0c8f1ce108f7ac26c78d2e3",
+    "export_sha256": "c5bfb22f76254ccdc4800dc0b42052aaec8fc986c0c8f1ce108f7ac26c78d2e3",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/kimi_vl.py",
+    "source_sha256": "0a846dcff9665ca56e804c932951ed3e3d210fccf6a28e5fda0b5bef5791e2fd",
+    "export_sha256": "0a846dcff9665ca56e804c932951ed3e3d210fccf6a28e5fda0b5bef5791e2fd",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/kosmos.py",
+    "source_sha256": "695f99f8662e5b082d3234fdb94500afad8c2307504191e0dbae3b7b47dbc30f",
+    "export_sha256": "695f99f8662e5b082d3234fdb94500afad8c2307504191e0dbae3b7b47dbc30f",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/liquid.py",
+    "source_sha256": "ae6399e9d3844342f4cb1c1b7cdc056b92c4ac13d35a216960e95ff9f521f622",
+    "export_sha256": "ae6399e9d3844342f4cb1c1b7cdc056b92c4ac13d35a216960e95ff9f521f622",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/llama4.py",
+    "source_sha256": "0a519b7c3960ec3f1f7653c2f9bdba7818d44d5c9ba409c280daeadb8b88fea2",
+    "export_sha256": "0a519b7c3960ec3f1f7653c2f9bdba7818d44d5c9ba409c280daeadb8b88fea2",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/llama_vision.py",
+    "source_sha256": "aa8b3730c6257ecb2d89bc32784c19a3afb2fef43eaf45e15b28b8fd98e90e8e",
+    "export_sha256": "aa8b3730c6257ecb2d89bc32784c19a3afb2fef43eaf45e15b28b8fd98e90e8e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/llava/__init__.py",
+    "source_sha256": "2fde00adf146d38b4fbb3e82d435302ff80838263367c00523202efb66b31110",
+    "export_sha256": "2fde00adf146d38b4fbb3e82d435302ff80838263367c00523202efb66b31110",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/llava/llava.py",
+    "source_sha256": "aaceb7ddd8b35489dbf743d075528e4bac764de03221b65a0ec6d07b96a6ed21",
+    "export_sha256": "aaceb7ddd8b35489dbf743d075528e4bac764de03221b65a0ec6d07b96a6ed21",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/llava/llava_xtuner.py",
+    "source_sha256": "238affd4d06e332a4c559ff953a2fe89929298a58c1de3b0ef697d10f2d5d76d",
+    "export_sha256": "238affd4d06e332a4c559ff953a2fe89929298a58c1de3b0ef697d10f2d5d76d",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/logics.py",
+    "source_sha256": "02be70168dc1be6a79b310c18af6a397a300e5c62e45eec0c2c74f2c3cc579ae",
+    "export_sha256": "02be70168dc1be6a79b310c18af6a397a300e5c62e45eec0c2c74f2c3cc579ae",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/long_vita.py",
+    "source_sha256": "d334fd1311fd56879b93a66611dca8423af573f290ca957f0b158d1c01377d69",
+    "export_sha256": "d334fd1311fd56879b93a66611dca8423af573f290ca957f0b158d1c01377d69",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/mantis.py",
+    "source_sha256": "88eb2ee0a99d665be11612f4041a68342bd5151f37935e80e751e3ce0440f6d1",
+    "export_sha256": "88eb2ee0a99d665be11612f4041a68342bd5151f37935e80e751e3ce0440f6d1",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/mgm.py",
+    "source_sha256": "53d67a93dc8cfcae669701dfba2d52651f27983224fb348e926803fbf62ad2a8",
+    "export_sha256": "53d67a93dc8cfcae669701dfba2d52651f27983224fb348e926803fbf62ad2a8",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/minicpm_v.py",
+    "source_sha256": "d940a54f28d0b9362f82cc09d4d3feafb4b95d20eb2e4d038d1cc15c85be5f4f",
+    "export_sha256": "d940a54f28d0b9362f82cc09d4d3feafb4b95d20eb2e4d038d1cc15c85be5f4f",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/minigpt4.py",
+    "source_sha256": "0c7c94b8c668d44764b1ecb015aef71bd86fda55e81e1897671e37c3c7b6c75c",
+    "export_sha256": "0c7c94b8c668d44764b1ecb015aef71bd86fda55e81e1897671e37c3c7b6c75c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/minimonkey.py",
+    "source_sha256": "c52d6b33c7a5f68d5a46c9b62cca13fc58c019b24640b2e980ce431def55d9a1",
+    "export_sha256": "c52d6b33c7a5f68d5a46c9b62cca13fc58c019b24640b2e980ce431def55d9a1",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/misc/blip2_instruct_vicuna13b.yaml",
+    "source_sha256": "71eaee79043f81389c44104a514bfc3ccb283960b77cf52997275c5c8a1c3d19",
+    "export_sha256": "71eaee79043f81389c44104a514bfc3ccb283960b77cf52997275c5c8a1c3d19",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/misc/blip2_instruct_vicuna7b.yaml",
+    "source_sha256": "f79ac9183141fd1d25931b30a9083cf78ec0f4f2d892d1c9da81dbcc88633f2a",
+    "export_sha256": "f79ac9183141fd1d25931b30a9083cf78ec0f4f2d892d1c9da81dbcc88633f2a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/misc/minigpt4_13b_eval.yaml",
+    "source_sha256": "3db41f0a9136edd3a1d50f2eb42fc464c43626f2375b69f422bd0b364198f6c9",
+    "export_sha256": "3db41f0a9136edd3a1d50f2eb42fc464c43626f2375b69f422bd0b364198f6c9",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/misc/minigpt4_7b_eval.yaml",
+    "source_sha256": "e564a73ddcad4998bd6c8c1736952106c12ee2080e0e41f80dcc94ce360d26e6",
+    "export_sha256": "e564a73ddcad4998bd6c8c1736952106c12ee2080e0e41f80dcc94ce360d26e6",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/misc/minigptv2_eval.yaml",
+    "source_sha256": "bb9a6cf064d0a949ce9c22873e82e03b485e3ebcc9698a31e8aab836a39bfaf2",
+    "export_sha256": "bb9a6cf064d0a949ce9c22873e82e03b485e3ebcc9698a31e8aab836a39bfaf2",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/mixsense.py",
+    "source_sha256": "0a9f1b51dd80311d43bcafc0f408cc6a0aafc4b58addb0814fe6d6e780b09f0e",
+    "export_sha256": "0a9f1b51dd80311d43bcafc0f408cc6a0aafc4b58addb0814fe6d6e780b09f0e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/mmalaya.py",
+    "source_sha256": "ccfb82972265e14bcb3decc03317bb609d0aafbc27a32901b3c06781a05e89d4",
+    "export_sha256": "ccfb82972265e14bcb3decc03317bb609d0aafbc27a32901b3c06781a05e89d4",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/molmo.py",
+    "source_sha256": "681019610f2e7b374d0f0338d0f73a8b2f44ae2f68e21a5aeea6ecf9258a5527",
+    "export_sha256": "681019610f2e7b374d0f0338d0f73a8b2f44ae2f68e21a5aeea6ecf9258a5527",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/monkey.py",
+    "source_sha256": "81687e026b6fd8b0d614d9db1f83b50756791cf6087ca56d1189f5e222daba9e",
+    "export_sha256": "81687e026b6fd8b0d614d9db1f83b50756791cf6087ca56d1189f5e222daba9e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/moondream.py",
+    "source_sha256": "ca64e5ce8b358ad9153324ed116437ef84623d937a230ce6a19a715271924c76",
+    "export_sha256": "ca64e5ce8b358ad9153324ed116437ef84623d937a230ce6a19a715271924c76",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/mplug_owl2.py",
+    "source_sha256": "3ff0d82f949bf53373e452d2fe95051b294c03963916b89208c7cb4718213c06",
+    "export_sha256": "3ff0d82f949bf53373e452d2fe95051b294c03963916b89208c7cb4718213c06",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/mplug_owl3.py",
+    "source_sha256": "52fc244aa30b84fe98573119c6a85af459c9b3ddd69403112e5fa752c0f70597",
+    "export_sha256": "52fc244aa30b84fe98573119c6a85af459c9b3ddd69403112e5fa752c0f70597",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/nvlm.py",
+    "source_sha256": "8a7123edee112d00b5358772ff2b14110f9ca45b7b15792696c635f2326d1646",
+    "export_sha256": "8a7123edee112d00b5358772ff2b14110f9ca45b7b15792696c635f2326d1646",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/__init__.py",
+    "source_sha256": "49822eafea8f7876c4d77ae56a01f2dbfa4a89175c2c35b685683de138af7ca2",
+    "export_sha256": "49822eafea8f7876c4d77ae56a01f2dbfa4a89175c2c35b685683de138af7ca2",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/arguments.py",
+    "source_sha256": "1e2906d6f1b8382c61047e423f5e6b8de687df8472fe9bc00fe4ec9e5b72b517",
+    "export_sha256": "1e2906d6f1b8382c61047e423f5e6b8de687df8472fe9bc00fe4ec9e5b72b517",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/constants.py",
+    "source_sha256": "1419ac1eea6aa0234710b46363377ef1e525245520e5712791f9a005db898ad5",
+    "export_sha256": "1419ac1eea6aa0234710b46363377ef1e525245520e5712791f9a005db898ad5",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/conversation.py",
+    "source_sha256": "31631655f9008c44a934962f71da768a7e4e8e2f3cf63606f437d131a3d49c50",
+    "export_sha256": "31631655f9008c44a934962f71da768a7e4e8e2f3cf63606f437d131a3d49c50",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/datasets/__init__.py",
+    "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "export_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/datasets/preprocess.py",
+    "source_sha256": "3f979f03f9b29bb176af60a0bf40a041c098cbe344abf063e5ca3806c95a1356",
+    "export_sha256": "3f979f03f9b29bb176af60a0bf40a041c098cbe344abf063e5ca3806c95a1356",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/mm_utils.py",
+    "source_sha256": "c2764473fce35f48a4b53f6b4b77b671376720f49c80d776a7d89e118f3aef55",
+    "export_sha256": "c2764473fce35f48a4b53f6b4b77b671376720f49c80d776a7d89e118f3aef55",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/model/__init__.py",
+    "source_sha256": "780f386efa528770f377663c88593b94d7f0dc84a917704f756236fd4ff759f5",
+    "export_sha256": "780f386efa528770f377663c88593b94d7f0dc84a917704f756236fd4ff759f5",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/model/builder.py",
+    "source_sha256": "accd71d29dfc8edddd3e27aa8347da89a156a2931d3f3af00fdf697904e4a7ce",
+    "export_sha256": "accd71d29dfc8edddd3e27aa8347da89a156a2931d3f3af00fdf697904e4a7ce",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/model/language_model/ola_qwen.py",
+    "source_sha256": "b8176969683a37a56a9fdde6c36b7e27109464e51429ec748d6efb23eb336039",
+    "export_sha256": "b8176969683a37a56a9fdde6c36b7e27109464e51429ec748d6efb23eb336039",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/model/multimodal_encoder/builder.py",
+    "source_sha256": "c92abd265cbba0bf9cb06835d6569ab6fd6ac6937f7d717a9c7c41334cb644a0",
+    "export_sha256": "c92abd265cbba0bf9cb06835d6569ab6fd6ac6937f7d717a9c7c41334cb644a0",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/model/multimodal_encoder/oryx_vit.py",
+    "source_sha256": "9a20293eecdab8a2adf139b5953e25e91226cd4e793e5d898284d7b971a10210",
+    "export_sha256": "9a20293eecdab8a2adf139b5953e25e91226cd4e793e5d898284d7b971a10210",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/model/multimodal_projector/builder.py",
+    "source_sha256": "d5fef26df4d8257cee79eba0d1badb2850cf0f00b3b5561a48e2bd8a8cebf6fb",
+    "export_sha256": "d5fef26df4d8257cee79eba0d1badb2850cf0f00b3b5561a48e2bd8a8cebf6fb",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/model/multimodal_projector/pooler_projector.py",
+    "source_sha256": "bb065ef29a330ec0e929704202998d3477f9430bf16591e30376e223f3130e64",
+    "export_sha256": "bb065ef29a330ec0e929704202998d3477f9430bf16591e30376e223f3130e64",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/model/multimodal_resampler/builder.py",
+    "source_sha256": "ae1c33ea7bf1de7a82cfe587d9ad908e0dc363bb47e76d362de218f751c3d686",
+    "export_sha256": "ae1c33ea7bf1de7a82cfe587d9ad908e0dc363bb47e76d362de218f751c3d686",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/model/multimodal_resampler/perceiver.py",
+    "source_sha256": "df4909c19b4aa0a42cbca60a538f0fecdbb2af824b25d696fc2b0fc09e29edac",
+    "export_sha256": "df4909c19b4aa0a42cbca60a538f0fecdbb2af824b25d696fc2b0fc09e29edac",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/model/ola_arch.py",
+    "source_sha256": "383dfd32739963dd8719b2c3b1cb8746b2971bb59d15fd35596aac5973be6bdf",
+    "export_sha256": "383dfd32739963dd8719b2c3b1cb8746b2971bb59d15fd35596aac5973be6bdf",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/model/speech_encoder/beats/BEATs.py",
+    "source_sha256": "0b8e29e415e4fd65b75e647bc1223e6a2424af476cf4473c89ddd307c91ddebb",
+    "export_sha256": "0b8e29e415e4fd65b75e647bc1223e6a2424af476cf4473c89ddd307c91ddebb",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/model/speech_encoder/beats/Tokenizers.py",
+    "source_sha256": "271a5a7c2c5a331779d66862daa5403f6cc3a995f8379dbcfeb89671102724eb",
+    "export_sha256": "271a5a7c2c5a331779d66862daa5403f6cc3a995f8379dbcfeb89671102724eb",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/model/speech_encoder/beats/__init__.py",
+    "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "export_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/model/speech_encoder/beats/backbone.py",
+    "source_sha256": "c709fb38cb6e5da5dfc2848f4faf9593c2ef03dd67956f603dd10001edf3097e",
+    "export_sha256": "c709fb38cb6e5da5dfc2848f4faf9593c2ef03dd67956f603dd10001edf3097e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/model/speech_encoder/beats/kaldi.py",
+    "source_sha256": "15f126c0fcf8f3d9a199fe8c880e70521c05a444846b8240ddc93c6a1330eb8e",
+    "export_sha256": "15f126c0fcf8f3d9a199fe8c880e70521c05a444846b8240ddc93c6a1330eb8e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/model/speech_encoder/beats/modules.py",
+    "source_sha256": "c4b4170b1c4286717b606788f617a0a768af076cdeaaa9b1d35bf70d6c3859fe",
+    "export_sha256": "c4b4170b1c4286717b606788f617a0a768af076cdeaaa9b1d35bf70d6c3859fe",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/model/speech_encoder/beats/quantizer.py",
+    "source_sha256": "8d15198f22618db773a5fed2ca416fbde67c7d56ce621822ab9d49d51e5534bb",
+    "export_sha256": "8d15198f22618db773a5fed2ca416fbde67c7d56ce621822ab9d49d51e5534bb",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/model/speech_encoder/builder.py",
+    "source_sha256": "a016e158d6b3a720920d1da36b1d55a6fde5d7b48e22af948ab071141c688790",
+    "export_sha256": "a016e158d6b3a720920d1da36b1d55a6fde5d7b48e22af948ab071141c688790",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/model/speech_encoder/speech_encoder.py",
+    "source_sha256": "33e697712ecf37d58b736319189d463cc4334f357ba42cccfc73f18436a40169",
+    "export_sha256": "33e697712ecf37d58b736319189d463cc4334f357ba42cccfc73f18436a40169",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/model/speech_projector/builder.py",
+    "source_sha256": "b3a7fd6a77dc00138cacd18a0f18f17b075dfd17a96cda7bce184981c96d6b0d",
+    "export_sha256": "b3a7fd6a77dc00138cacd18a0f18f17b075dfd17a96cda7bce184981c96d6b0d",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/model/speech_projector/speech_projector.py",
+    "source_sha256": "af7a4717c6652949e63e1bc3324d337f7fa201a704b38ca690a5bd955b14fdea",
+    "export_sha256": "af7a4717c6652949e63e1bc3324d337f7fa201a704b38ca690a5bd955b14fdea",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola/utils.py",
+    "source_sha256": "0ca9a76c295afb6293ad00b4d1384c540088e30bc6929999db8dc82595d448d7",
+    "export_sha256": "0ca9a76c295afb6293ad00b4d1384c540088e30bc6929999db8dc82595d448d7",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ola/ola_model.py",
+    "source_sha256": "bcae39aea1098a7ba70b31cb0aada254bcececf8e82fe266cfde85fa3e8442b5",
+    "export_sha256": "bcae39aea1098a7ba70b31cb0aada254bcececf8e82fe266cfde85fa3e8442b5",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/omchat.py",
+    "source_sha256": "55bb52e4a5fb4b8325f53b3464e11343e2a76c8c9506370e536130f18023081a",
+    "export_sha256": "55bb52e4a5fb4b8325f53b3464e11343e2a76c8c9506370e536130f18023081a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/omnilmm.py",
+    "source_sha256": "075069053e42b5a494bfc95a1063d9d1cb66411e439cbe55dbd78ae4d1602377",
+    "export_sha256": "075069053e42b5a494bfc95a1063d9d1cb66411e439cbe55dbd78ae4d1602377",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/open_flamingo.py",
+    "source_sha256": "cdf484979b2f35e03d2c5fe9d130a33cc25ae0c6248d7c51553222eb3d460e3d",
+    "export_sha256": "cdf484979b2f35e03d2c5fe9d130a33cc25ae0c6248d7c51553222eb3d460e3d",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/oryx.py",
+    "source_sha256": "65e5d0d699367b797cd5df18fb14563c59413ac636ad95a8cc1c218387a09226",
+    "export_sha256": "65e5d0d699367b797cd5df18fb14563c59413ac636ad95a8cc1c218387a09226",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ovis/__init__.py",
+    "source_sha256": "e4a12ade26d33100e55ec46b656c332eefddef5b1c33c60bdf1eafd50ab9b1c1",
+    "export_sha256": "e4a12ade26d33100e55ec46b656c332eefddef5b1c33c60bdf1eafd50ab9b1c1",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ovis/ovis.py",
+    "source_sha256": "b894919c5e3d2d4da029107626b17aa99293b9635071e045eb30934a75363696",
+    "export_sha256": "b894919c5e3d2d4da029107626b17aa99293b9635071e045eb30934a75363696",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ovis/utils/__init__.py",
+    "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "export_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ovis/utils/mdp3.py",
+    "source_sha256": "01a949d98191edc06e2dff97d455c18936c47bccfffb9c198c077d14cd991682",
+    "export_sha256": "01a949d98191edc06e2dff97d455c18936c47bccfffb9c198c077d14cd991682",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/pandagpt.py",
+    "source_sha256": "dc4176d135326ac64e7053f2c637e7ffe08d3b9b4067ecbf2d466421d1ebaa01",
+    "export_sha256": "dc4176d135326ac64e7053f2c637e7ffe08d3b9b4067ecbf2d466421d1ebaa01",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/parrot.py",
+    "source_sha256": "3e1ef84b2e37becdce9fb71d507fd66284013ff4a70b8ac6910018f6aa48bdc4",
+    "export_sha256": "3e1ef84b2e37becdce9fb71d507fd66284013ff4a70b8ac6910018f6aa48bdc4",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/phi3_vision.py",
+    "source_sha256": "e313f57d6bb5086665310da1523557d5b3575b433c3ba702543a261a324d4798",
+    "export_sha256": "e313f57d6bb5086665310da1523557d5b3575b433c3ba702543a261a324d4798",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/phi4_multimodal.py",
+    "source_sha256": "f79ad2ebd6383043d2495cf77003dd41bc95bafd86ca8d403bcc19b8a097cced",
+    "export_sha256": "f79ad2ebd6383043d2495cf77003dd41bc95bafd86ca8d403bcc19b8a097cced",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/pixtral.py",
+    "source_sha256": "33a9d735d03079d94b1829883293c033a1cc28b7480e0b7eda536cfb7954e404",
+    "export_sha256": "33a9d735d03079d94b1829883293c033a1cc28b7480e0b7eda536cfb7954e404",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/points.py",
+    "source_sha256": "909b656e977a4201bebbd5266a87fd37516e864c9ed1673caff45132bcba44ec",
+    "export_sha256": "909b656e977a4201bebbd5266a87fd37516e864c9ed1673caff45132bcba44ec",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/qh_360vl.py",
+    "source_sha256": "53125416dbe93a6400067a263bb167ac04698d7567ccc06fa06db48c3cd6963b",
+    "export_sha256": "53125416dbe93a6400067a263bb167ac04698d7567ccc06fa06db48c3cd6963b",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/qianfan_vl.py",
+    "source_sha256": "2a3c414825b98f4740cdd7d0d51b6e10cd9caa1ff186f6f5c247d2423e379a83",
+    "export_sha256": "2a3c414825b98f4740cdd7d0d51b6e10cd9caa1ff186f6f5c247d2423e379a83",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/qtunevl/__init__.py",
+    "source_sha256": "66143e97e97c611a7088663a7f1c998053a13247ddd4dcbdd8c95106e435e198",
+    "export_sha256": "66143e97e97c611a7088663a7f1c998053a13247ddd4dcbdd8c95106e435e198",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/qtunevl/qtune_vl.py",
+    "source_sha256": "963db0b1c80bfda73881f38683b53575ae09b5d330bbb8cd2e0a15f7f5a6c6e8",
+    "export_sha256": "963db0b1c80bfda73881f38683b53575ae09b5d330bbb8cd2e0a15f7f5a6c6e8",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/qtunevl/qtune_vl_chat.py",
+    "source_sha256": "bb536eb66a0f99636348b3de786859bef235836ef01015b12af6d6f641e35fb8",
+    "export_sha256": "bb536eb66a0f99636348b3de786859bef235836ef01015b12af6d6f641e35fb8",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/qwen2_vl/__init__.py",
+    "source_sha256": "8e33629d67503f5e3b1141a90713fd7a4d57e6ba7cd1fb919fc00018eac351cb",
+    "export_sha256": "8e33629d67503f5e3b1141a90713fd7a4d57e6ba7cd1fb919fc00018eac351cb",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/qwen2_vl/model.py",
+    "source_sha256": "a903369dd1c6df7749b3a53f2e847fef876a0e5c6ede4da21e445d4e6abce72d",
+    "export_sha256": "ee16d25ca7965aeed38f9209d2665e79dc194cc9c58088b12c38e139edb85674",
+    "portable_edits": 0,
+    "additional_export_edit": "Portable dependency path or multi-image prompt preservation"
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/qwen2_vl/prompt.py",
+    "source_sha256": "64ed32b8c4484c4f5eda12d3ad794a116c414b4c5c54b371a099d0f1e36449fa",
+    "export_sha256": "64ed32b8c4484c4f5eda12d3ad794a116c414b4c5c54b371a099d0f1e36449fa",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/qwen3_vl/__init__.py",
+    "source_sha256": "8d71a94b7beda683783354d4da43940a944b4c2fe30f7b276c3da3a8c0aba9a5",
+    "export_sha256": "8d71a94b7beda683783354d4da43940a944b4c2fe30f7b276c3da3a8c0aba9a5",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/qwen3_vl/model.py",
+    "source_sha256": "d5be53381229e0102aad92c834ba58b1980d14156798883aba996b23e15221fb",
+    "export_sha256": "d5be53381229e0102aad92c834ba58b1980d14156798883aba996b23e15221fb",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/qwen3_vl/prompt.py",
+    "source_sha256": "98949c9bb67820750fc72496bcb4eb9acfe30b0d6fc8917ecdccb9f91e6cd281",
+    "export_sha256": "98949c9bb67820750fc72496bcb4eb9acfe30b0d6fc8917ecdccb9f91e6cd281",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/qwen_vl.py",
+    "source_sha256": "1a5d1efaa4c8eedaa85113f9337406c41e43b1ed0ad03e09e1c77f64b3f0a17a",
+    "export_sha256": "1a5d1efaa4c8eedaa85113f9337406c41e43b1ed0ad03e09e1c77f64b3f0a17a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/rbdash.py",
+    "source_sha256": "78e853c217b3b6cd779cc8d962e3a1414ff24a48b74a6d641f4372c9ba2f4905",
+    "export_sha256": "78e853c217b3b6cd779cc8d962e3a1414ff24a48b74a6d641f4372c9ba2f4905",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ristretto.py",
+    "source_sha256": "3e57f991b70cd646c09411adce3b9c23cb6322d5cdf844f9cc30776931fb982d",
+    "export_sha256": "3e57f991b70cd646c09411adce3b9c23cb6322d5cdf844f9cc30776931fb982d",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ross.py",
+    "source_sha256": "a18bb05b39d1db385dcd672e5536cbe8bf01e635acf9fae660528a184e7a1c8d",
+    "export_sha256": "a18bb05b39d1db385dcd672e5536cbe8bf01e635acf9fae660528a184e7a1c8d",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/sail_vl.py",
+    "source_sha256": "5a86397c6bebff1eb6dc2a4f6759add2163f44fe24e69c497d1f38d5fb96cec4",
+    "export_sha256": "5a86397c6bebff1eb6dc2a4f6759add2163f44fe24e69c497d1f38d5fb96cec4",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/slime.py",
+    "source_sha256": "dc88ed64d7dde40289761a09842b6465ad1a359669b7ede85aa26429b2795093",
+    "export_sha256": "dc88ed64d7dde40289761a09842b6465ad1a359669b7ede85aa26429b2795093",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/smolvlm.py",
+    "source_sha256": "eac97a4489b79b30a2b489e50a740b96b093dc0ed3db3fb638d58479159212f7",
+    "export_sha256": "eac97a4489b79b30a2b489e50a740b96b093dc0ed3db3fb638d58479159212f7",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/thyme/__init__.py",
+    "source_sha256": "6acc517ba4ed8b594074f6e7e39aabd0edf3544056589f25d864697583edb715",
+    "export_sha256": "6acc517ba4ed8b594074f6e7e39aabd0edf3544056589f25d864697583edb715",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/thyme/model.py",
+    "source_sha256": "988523fb9da7ed09d1d55a143fda0d07b6d77200e0683a178ff672d1ec438f40",
+    "export_sha256": "988523fb9da7ed09d1d55a143fda0d07b6d77200e0683a178ff672d1ec438f40",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/thyme/prompt.py",
+    "source_sha256": "a22154a13e1339258882f2fe7bbfa5cec1a35607431d53032dbebaf548e759c2",
+    "export_sha256": "a22154a13e1339258882f2fe7bbfa5cec1a35607431d53032dbebaf548e759c2",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/thyme/sandbox.py",
+    "source_sha256": "b8a754ce3de764c15e28a40f4bcfe92b8d15e82fecd9ae3f407d1ce8eb594d42",
+    "export_sha256": "b8a754ce3de764c15e28a40f4bcfe92b8d15e82fecd9ae3f407d1ce8eb594d42",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/thyme/utils.py",
+    "source_sha256": "6995afc39ffbf9e1f503ef419248ae6c808a7e00bee3d006a37d79ce6d477cda",
+    "export_sha256": "6995afc39ffbf9e1f503ef419248ae6c808a7e00bee3d006a37d79ce6d477cda",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/transcore_m.py",
+    "source_sha256": "2932b82201cebf0ab1e28a5eb1c66762a7b13593f138e883210cf866f3f5166c",
+    "export_sha256": "2932b82201cebf0ab1e28a5eb1c66762a7b13593f138e883210cf866f3f5166c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/treevgr.py",
+    "source_sha256": "674186bac68e9b6c849695bd90729f5d70ed65e5c5f326de87197c2a611cb9bb",
+    "export_sha256": "674186bac68e9b6c849695bd90729f5d70ed65e5c5f326de87197c2a611cb9bb",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ursa/__init__.py",
+    "source_sha256": "7ed7a10747ab3afe771a4fd7c4ab617f8894811554e3cfa73dd1f13b6e1f22c2",
+    "export_sha256": "7ed7a10747ab3afe771a4fd7c4ab617f8894811554e3cfa73dd1f13b6e1f22c2",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ursa/ursa_chat.py",
+    "source_sha256": "0f246246124b3d2f322a2cc16bb2adc3de6b6bf722c46794f11538b4040484b5",
+    "export_sha256": "0f246246124b3d2f322a2cc16bb2adc3de6b6bf722c46794f11538b4040484b5",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ursa/ursa_model/__init__.py",
+    "source_sha256": "9706a3ad9a25b66b26fce3653f1ba3bb86c40238b5ad7733a80c31dee5d3652e",
+    "export_sha256": "9706a3ad9a25b66b26fce3653f1ba3bb86c40238b5ad7733a80c31dee5d3652e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ursa/ursa_model/clip_encoder.py",
+    "source_sha256": "b67fae4c201c6fadd6397e9c074ae5db29ceb2e9b6df1cb5b40bc1a8f6c81c7a",
+    "export_sha256": "b67fae4c201c6fadd6397e9c074ae5db29ceb2e9b6df1cb5b40bc1a8f6c81c7a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ursa/ursa_model/configuration_ursa.py",
+    "source_sha256": "cb5c585d03769f765d3870afbff652f0950b3bf1cdbf7766ea8db6b859fb6478",
+    "export_sha256": "cb5c585d03769f765d3870afbff652f0950b3bf1cdbf7766ea8db6b859fb6478",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ursa/ursa_model/image_processing_vlm.py",
+    "source_sha256": "364deb2b4782c25fa1a1878eaefd62886ed9bf72a5645176000cd55cddb0453d",
+    "export_sha256": "364deb2b4782c25fa1a1878eaefd62886ed9bf72a5645176000cd55cddb0453d",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ursa/ursa_model/modeling_ursa.py",
+    "source_sha256": "afe9359178af7212d3bb77ef3496f380f258c37ef179bdd5fc4dd30224b5dd63",
+    "export_sha256": "afe9359178af7212d3bb77ef3496f380f258c37ef179bdd5fc4dd30224b5dd63",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ursa/ursa_model/processing_ursa.py",
+    "source_sha256": "1118af43032bbb556ab44c420a853633e2b751071ad2b49f73481729168c16b6",
+    "export_sha256": "1118af43032bbb556ab44c420a853633e2b751071ad2b49f73481729168c16b6",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ursa/ursa_model/projector.py",
+    "source_sha256": "0573f1e238f88c80dd658649fe6a374a6ce06930150bb07140cb94d701337480",
+    "export_sha256": "0573f1e238f88c80dd658649fe6a374a6ce06930150bb07140cb94d701337480",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ursa/ursa_model/sam.py",
+    "source_sha256": "a4776a0303d2bab47246ec263109ab893873f1ec8f1626a87da2c61b0a4b0ee5",
+    "export_sha256": "a4776a0303d2bab47246ec263109ab893873f1ec8f1626a87da2c61b0a4b0ee5",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/ursa/ursa_model/siglip_vit.py",
+    "source_sha256": "ae67f7a07359da08f6719008f982ad2509201a78d5355c708b2f8cef050eb471",
+    "export_sha256": "ae67f7a07359da08f6719008f982ad2509201a78d5355c708b2f8cef050eb471",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/valley/__init__.py",
+    "source_sha256": "1bbe16d8c27973ff581521ecbbadcfb97d3767caceb7eea30c733e16078d21fe",
+    "export_sha256": "1bbe16d8c27973ff581521ecbbadcfb97d3767caceb7eea30c733e16078d21fe",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/valley/valley2.py",
+    "source_sha256": "ae8bbe4507d731b96f42e5ddbd37db5f3df9850751dde49ad9fda73de4d6cb0d",
+    "export_sha256": "ae8bbe4507d731b96f42e5ddbd37db5f3df9850751dde49ad9fda73de4d6cb0d",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/valley/valley3.py",
+    "source_sha256": "4fdbee104851b447d665fc9cfca2a178eeef9f9e2221397140f933e9a30c569c",
+    "export_sha256": "4fdbee104851b447d665fc9cfca2a178eeef9f9e2221397140f933e9a30c569c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/varco_vision.py",
+    "source_sha256": "0497b4c8af0c44a007b48d55729eca6e38258d277f3068c4c81d71c0747fe2af",
+    "export_sha256": "0497b4c8af0c44a007b48d55729eca6e38258d277f3068c4c81d71c0747fe2af",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/video_llm/__init__.py",
+    "source_sha256": "e62a33f419c5923bc15d3a22123a64eca42748ab64a225ce1377ccb0e2708f7b",
+    "export_sha256": "e62a33f419c5923bc15d3a22123a64eca42748ab64a225ce1377ccb0e2708f7b",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/video_llm/chat_uni_vi.py",
+    "source_sha256": "f587d00e845daed2a910fcf678af6eda3b18bb273f34a2d813b06062c2e9de41",
+    "export_sha256": "f587d00e845daed2a910fcf678af6eda3b18bb273f34a2d813b06062c2e9de41",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/video_llm/configs/llama_vid/processor/clip-patch14-224/config.json",
+    "source_sha256": "8a09b467700c58138c29d53c605b34ebc69beaadd13274a8a2af8ad2c2f4032a",
+    "export_sha256": "8a09b467700c58138c29d53c605b34ebc69beaadd13274a8a2af8ad2c2f4032a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/video_llm/configs/llama_vid/processor/clip-patch14-224/preprocessor_config.json",
+    "source_sha256": "910e70b3956ac9879ebc90b22fb3bc8a75b6a0677814500101a4c072bd7857bd",
+    "export_sha256": "910e70b3956ac9879ebc90b22fb3bc8a75b6a0677814500101a4c072bd7857bd",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/video_llm/configs/videochat2_hd.json",
+    "source_sha256": "d252cc96e7bcf00788d114bc4603343154bdd1806c7e21a4d9655f97320e3194",
+    "export_sha256": "d252cc96e7bcf00788d114bc4603343154bdd1806c7e21a4d9655f97320e3194",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/video_llm/llama_vid.py",
+    "source_sha256": "ba135ced7b90091d35f6dc52108ed7f5fdcb5e93a354405a44b42d31d565e7f9",
+    "export_sha256": "ba135ced7b90091d35f6dc52108ed7f5fdcb5e93a354405a44b42d31d565e7f9",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/video_llm/pllava.py",
+    "source_sha256": "5d76254b06ccc2ca1eb7f9d88f78195eb9337364ccdea8921d27cf9b96e523f5",
+    "export_sha256": "5d76254b06ccc2ca1eb7f9d88f78195eb9337364ccdea8921d27cf9b96e523f5",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/video_llm/video_chatgpt.py",
+    "source_sha256": "0dff94429f4675827d50a77e272c52219eab91c043e7f1222b5daac3b0647155",
+    "export_sha256": "0dff94429f4675827d50a77e272c52219eab91c043e7f1222b5daac3b0647155",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/video_llm/video_llava.py",
+    "source_sha256": "22950098bc0eca30218ba742395c016f4ac3ee7736216dd71a128f480f52a951",
+    "export_sha256": "22950098bc0eca30218ba742395c016f4ac3ee7736216dd71a128f480f52a951",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/video_llm/videochat2.py",
+    "source_sha256": "ca23a93a842c3892e00c17c2feb7be3d352f2e4a5819f7287904beb6e1f8eb4c",
+    "export_sha256": "ca23a93a842c3892e00c17c2feb7be3d352f2e4a5819f7287904beb6e1f8eb4c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/vila.py",
+    "source_sha256": "0234e0eca592c2bb0246853e238b1635f8137c52928af268d54760ca49ad725e",
+    "export_sha256": "0234e0eca592c2bb0246853e238b1635f8137c52928af268d54760ca49ad725e",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/vintern_chat.py",
+    "source_sha256": "1fb055c5f4cf5d38e6a56e76a993c6b5f8b663ee2d73f0f0a29a3c503202202c",
+    "export_sha256": "1fb055c5f4cf5d38e6a56e76a993c6b5f8b663ee2d73f0f0a29a3c503202202c",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/visualglm.py",
+    "source_sha256": "fe36e0993269d535a931f6d0c98fe1455c5ab43451a87308e4d88d4770174ef2",
+    "export_sha256": "fe36e0993269d535a931f6d0c98fe1455c5ab43451a87308e4d88d4770174ef2",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/vita.py",
+    "source_sha256": "6b3c206d3087be442a6bf626fabe01bf1b91fafd37e28d46a7b56bf6ff028875",
+    "export_sha256": "6b3c206d3087be442a6bf626fabe01bf1b91fafd37e28d46a7b56bf6ff028875",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/vlaa_thinker.py",
+    "source_sha256": "81ea1d1d3feb53a5dddae2ea08780c77efb770f9b9fdd485e1add1da6e7b3108",
+    "export_sha256": "81ea1d1d3feb53a5dddae2ea08780c77efb770f9b9fdd485e1add1da6e7b3108",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/vlm_r1.py",
+    "source_sha256": "d0e495ef0075077eeb024c1c31f0348dc5dc67d30aa0db94f49ec1d4170fd600",
+    "export_sha256": "d0e495ef0075077eeb024c1c31f0348dc5dc67d30aa0db94f49ec1d4170fd600",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/vxverse.py",
+    "source_sha256": "a571869cb615bce44ec8500c2317530ecaf604e180b9d593c82a6aea3c4131fa",
+    "export_sha256": "a571869cb615bce44ec8500c2317530ecaf604e180b9d593c82a6aea3c4131fa",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/wemm.py",
+    "source_sha256": "df675ee397c714ec6edf456518bcad3d7a718afbbd5aa4e62ac2822dd71aa002",
+    "export_sha256": "df675ee397c714ec6edf456518bcad3d7a718afbbd5aa4e62ac2822dd71aa002",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/wethink_vl.py",
+    "source_sha256": "136e4ccefa114ea7becab3147cd416f534fcc43981e8bb8c15b6f6a139e28e63",
+    "export_sha256": "136e4ccefa114ea7becab3147cd416f534fcc43981e8bb8c15b6f6a139e28e63",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/x_vl.py",
+    "source_sha256": "bdaef91c75ff4d3eaabf72efc89154a0dcfdc3af683df85ecf2818e701d5ff16",
+    "export_sha256": "bdaef91c75ff4d3eaabf72efc89154a0dcfdc3af683df85ecf2818e701d5ff16",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/xcomposer/__init__.py",
+    "source_sha256": "425039408d1ca61d36406cc26ed560a4a5efcef3745a6fd3873e11a91e744790",
+    "export_sha256": "425039408d1ca61d36406cc26ed560a4a5efcef3745a6fd3873e11a91e744790",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/xcomposer/sharecaptioner.py",
+    "source_sha256": "c3ae744ffb3715c0b69cbfad077b69981ffb98fed55131eaf40549e058f1b5a2",
+    "export_sha256": "c3ae744ffb3715c0b69cbfad077b69981ffb98fed55131eaf40549e058f1b5a2",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/xcomposer/xcomposer.py",
+    "source_sha256": "75e09cc8af46920907b446a289128e5f4d8efc3e1b6a127021cab3cd30b6e5be",
+    "export_sha256": "75e09cc8af46920907b446a289128e5f4d8efc3e1b6a127021cab3cd30b6e5be",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/xcomposer/xcomposer2.py",
+    "source_sha256": "5e2f870eca0acf55607cfec42f1402dbc617b275aed3a1879c498053cab218e5",
+    "export_sha256": "5e2f870eca0acf55607cfec42f1402dbc617b275aed3a1879c498053cab218e5",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/xcomposer/xcomposer2_4KHD.py",
+    "source_sha256": "26ddbcbcd7653e3143c2f688e8087bbca3e3c5e7abb0ec176b72be30eff17f50",
+    "export_sha256": "26ddbcbcd7653e3143c2f688e8087bbca3e3c5e7abb0ec176b72be30eff17f50",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/xcomposer/xcomposer2d5.py",
+    "source_sha256": "d7828db3cb6d5650aa8b35ba2ac010a4b922fc5e9cfa1ad0d7ba69c1892ee1c2",
+    "export_sha256": "d7828db3cb6d5650aa8b35ba2ac010a4b922fc5e9cfa1ad0d7ba69c1892ee1c2",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/xgen_mm.py",
+    "source_sha256": "05ffde0ad094b8d41c9342e1c4fa1aeda7a85f71350b07c83a92000b0707a806",
+    "export_sha256": "05ffde0ad094b8d41c9342e1c4fa1aeda7a85f71350b07c83a92000b0707a806",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/vlmeval/vlm/yi_vl.py",
+    "source_sha256": "125d29842b71e3c56173bd4ffb4a235d8f284851b299aa23bf07f70c1b9c4bfe",
+    "export_sha256": "125d29842b71e3c56173bd4ffb4a235d8f284851b299aa23bf07f70c1b9c4bfe",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/policy/policy_model.py",
+    "source_sha256": "d30f932c8496b701f796872141d4d2e4917984cc96e15bd7a4ba19415315ef95",
+    "export_sha256": "d30f932c8496b701f796872141d4d2e4917984cc96e15bd7a4ba19415315ef95",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/internvl/__init__.py",
+    "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "export_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/internvl/configuration_intern_vit.py",
+    "source_sha256": "6530df52748e4f7766568825e1d11f55dfa6cc421990020a640c548dc6cd2646",
+    "export_sha256": "6530df52748e4f7766568825e1d11f55dfa6cc421990020a640c548dc6cd2646",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/internvl/configuration_internvl_chat.py",
+    "source_sha256": "e9fdff47225fd380d940a4a2b6818b303fd2a5fdddf44fce0a75b05a4beb1539",
+    "export_sha256": "e9fdff47225fd380d940a4a2b6818b303fd2a5fdddf44fce0a75b05a4beb1539",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/internvl/conversation.py",
+    "source_sha256": "b1b9f280e9cb9211e519e2b8071002b57cc742aadb2f49b05fa674ee3c7d83ee",
+    "export_sha256": "b1b9f280e9cb9211e519e2b8071002b57cc742aadb2f49b05fa674ee3c7d83ee",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/internvl/modeling_intern_vit.py",
+    "source_sha256": "16a389d8f60fe09a35d570cfa6cc77f7b05063d2ffd7c5c675e9e923fead937a",
+    "export_sha256": "16a389d8f60fe09a35d570cfa6cc77f7b05063d2ffd7c5c675e9e923fead937a",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/internvl/modeling_internvl_chat.py",
+    "source_sha256": "a692979e93640f8d2a9b1006487a26db33408b66441fb0316ac7a35baa20dee1",
+    "export_sha256": "a692979e93640f8d2a9b1006487a26db33408b66441fb0316ac7a35baa20dee1",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/LICENSE",
+    "source_sha256": "5f0538b314b13e062d1fed3991ec1868cc71c49d0838cd7bc6ef563be06a5ad3",
+    "export_sha256": "5f0538b314b13e062d1fed3991ec1868cc71c49d0838cd7bc6ef563be06a5ad3",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VLMEvalKit/requirements.txt",
+    "source_sha256": "4e860e900b6beabd16957ca6cbf7d82265f229f9e427480974613e1a7beb1c41",
+    "export_sha256": "4e860e900b6beabd16957ca6cbf7d82265f229f9e427480974613e1a7beb1c41",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VisionZip/Qwen2_5_VL/qwen2_5vl_visionzip.py",
+    "source_sha256": "1c0d8bc85f4b0bd69e551193b763c7da7c1502c81568be1a767bac95a9bb6f47",
+    "export_sha256": "1c0d8bc85f4b0bd69e551193b763c7da7c1502c81568be1a767bac95a9bb6f47",
+    "portable_edits": 0
+  },
+  {
+    "file": "third_party/VisionZip/LICENSE",
+    "source_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "export_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "portable_edits": 0
+  },
+  {
+    "file": "scope_eval/visionzip_memory.py",
+    "source_sha256": "1a8dd36e9c84c9b35fd1bfb278d9bd03d4ad8f7b207490ead92a36dab73d21e3",
+    "export_sha256": "1a8dd36e9c84c9b35fd1bfb278d9bd03d4ad8f7b207490ead92a36dab73d21e3",
+    "portable_edits": 0
+  }
+]

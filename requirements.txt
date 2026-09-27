@@ -1,0 +1,18 @@
+# Install the CUDA-compatible torch/torchvision/flash-attn build first.
+# Reconstruct the patched Transformers sources with runtime/prepare.py.
+transformers==4.57.0
+tokenizers==0.22.2
+huggingface-hub==0.34.3
+peft==0.18.1
+accelerate==1.13.0
+qwen-vl-utils==0.0.14
+datasets==4.8.5
+safetensors==0.7.0
+pandas==3.0.0
+pyarrow==23.0.1
+PyYAML==6.0.3
+openpyxl==3.1.5
+tqdm==4.67.3
+pytest>=8,<10
+# Additional VLMEvalKit dependencies: third_party/VLMEvalKit/requirements.txt.
+# See docs/ENVIRONMENT.md before choosing a Pillow wheel.

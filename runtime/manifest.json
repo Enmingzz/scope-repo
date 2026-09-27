@@ -1,0 +1,22 @@
+{
+  "transformers_version": "4.57.0",
+  "wheel_sha256": "9d7c6d098c026e40d897e017ed1f481ab803cbac041021dbc6ae6100e4949b55",
+  "overlays": {
+    "train": {
+      "transformers/generation/utils.py": "9acc5ad5be42eec3661c899a5ef1b37d076f3f2c64eb992998ce5198862e05fc",
+      "transformers/integrations/flash_attention.py": "b16484572ac4940d304ba667a76a809ae22433cbe12e46c66ae2c2fc7f3651d8",
+      "transformers/models/auto/configuration_auto.py": "120b62cd4e13dd155762acd14cf64fc8bca17a068f5dd004ddfd30fbcb2ef4ab",
+      "transformers/models/qwen2_5_vl/modeling_qwen2_5_vl.py": "4a207f07cd6d3d20fdd9afd33a3933cffc3f1d4ab1d386900579eba09b9e558a",
+      "transformers/models/qwen3/modeling_qwen3.py": "96ac412e70cfe2d883a6741884ab550d31c45fbdc5cd7e4af3e29cff1cb9c5e3",
+      "transformers/models/qwen3_vl/modeling_qwen3_vl.py": "e0186fd3a226eed289e29ea0d993d3e7ab9eb4c5f83a2c1b02c67b0260964203"
+    },
+    "eval": {
+      "transformers/generation/utils.py": "9acc5ad5be42eec3661c899a5ef1b37d076f3f2c64eb992998ce5198862e05fc",
+      "transformers/integrations/flash_attention.py": "274a6a261437673efcb4ba76f4a78304ed6245e3a1f200376137090bdcb9c8de",
+      "transformers/models/auto/configuration_auto.py": "120b62cd4e13dd155762acd14cf64fc8bca17a068f5dd004ddfd30fbcb2ef4ab",
+      "transformers/models/qwen2_5_vl/modeling_qwen2_5_vl.py": "81e1e76eff4d476bf7a56fe57295cd4cfb8b826a8b7d1ed4ab8ee49e5757dc8f",
+      "transformers/models/qwen3/modeling_qwen3.py": "96ac412e70cfe2d883a6741884ab550d31c45fbdc5cd7e4af3e29cff1cb9c5e3",
+      "transformers/models/qwen3_vl/modeling_qwen3_vl.py": "e0186fd3a226eed289e29ea0d993d3e7ab9eb4c5f83a2c1b02c67b0260964203"
+    }
+  }
+}

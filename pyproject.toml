@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scope-repo"
+version = "0.1.0"
+description = "SCOPE and SCOPD+ core training and versioned visual evaluation"
+requires-python = ">=3.11"
+
+[tool.setuptools]
+py-modules = ["train_opsd_scope"]
+
+[tool.setuptools.packages.find]
+include = ["opsd*", "scope_eval*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

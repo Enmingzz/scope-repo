@@ -1,0 +1,7 @@
+{
+  "rows": 20000,
+  "source_jsonl_sha256": "9f1cf9dfbff291ee0ce7f34a236820c7da907f096bdb54ec0165eed845f3516f",
+  "order_sha256": "7c8439909092dc49ec021ed0fc065c8727a146afdd7271cc705fa4ae3fa9fbf9",
+  "default_training_prefix_rows": 10240,
+  "contains_images_or_targets": false
+}

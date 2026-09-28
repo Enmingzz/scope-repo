@@ -4,11 +4,11 @@ from pathlib import Path
 
 import pytest
 
-from scope_eval import postprocess
-from scope_eval.datasets import make_record
-from scope_eval.infer import visionzip_settings
-from scope_eval.protocol import DEFAULT_MODEL, candidate_answer, exact_match, make_request
-from scope_eval.scoring import summarize
+from scopd_eval import postprocess
+from scopd_eval.datasets import make_record
+from scopd_eval.infer import visionzip_settings
+from scopd_eval.protocol import DEFAULT_MODEL, candidate_answer, exact_match, make_request
+from scopd_eval.scoring import summarize
 
 IMAGE = 'data:image/png;base64,' + base64.b64encode(b'test-image-bytes').decode()
 

@@ -9,11 +9,11 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from opsd.pruning_distill.qwen25_pruned_forward import build_pruned_inputs_embeds, extract_next_token_logits
-from opsd.pruning_distill.losses import compute_kd_loss
-from opsd.pruning_distill.pruners import DivPruneLitePruner, GridPruner, RandomPruner, VScanStage1Pruner
-from opsd.visionzip_aokvqa.losses import compute_generalized_jsd
-from opsd.visionzip_aokvqa.prompting import build_opsd_teacher_prompt
+from scopd.pruning_distill.qwen25_pruned_forward import build_pruned_inputs_embeds, extract_next_token_logits
+from scopd.pruning_distill.losses import compute_kd_loss
+from scopd.pruning_distill.pruners import DivPruneLitePruner, GridPruner, RandomPruner, VScanStage1Pruner
+from scopd.visionzip_aokvqa.losses import compute_generalized_jsd
+from scopd.visionzip_aokvqa.prompting import build_scopd_teacher_prompt
 
 
 class FakeConfig:
@@ -124,8 +124,8 @@ def test_generalized_jsd_beta_zero_matches_forward_kl_without_clip():
     assert torch.allclose(actual, expected)
 
 
-def test_opsd_teacher_prompt_contains_reference_solution():
-    prompt = build_opsd_teacher_prompt(
+def test_scopd_teacher_prompt_contains_reference_solution():
+    prompt = build_scopd_teacher_prompt(
         "What color is the object?",
         ["red", "blue", "green", "yellow"],
         "Reasoning: The object is blue.\nFinal answer: B",
@@ -135,9 +135,9 @@ def test_opsd_teacher_prompt_contains_reference_solution():
     assert "do not copy or paraphrase it" in prompt.lower()
 
 
-def test_opsd_open_teacher_prompt_contains_reference_solution_without_options():
+def test_scopd_open_teacher_prompt_contains_reference_solution_without_options():
     target = "<think>Count the three visible objects.</think>\n<answer>3</answer>"
-    prompt = build_opsd_teacher_prompt(
+    prompt = build_scopd_teacher_prompt(
         "How many objects are visible?",
         [],
         target,
@@ -219,7 +219,7 @@ if __name__ == "__main__":
     test_keep_all_drop_tokens_matches_full_embedding_path()
     test_next_token_logits_align_by_answer_index_not_absolute_position()
     test_generalized_jsd_beta_zero_matches_forward_kl_without_clip()
-    test_opsd_teacher_prompt_contains_reference_solution()
+    test_scopd_teacher_prompt_contains_reference_solution()
     test_divprune_lite_synthetic_tokens_are_sorted_and_diverse()
     test_divprune_lite_grid_floor_covers_coarse_cells()
     test_random_grid_divprune_vscan_counts_and_synthetic_kl()

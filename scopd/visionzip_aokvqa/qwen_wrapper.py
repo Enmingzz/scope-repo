@@ -25,7 +25,7 @@ _drop_disallowed_qwen25_bootstrap_path()
 import torch
 import torch.nn.functional as F
 
-from opsd.pruning_distill.qwen25_pruned_forward import (
+from scopd.pruning_distill.qwen25_pruned_forward import (
     _unwrap_qwen_model,
     build_pruned_inputs_embeds,
     compute_full_position_ids,
@@ -34,7 +34,7 @@ from opsd.pruning_distill.qwen25_pruned_forward import (
     maybe_disable_adapter,
     validate_single_image_qwen_inputs,
 )
-from opsd.pruning_distill.pruners import RandomPruner
+from scopd.pruning_distill.pruners import RandomPruner
 
 from .aokvqa import FormattedAOKVQASample, resolve_image
 from .prompting import format_chat_messages, format_chat_with_assistant, parse_final_answer
@@ -318,7 +318,7 @@ def apply_lora(
             scope_label = "joint" if include_language_decoder else "vision-only"
             raise RuntimeError(f"Could not discover {scope_label} Qwen2.5-VL LoRA target modules.")
         target_modules = sorted(set(resolved_targets))
-        setattr(model, "_opsd_resolved_lora_target_modules", tuple(target_modules))
+        setattr(model, "_scopd_resolved_lora_target_modules", tuple(target_modules))
     config_kwargs: dict[str, Any] = {}
     if layers_to_transform is not None:
         config_kwargs["layers_to_transform"] = layers_to_transform
@@ -841,7 +841,7 @@ def full_token_metadata(
 
 
 def normalize_pruning_method(method: str | None = None) -> str:
-    raw = (method or os.environ.get("OPSD_PRUNING_METHOD", "visionzip") or "visionzip").strip().lower()
+    raw = (method or os.environ.get("SCOPD_PRUNING_METHOD", "visionzip") or "visionzip").strip().lower()
     aliases = {
         "vz": "visionzip",
         "official_visionzip": "visionzip",
@@ -865,7 +865,7 @@ def normalize_pruning_method(method: str | None = None) -> str:
 
 
 def random_pruner_seed() -> int:
-    return int(os.environ.get("OPSD_RANDOM_PRUNER_SEED", "42"))
+    return int(os.environ.get("SCOPD_RANDOM_PRUNER_SEED", "42"))
 
 
 def _random_mask_hash(indices: torch.Tensor) -> str:
@@ -949,11 +949,11 @@ def fastv_tokens_ratio_from_retention(retention_ratio: float) -> float:
 
 
 def fastv_tokens_anchor() -> str:
-    return os.environ.get("OPSD_FASTV_TOKENS_ANCHOR", "all")
+    return os.environ.get("SCOPD_FASTV_TOKENS_ANCHOR", "all")
 
 
 def fastv_tokens_prune_layers() -> str:
-    return os.environ.get("OPSD_FASTV_TOKENS_PRUNE_LAYERS", "4")
+    return os.environ.get("SCOPD_FASTV_TOKENS_PRUNE_LAYERS", "4")
 
 
 def _placeholder_token_id(model: Any, inputs: dict[str, torch.Tensor]) -> int:
@@ -1250,7 +1250,7 @@ def generate_pruned(
             stop_on_parse=bool(stop_on_parse),
         )
         pruned["metadata"]["rollout_decoder"] = "explicit_pruned_prefill_decode_kv_cache"
-        verify_cache = os.environ.get("OPSD_RANDOM_VERIFY_CACHE_EQUIVALENCE", "0") == "1"
+        verify_cache = os.environ.get("SCOPD_RANDOM_VERIFY_CACHE_EQUIVALENCE", "0") == "1"
         if verify_cache:
             if do_sample:
                 raise ValueError("RandomPruner cache equivalence verification requires greedy decoding.")

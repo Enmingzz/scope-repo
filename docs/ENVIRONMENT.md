@@ -58,7 +58,7 @@ be repaired and resumed, not scored as model mistakes.
   `third_party/VLMEvalKit/LICENSE` and retained file notices. The runtime snapshot
   is based on revision `51682a6baab948d3dbb4b867a3eab178504ac3f5` with local patches.
 - VisionZip: retained implementation and upstream license under `third_party/VisionZip/`.
-- EPIC helper: upstream attribution remains in `opsd/visionzip_aokvqa/epic_official.py`.
+- EPIC helper: upstream attribution remains in `scopd/visionzip_aokvqa/epic_official.py`.
 
 The repository is a private source transfer, not an anonymous reviewer site.
 Do not remove third-party licensing attribution for double-blind anonymity.

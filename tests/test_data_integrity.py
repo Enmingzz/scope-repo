@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from opsd.visionzip_aokvqa.data_integrity import verify_decontaminated_training_data
+from scopd.visionzip_aokvqa.data_integrity import verify_decontaminated_training_data
 
 
 ROOT = Path(__file__).resolve().parents[1]

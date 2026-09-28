@@ -1,24 +1,21 @@
-# SCOPE / SCOPD+ Reproduction
+# SCOPD / SCOPD+ Reproduction
 
 Core Qwen2.5-VL-7B training, merged-model image evaluation, and a single
 versioned Qwen27B visual post-processing protocol. Experimental outputs,
 model weights, datasets, personal paths, job histories and credentials are
 not included.
 
-## Names
+## Methods
 
-| CLI name | Method | Historical name |
-|---|---|---|
-| `scope` | Dense forward KL on every generated response token | OPSD |
-| `scopd+` | Forward KL on the top 10% budget-JSD response tokens | SCOPE |
-
-These are the requested new names, not changes to the objectives. In particular,
-`--method scope` now means the dense baseline.
+| CLI name | Method |
+|---|---|
+| `scopd` | SCOPD: dense forward KL on every generated response token |
+| `scopd+` | SCOPD+: forward KL on the top 10% budget-JSD response tokens |
 
 ## Training
 
-The shared core is [train_opsd_scope.py](train_opsd_scope.py). Necessary trainer,
-EMA, optimizer, LoRA and pruning helpers are included under `opsd/`.
+The shared core is [train_scopd.py](train_scopd.py). Necessary trainer,
+EMA, optimizer, LoRA and pruning helpers are included under `scopd/`.
 
 | Setting | Default |
 |---|---|
@@ -37,9 +34,8 @@ EMA, optimizer, LoRA and pruning helpers are included under `opsd/`.
 | Output format | `<think>...</think><answer>...</answer>` |
 
 The actual resized token count can differ because of native grid rounding.
-These are the new entry-point defaults, not a relabeling of historical runs.
-Older image settings require `--image-token-budget 1080`; older response caps
-must be supplied explicitly on resume. Changing either fails the resume contract.
+Use `--image-token-budget` and `--max-new-tokens` to set these budgets explicitly.
+Resume requires both values to match the saved configuration.
 
 Activate a compatible environment and reconstruct the patched sources:
 
@@ -48,13 +44,13 @@ python runtime/prepare.py
 source runtime/activate.sh train
 python -m pip install --no-deps -e .
 
-torchrun --standalone --nproc_per_node=4 train_opsd_scope.py \
+torchrun --standalone --nproc_per_node=4 train_scopd.py \
   --method scopd+ --model "$BASE_MODEL" \
   --dataset "$TRAIN_JSONL" --image-root "$IMAGE_ROOT" \
   --output-dir "$RUN_ROOT/scopd_plus"
 ```
 
-Use `--method scope` for the dense control. One GPU uses the same command with
+Use `--method scopd` for the dense control. One GPU uses the same command with
 `python` instead of `torchrun`; accumulation preserves effective batch 32.
 Use `--max-samples 20480` to consume a prepared ordered file of at least 20480
 entries without wrapping. A 20000-row file is not enough for 20480 examples.
@@ -88,7 +84,7 @@ Do not pass `0.10` directly to the backend's `visionzip_ratio`.
 
 ```bash
 source runtime/activate.sh eval
-python -m scope_eval.infer --model "$MERGED_MODEL" --model-revision "$MODEL_REVISION" \
+python -m scopd_eval.infer --model "$MERGED_MODEL" --model-revision "$MODEL_REVISION" \
   --dataset mmstar --retention 0.10 --output-dir "$EVAL_ROOT/mmstar"
 ```
 
@@ -99,12 +95,12 @@ reasoning prompt, cap 2048, and evaluation image bounds 1280 to 4096 tokens.
 Supported image tasks: MME, MMStar, MathVista-MINI, MathVerse-MINI-Vision-Only,
 MMMU-Pro-4c, HallusionBench, CVBench, LogicVista, BLINK, VisOnlyQA,
 HRBench4K, MMVP, MME-RealWorld-Lite, RealWorldQA, POPE, MathVision-MINI.
-Use `python -m scope_eval.infer --help` for their short keys. Independent
+Use `python -m scopd_eval.infer --help` for their short keys. Independent
 `--shard N --shards K` jobs may each use one GPU; do not score an incomplete
 set of shards as a full-benchmark result.
 
 ```bash
-python -m scope_eval.merge_shards --input-dir "$EVAL_ROOT/mmstar" \
+python -m scopd_eval.merge_shards --input-dir "$EVAL_ROOT/mmstar" \
   --shards 4 --output "$EVAL_ROOT/mmstar/all_predictions.jsonl"
 ```
 
@@ -122,8 +118,8 @@ The legacy MMStar 7B fallback is disabled. Processing is:
 
 The gate is **all nonmatches**, including parsed wrong answers, not only parse
 failures. All methods use the same gate, prompt, judge checkpoint and images.
-This is a **new protocol**: historical scores from text-only, GT-blind or 7B
-judges must not be silently reused as if they came from this protocol.
+Scores obtained with different judge models, inputs or protocols are not directly
+comparable. Reprocess every compared method under this protocol.
 See [exact prompt and scoring policy](docs/EVALUATION.md).
 
 Start the judge in its separate environment on an allocated GPU:
@@ -137,7 +133,7 @@ bash scripts/serve_judge.sh
 From another shell:
 
 ```bash
-python -m scope_eval.postprocess \
+python -m scopd_eval.postprocess \
   --input "$EVAL_ROOT/mmstar/all_predictions.jsonl" \
   --output-dir "$EVAL_ROOT/mmstar/judged" \
   --judge-revision "$JUDGE_MODEL_REVISION"
@@ -147,12 +143,12 @@ For a single unsharded run, use `shard_000/predictions.jsonl` directly. For
 multiple shards, use the merged file rather than scoring only the first shard.
 
 `--dry-run` checks data and image availability without querying the judge.
-For existing VLMEvalKit files, use `scope_eval.import_results`; there is no need
+For existing VLMEvalKit files, use `scopd_eval.import_results`; there is no need
 to regenerate responses. A model/parser/judge failure is not silently turned
 into an incorrect answer. Resume uses request fingerprints; changing the model,
 reference, image, candidate, protocol or input file invalidates reuse.
 
-## Tests and Scope
+## Tests and Validation
 
 ```bash
 source runtime/activate.sh train
@@ -160,10 +156,10 @@ python -m pytest -q
 ```
 
 The bundled source overlays are needed even when `transformers.__version__`
-already says 4.57.0. The full historical experiment tree is intentionally absent.
-This release does not submit jobs, run new full training, or overwrite old scores.
-The export was checked with 95 passing tests and three skips for unbundled
-historical data/reference code. Judge request routing is covered with a mock
+already says 4.57.0. Experiment outputs and model weights are not included.
+Tests cover loss and gradient equivalence, token selection, runtime hooks,
+resume contracts, inference sharding and judge request routing. Tests requiring
+an unavailable dataset or GPU are skipped explicitly. Judge routing uses a mock
 server; the real 27B image-aware judge has not been validated end to end here.
 Large GPU runs and a clean-machine environment installation still need local
 validation; passing unit tests is not a memory guarantee for maximum-length runs.

@@ -1,4 +1,4 @@
-"""Detached trajectory-level weighting utilities for paired OPSD pilots."""
+"""Detached trajectory-level weighting utilities for paired SCOPD pilots."""
 
 from __future__ import annotations
 
@@ -656,7 +656,7 @@ def competence_frontier_probability_weights(
     tau: float,
     eps: float = 1e-8,
 ) -> CompetenceFrontierProbabilityWeights:
-    """Focus on intermediate robust need while preserving scalar OPSD loss.
+    """Focus on intermediate robust need while preserving scalar SCOPD loss.
 
     The bounded frontier ``4*tau*x/(tau+x)^2`` is one at ``x=tau`` and tends
     to zero for solved and currently too-hard trajectories. A detached scalar
@@ -695,7 +695,7 @@ def competence_frontier_probability_weights(
     else:
         if not torch.isfinite(raw_weighted_mass) or float(raw_weighted_mass) <= eps:
             raise FloatingPointError(
-                "Competence frontier assigned zero mass to a nonzero OPSD batch."
+                "Competence frontier assigned zero mass to a nonzero SCOPD batch."
             )
         loss_mass_scale = unweighted_mass / raw_weighted_mass
         objective_weight = raw_weight * loss_mass_scale
@@ -1008,7 +1008,7 @@ class AdaptiveBudgetFrontierState:
 
     A balanced warmup estimates the initial robust-need distribution.  The
     state then tracks one EMA per retention ratio and samples the next budget
-    from a bounded competence frontier.  It never changes the OPSD loss after
+    from a bounded competence frontier.  It never changes the SCOPD loss after
     a trajectory has been selected.
     """
 
@@ -1739,7 +1739,7 @@ def trajectory_rank_downweights(
     higher_is_better: bool,
     eps: float = 1e-8,
 ) -> TrajectoryRankWeights:
-    """Rank trajectories and preserve the detached aggregate OPSD loss mass.
+    """Rank trajectories and preserve the detached aggregate SCOPD loss mass.
 
     ``raw_weight`` only downweights: the highest-priority trajectory receives
     one and the lowest receives ``1 - downweight_strength``. A single detached
@@ -1929,7 +1929,7 @@ def trajectory_priority_downweights(
     downweight_strength: float,
     eps: float = 1e-8,
 ) -> TrajectoryRankWeights:
-    """Apply detached priorities while preserving aggregate OPSD loss mass."""
+    """Apply detached priorities while preserving aggregate SCOPD loss mass."""
 
     if not 0.0 <= float(downweight_strength) < 1.0:
         raise ValueError(

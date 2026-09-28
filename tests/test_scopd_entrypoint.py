@@ -1,5 +1,4 @@
 from copy import deepcopy
-import importlib.util
 import json
 from pathlib import Path
 from types import SimpleNamespace
@@ -7,11 +6,11 @@ from types import SimpleNamespace
 import pytest
 import torch
 
-import train_opsd_scope as core
-from opsd.visionzip_aokvqa import train as runtime
-from opsd.visionzip_aokvqa.aokvqa import normalize_reasoning_answer_jsonl_sample
-from opsd.visionzip_aokvqa.prompting import format_chat_messages
-from opsd.visionzip_aokvqa.losses import compute_forward_kl, compute_per_token_generalized_jsd
+import train_scopd as core
+from scopd.visionzip_aokvqa import train as runtime
+from scopd.visionzip_aokvqa.aokvqa import normalize_reasoning_answer_jsonl_sample
+from scopd.visionzip_aokvqa.prompting import format_chat_messages
+from scopd.visionzip_aokvqa.losses import compute_forward_kl, compute_per_token_generalized_jsd
 
 
 def arguments(tmp_path, method="scopd+", *extra):
@@ -58,13 +57,7 @@ def test_selection_ceil_ties_mask_eos_and_no_kl_floor():
     assert core.select_response_tokens(scores, valid, 1.0).tolist() == [0, 1, 3, 4]
 
 
-def test_scopd_plus_matches_established_selection_and_gradients():
-    path = core.ROOT / "experiments/llm_only/opsd_r010_budgetjsd_top10_gap_sweep_forwardkl_20260917/selection.py"
-    if not path.exists():
-        pytest.skip("Historical experiment reference is not part of the core-only checkout")
-    spec = importlib.util.spec_from_file_location("reference_scope_selection", path)
-    reference = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(reference)
+def test_scopd_plus_selection_and_gradients_match_direct_definition():
     torch.manual_seed(23)
     teacher, student, probe = (torch.randn(65, 37, requires_grad=True) for _ in range(3))
     valid = torch.ones(65, dtype=torch.bool)
@@ -72,30 +65,37 @@ def test_scopd_plus_matches_established_selection_and_gradients():
     b = core.budget_jsd(student, probe)
     selected = core.select_response_tokens(b, valid, .1)
     loss = core.forward_kl(teacher[selected], student[selected])
-    ref_loss, ref_b, _, ref_selected = reference.selected_forward_loss(teacher, student, probe, valid)
-    torch.testing.assert_close(b, ref_b, rtol=0, atol=0)
+    p, plus = student.detach().softmax(-1), probe.detach().softmax(-1)
+    mixture = (p + plus) / 2
+    ref_b = (.5 * p * (p.log() - mixture.log()) +
+             .5 * plus * (plus.log() - mixture.log())).sum(-1)
+    valid_positions = valid.nonzero().flatten()
+    ref_selected = valid_positions[ref_b[valid].topk(7).indices].sort().values
+    q = teacher[ref_selected].detach().softmax(-1)
+    ref_loss = (q * (q.log() - student[ref_selected].log_softmax(-1))).sum(-1).mean()
+    torch.testing.assert_close(b, ref_b, rtol=1e-5, atol=1e-7)
     assert selected.tolist() == ref_selected.tolist()
-    torch.testing.assert_close(loss, ref_loss, rtol=0, atol=0)
+    torch.testing.assert_close(loss, ref_loss, rtol=1e-6, atol=1e-7)
     grad = torch.autograd.grad(loss, student, retain_graph=True)[0]
-    torch.testing.assert_close(grad, torch.autograd.grad(ref_loss, student)[0], rtol=0, atol=0)
+    torch.testing.assert_close(grad, torch.autograd.grad(ref_loss, student)[0], rtol=1e-6, atol=1e-8)
     assert not grad[~torch.isin(torch.arange(65), selected)].any()
 
 
 def test_configuration_pairing_batch_and_checkpoint_contract(tmp_path, monkeypatch):
-    a = core.build_config(arguments(tmp_path, "scope"), 4)
+    a = core.build_config(arguments(tmp_path, "scopd"), 4)
     b = core.build_config(arguments(tmp_path, "scopd+"), 4)
     for key in ("base_model", "dataset", "training", "generation", "pruning", "paired_sampling"):
         assert a[key] == b[key]
     assert b["training"]["lora_dropout"] == 0
     assert b["training"]["gradient_accumulation_steps"] == 8
     assert b["training"]["max_steps"] // 32 == 320
-    assert a["experiment"]["name"] == "scope"
+    assert a["experiment"]["name"] == "scopd"
     assert b["experiment"]["name"] == "scopd+"
-    assert a["experiment"]["algorithm_version"] == b["experiment"]["algorithm_version"] == 2
-    assert not a["opsd"]["budget_token_selection"]["enabled"]
-    assert b["opsd"]["budget_token_selection"]["enabled"]
-    assert b["opsd"]["budget_token_selection"]["delta"] == .01
-    assert b["opsd"]["budget_token_selection"]["top_fraction"] == .1
+    assert a["experiment"]["algorithm_version"] == b["experiment"]["algorithm_version"] == 3
+    assert not a["scopd"]["budget_token_selection"]["enabled"]
+    assert b["scopd"]["budget_token_selection"]["enabled"]
+    assert b["scopd"]["budget_token_selection"]["delta"] == .01
+    assert b["scopd"]["budget_token_selection"]["top_fraction"] == .1
     monkeypatch.setenv("LOCAL_RANK", "3")
     assert core.build_config(arguments(tmp_path, "scopd+"), 4) == b
     assert core.build_config(arguments(tmp_path), 1)["training"]["gradient_accumulation_steps"] == 32
@@ -105,7 +105,7 @@ def test_configuration_pairing_batch_and_checkpoint_contract(tmp_path, monkeypat
     assert runtime.checkpoint_contract_sha256(resumed) == runtime.checkpoint_contract_sha256(b)
 
 
-@pytest.mark.parametrize("method", ["scope", "scopd+"])
+@pytest.mark.parametrize("method", ["scopd", "scopd+"])
 def test_training_response_length_default_override_and_resume_contract(tmp_path, method):
     default = core.build_config(arguments(tmp_path, method), 4)
     legacy = core.build_config(arguments(tmp_path, method, "--max-new-tokens", "512"), 4)
@@ -134,20 +134,20 @@ def test_rejects_invalid_config(tmp_path, extra):
         core.build_config(arguments(tmp_path, "scopd+", *extra), 4)
 
 
-def test_old_opsd_cli_name_is_rejected(tmp_path):
+def test_unknown_cli_method_is_rejected(tmp_path):
     with pytest.raises(SystemExit) as error:
-        arguments(tmp_path, "opsd")
+        arguments(tmp_path, "unknown-method")
     assert error.value.code == 2
 
 
-@pytest.mark.parametrize("method,old_method", [("scope", "opsd"), ("scopd+", "scope")])
-def test_pre_rename_checkpoints_are_not_silently_reinterpreted(tmp_path, method, old_method):
+@pytest.mark.parametrize("method,other_method", [("scopd", "scopd+"), ("scopd+", "scopd")])
+def test_resume_cannot_switch_methods(tmp_path, method, other_method):
     cfg = core.build_config(arguments(tmp_path, method), 1)
     checkpoint = Path(cfg["output_dir"]) / "resume_checkpoints/step_001024"
     checkpoint.mkdir(parents=True)
     (checkpoint / "COMPLETE").touch()
     old = deepcopy(cfg)
-    old["experiment"].update(name=old_method, algorithm_version=1)
+    old["experiment"].update(name=other_method)
     (checkpoint / "trainer_state.json").write_text(json.dumps({
         "config_contract_sha256": runtime.checkpoint_contract_sha256(old),
         "global_step": 1024,
@@ -196,7 +196,7 @@ def test_gt_and_reference_reasoning_do_not_change_model_prompt():
     assert "GT_SENTINEL" not in json.dumps(chat_a)
 
 
-@pytest.mark.parametrize("method", ["scope", "scopd+"])
+@pytest.mark.parametrize("method", ["scopd", "scopd+"])
 @pytest.mark.parametrize("privileged", [
     {"teacher_uses_ground_truth": True}, {"teacher_adapter_name": "gt_adapter"},
     {"teacher_model": object()}, {"fixed_rollout_token_ids": torch.tensor([[1]])},
@@ -250,7 +250,7 @@ def test_causal_response_slice_excludes_target_itself(prompt_len):
 
 
 @pytest.mark.parametrize("ema", [False, True])
-@pytest.mark.parametrize("method", ["scope", "scopd+"])
+@pytest.mark.parametrize("method", ["scopd", "scopd+"])
 def test_step_prefix_gradients_modes_ema_and_one_rollout(tmp_path, monkeypatch, ema, method):
     torch.manual_seed(7)
     model = ToyModel().train()
@@ -294,16 +294,16 @@ def test_step_prefix_gradients_modes_ema_and_one_rollout(tmp_path, monkeypatch, 
     assert metrics["teacher_visual_tokens"] == 100
     assert metrics["selected_tokens"] == (1 if method == "scopd+" else 4)
     assert metrics["loss_type"] == (
-        "scopd_plus_top_budget_jsd_forward_kl" if method == "scopd+" else "scope_nogt_forward_kl"
+        "scopd_plus_top_budget_jsd_forward_kl" if method == "scopd+" else "scopd_nogt_forward_kl"
     )
     assert metrics["teacher_ground_truth_access"] is False
     assert metrics["generated_tokens"] == 4
     loss.backward()
     assert model.weight.grad is not None and torch.isfinite(model.weight.grad).all()
-    if method == "scope":
+    if method == "scopd":
         actual_grad = model.weight.grad.clone()
         model.zero_grad()
-        ref_loss, _ = runtime.opsd_nogt_step(model, processor, sample, cfg, .1,
+        ref_loss, _ = runtime.scopd_nogt_step(model, processor, sample, cfg, .1,
                                             ema_shadow=shadow, rollout_seed=17)
         ref_loss.backward()
         torch.testing.assert_close(loss, ref_loss, rtol=0, atol=0)
@@ -311,16 +311,16 @@ def test_step_prefix_gradients_modes_ema_and_one_rollout(tmp_path, monkeypatch, 
 
 
 def test_hooks_restore_even_on_failure():
-    old_step, old_lora = runtime.opsd_nogt_step, runtime.apply_lora
+    old_step, old_lora = runtime.scopd_nogt_step, runtime.apply_lora
     with pytest.raises(RuntimeError):
         with core.install_core(runtime):
-            assert runtime.opsd_nogt_step is core.training_step
+            assert runtime.scopd_nogt_step is core.training_step
             raise RuntimeError("deliberate")
-    assert runtime.opsd_nogt_step is old_step and runtime.apply_lora is old_lora
+    assert runtime.scopd_nogt_step is old_step and runtime.apply_lora is old_lora
 
 
 def test_preflight_refuses_overwrite_repeat_and_missing_resume(tmp_path):
-    args = arguments(tmp_path, "scope", "--max-samples", "32")
+    args = arguments(tmp_path, "scopd", "--max-samples", "32")
     args.dataset.write_text('{"sample_id":"a"}\n')
     args.image_root.mkdir()
     cfg = core.build_config(args, 1)

@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 import torch
 
-from opsd.visionzip_aokvqa.native_budget_weighting import (
+from scopd.visionzip_aokvqa.native_budget_weighting import (
     symmetric_teacher_gap_stability_weights,
 )
 

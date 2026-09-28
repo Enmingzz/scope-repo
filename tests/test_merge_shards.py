@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from scope_eval.merge_shards import merge
+from scopd_eval.merge_shards import merge
 
 
 def write_shard(root, shard, sample_id, *, model='model', limit=0, rows=None):

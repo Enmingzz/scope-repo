@@ -1,140 +1,140 @@
 [
   {
-    "file": "train_opsd_scope.py",
+    "file": "train_scopd.py",
     "source_sha256": "26e3b16bfd79bce721fb4d794af35159a7055e8f163205758892c3cfd4333dcc",
-    "export_sha256": "c1b02f06d2f95a20c1278ed62edf544a8f669c46d0032f73b64c53d14260fd41",
+    "export_sha256": "593c8866443504cfac0b5f22ca1ba8fa31db43eecc9d0b1ea47ceef9f6896980",
     "portable_edits": 1
   },
   {
-    "file": "opsd/__init__.py",
+    "file": "scopd/__init__.py",
     "source_sha256": "294411a6a20c02d1b0f2a5eefd30c9c7e2c83c4a06a052ff1818f7a051365f82",
     "export_sha256": "294411a6a20c02d1b0f2a5eefd30c9c7e2c83c4a06a052ff1818f7a051365f82",
     "portable_edits": 0
   },
   {
-    "file": "opsd/visionzip_aokvqa/__init__.py",
+    "file": "scopd/visionzip_aokvqa/__init__.py",
     "source_sha256": "f71f6922433ac56382c4d50a76ccbb725fa46798c98f8aef19136feedcea6442",
     "export_sha256": "f71f6922433ac56382c4d50a76ccbb725fa46798c98f8aef19136feedcea6442",
     "portable_edits": 0
   },
   {
-    "file": "opsd/visionzip_aokvqa/aokvqa.py",
+    "file": "scopd/visionzip_aokvqa/aokvqa.py",
     "source_sha256": "3d06717d535054608e88d8eb594713dc43178c8e50a5ab9035dab01ec97e931e",
     "export_sha256": "145c7637801a54d3b30aeb9a8bc90c5692629a248baf076d25fc1a8dd4d95035",
     "portable_edits": 1
   },
   {
-    "file": "opsd/visionzip_aokvqa/data_integrity.py",
+    "file": "scopd/visionzip_aokvqa/data_integrity.py",
     "source_sha256": "6cf2f3d8e26163a331a5ebd3ca1d629c06c7d0735b0f86a4683f75cf75ef50f7",
     "export_sha256": "6cf2f3d8e26163a331a5ebd3ca1d629c06c7d0735b0f86a4683f75cf75ef50f7",
     "portable_edits": 0
   },
   {
-    "file": "opsd/visionzip_aokvqa/epic_official.py",
+    "file": "scopd/visionzip_aokvqa/epic_official.py",
     "source_sha256": "6e7dfd2842668793e393d016c1e4e208f97f669bbbae1e418033e363837f0d68",
-    "export_sha256": "6e7dfd2842668793e393d016c1e4e208f97f669bbbae1e418033e363837f0d68",
+    "export_sha256": "75dbb40f5685689faf3a838543dd0fc65c9a20516c01982bc82182a6cf4a5e38",
     "portable_edits": 0
   },
   {
-    "file": "opsd/visionzip_aokvqa/losses.py",
+    "file": "scopd/visionzip_aokvqa/losses.py",
     "source_sha256": "1f04acf34a1780f4fcde60258bc77497a7de8bad55331138f14de9837bf330a2",
-    "export_sha256": "1f04acf34a1780f4fcde60258bc77497a7de8bad55331138f14de9837bf330a2",
+    "export_sha256": "75cec89e3b7d1049e489e7455c7e2f23d92f65e389ce740ae7a30a20864c00e0",
     "portable_edits": 0
   },
   {
-    "file": "opsd/visionzip_aokvqa/native_budget_weighting.py",
+    "file": "scopd/visionzip_aokvqa/native_budget_weighting.py",
     "source_sha256": "5e5ba6aef6bcf3a125b5768769f97c3cdc2cc2cb84ba9c7ec83682a1b2d62c99",
-    "export_sha256": "5e5ba6aef6bcf3a125b5768769f97c3cdc2cc2cb84ba9c7ec83682a1b2d62c99",
+    "export_sha256": "889eba932feb9940ededede74dda31c806826f353a7913c69ffd520efce3e274",
     "portable_edits": 0
   },
   {
-    "file": "opsd/visionzip_aokvqa/paired_sampling.py",
+    "file": "scopd/visionzip_aokvqa/paired_sampling.py",
     "source_sha256": "3a80099b8f6f7b3ba0dbcbe1a859e34d3e747f541a633fb9eac74e43b6f9a38f",
     "export_sha256": "3a80099b8f6f7b3ba0dbcbe1a859e34d3e747f541a633fb9eac74e43b6f9a38f",
     "portable_edits": 0
   },
   {
-    "file": "opsd/visionzip_aokvqa/phase_ratio_scaling.py",
+    "file": "scopd/visionzip_aokvqa/phase_ratio_scaling.py",
     "source_sha256": "71b71dce08405bc43d6962716a2f696b3ef0581cf71c7532c53c312be7c5fd72",
-    "export_sha256": "71b71dce08405bc43d6962716a2f696b3ef0581cf71c7532c53c312be7c5fd72",
+    "export_sha256": "0e3d19a5f38eaa51e1fce15795b56dfe895d418ffdcf5d8dc97ae06b1284016b",
     "portable_edits": 0
   },
   {
-    "file": "opsd/visionzip_aokvqa/prompting.py",
+    "file": "scopd/visionzip_aokvqa/prompting.py",
     "source_sha256": "ce6fde4a9d7d1d8256d4a8e9e80eb875078a244d336fde34f71f3735f850533e",
-    "export_sha256": "ce6fde4a9d7d1d8256d4a8e9e80eb875078a244d336fde34f71f3735f850533e",
+    "export_sha256": "8fe35fcca08466f6b42d7904660a519135a0bd0ee26d10204504c5a63befb9bc",
     "portable_edits": 0
   },
   {
-    "file": "opsd/visionzip_aokvqa/qwen_wrapper.py",
+    "file": "scopd/visionzip_aokvqa/qwen_wrapper.py",
     "source_sha256": "e973daced0492bec8ac9ed60fa8ae61f2df31d053b3b13c08cce3a2a09bac31f",
-    "export_sha256": "400f96dd232428a2e5f8aab2a549f4c8bb7402f20d424e600d39de1561985d31",
+    "export_sha256": "51aa206ab60e8d6fa81abfe1a12d4bc93c417c11875d029a50f21a0837cb9bb6",
     "portable_edits": 10
   },
   {
-    "file": "opsd/visionzip_aokvqa/root_kl_frontier.py",
+    "file": "scopd/visionzip_aokvqa/root_kl_frontier.py",
     "source_sha256": "3c67a48fe875b25fc85f69f196f92347454b4506b2e93772883e0ec70a445d3e",
     "export_sha256": "3c67a48fe875b25fc85f69f196f92347454b4506b2e93772883e0ec70a445d3e",
     "portable_edits": 0
   },
   {
-    "file": "opsd/visionzip_aokvqa/train.py",
+    "file": "scopd/visionzip_aokvqa/train.py",
     "source_sha256": "f3deaa593e243d1d56e37671a9fba17e2ab7fd295da574b795460c6adacfa90d",
-    "export_sha256": "e4ae1244e1c16e7d5a24f84ea4dc94d50ac308d514b82018d4815fdcfd521f19",
+    "export_sha256": "a846d430a63e7b018bb922c9f78df624efe956f3042a3942a20d775970990fe4",
     "portable_edits": 1
   },
   {
-    "file": "opsd/visionzip_aokvqa/trajectory_weighting.py",
+    "file": "scopd/visionzip_aokvqa/trajectory_weighting.py",
     "source_sha256": "c98eb10f7fb7bea0e15395c560fc4a42c09c3fb3525f9c535e664d957a2f01eb",
-    "export_sha256": "c98eb10f7fb7bea0e15395c560fc4a42c09c3fb3525f9c535e664d957a2f01eb",
+    "export_sha256": "53b5685ed8027c9c6a828e30e270862d1be04310dee44fe047a7878e37874123",
     "portable_edits": 0
   },
   {
-    "file": "opsd/pruning_distill/__init__.py",
+    "file": "scopd/pruning_distill/__init__.py",
     "source_sha256": "9d0ce90bfdfdb99b6a984a0a7ec235f225ecae57b28e2f52776c75bf24ffa15f",
     "export_sha256": "9d0ce90bfdfdb99b6a984a0a7ec235f225ecae57b28e2f52776c75bf24ffa15f",
     "portable_edits": 0
   },
   {
-    "file": "opsd/pruning_distill/losses.py",
+    "file": "scopd/pruning_distill/losses.py",
     "source_sha256": "d260b4b2bbd54d018dbd4a293a2051b65764a4dd1ee4e48b7edf176291672228",
     "export_sha256": "d260b4b2bbd54d018dbd4a293a2051b65764a4dd1ee4e48b7edf176291672228",
     "portable_edits": 0
   },
   {
-    "file": "opsd/pruning_distill/pruners.py",
+    "file": "scopd/pruning_distill/pruners.py",
     "source_sha256": "c11d455816005b83685976a8ab171621baf9206ee683b65fe54376a8270a442c",
     "export_sha256": "c11d455816005b83685976a8ab171621baf9206ee683b65fe54376a8270a442c",
     "portable_edits": 0
   },
   {
-    "file": "opsd/pruning_distill/qwen25_pruned_forward.py",
+    "file": "scopd/pruning_distill/qwen25_pruned_forward.py",
     "source_sha256": "2beb603cfad9396bba110d734d760c70754174e964f83b6fdf016ce409db974c",
     "export_sha256": "2beb603cfad9396bba110d734d760c70754174e964f83b6fdf016ce409db974c",
     "portable_edits": 0
   },
   {
-    "file": "tests/test_opsd_scope_entrypoint.py",
+    "file": "tests/test_scopd_entrypoint.py",
     "source_sha256": "9637889a5b785b0a9f53ac44b54264cd5b23251e2990f20c258ee0539e7497c1",
-    "export_sha256": "62cad33a2b1d776bdb546a121ce8816904d06223810bc060595fe85164521155",
+    "export_sha256": "8de0f26ee6dec197637f026fc255a1c2fbfa929769ffe906135d65c8f1003843",
     "portable_edits": 1
   },
   {
     "file": "tests/test_qwen25vl_pruned_forward.py",
     "source_sha256": "8c29aa9405b9456f512229ea21878cb3e5d0e3dbaff8879de11724ebf8779cfb",
-    "export_sha256": "8c29aa9405b9456f512229ea21878cb3e5d0e3dbaff8879de11724ebf8779cfb",
+    "export_sha256": "e589a084c964cc4d9c875cff2a02db4b3577a3b15c5a1719a121c19e0dabc9d0",
     "portable_edits": 0
   },
   {
     "file": "tests/test_token_budget_stability.py",
     "source_sha256": "3ea0b13db82a3f4a82311c78b135ff28e0091d363c474f1676b9cdfaa31a4df8",
-    "export_sha256": "3ea0b13db82a3f4a82311c78b135ff28e0091d363c474f1676b9cdfaa31a4df8",
+    "export_sha256": "735fa95f70376e42dcb9a57aa0f7c9a81770ad1a1a9767dcee6053635b1eea3e",
     "portable_edits": 0
   },
   {
     "file": "tests/test_data_integrity.py",
     "source_sha256": "30d106aa6eb22048e1fb71d40b37ade80bd062fbac3d4f5e8a88050cce6f5ea1",
-    "export_sha256": "30d106aa6eb22048e1fb71d40b37ade80bd062fbac3d4f5e8a88050cce6f5ea1",
+    "export_sha256": "334c7324b23d56241a4a73fa2fa2dccdb9ee0316327b06cfaa0bf7f427416b4e",
     "portable_edits": 0
   },
   {
@@ -394,7 +394,7 @@
   {
     "file": "third_party/VLMEvalKit/vlmeval/config.py",
     "source_sha256": "0f455ba54dae73e12d08600345382cb19a9b91dfff6023dbd74278f7998c8604",
-    "export_sha256": "0f455ba54dae73e12d08600345382cb19a9b91dfff6023dbd74278f7998c8604",
+    "export_sha256": "80f1dddf6cb75df807678842cf9215f6cf827bacd575394442704f37ff0d6275",
     "portable_edits": 0
   },
   {
@@ -3778,7 +3778,7 @@
     "portable_edits": 0
   },
   {
-    "file": "scope_eval/visionzip_memory.py",
+    "file": "scopd_eval/visionzip_memory.py",
     "source_sha256": "1a8dd36e9c84c9b35fd1bfb278d9bd03d4ad8f7b207490ead92a36dab73d21e3",
     "export_sha256": "1a8dd36e9c84c9b35fd1bfb278d9bd03d4ad8f7b207490ead92a36dab73d21e3",
     "portable_edits": 0

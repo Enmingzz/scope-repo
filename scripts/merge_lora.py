@@ -12,7 +12,7 @@ def main():
     a = p.parse_args()
     if a.output.exists() and any(a.output.iterdir()):
         raise FileExistsError('Refusing to overwrite a merged model')
-    from opsd.visionzip_aokvqa.qwen_wrapper import import_qwen25_modules
+    from scopd.visionzip_aokvqa.qwen_wrapper import import_qwen25_modules
     cls, _, processor_cls = import_qwen25_modules()
     import torch
     from peft import PeftModel

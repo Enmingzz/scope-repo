@@ -26,9 +26,9 @@ import torch
 import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
 
-from opsd.visionzip_aokvqa.aokvqa import FormattedAOKVQASample, load_aokvqa_dataset
-from opsd.visionzip_aokvqa.data_integrity import verify_decontaminated_training_data
-from opsd.visionzip_aokvqa.epic_official import (
+from scopd.visionzip_aokvqa.aokvqa import FormattedAOKVQASample, load_aokvqa_dataset
+from scopd.visionzip_aokvqa.data_integrity import verify_decontaminated_training_data
+from scopd.visionzip_aokvqa.epic_official import (
     UPSTREAM_COMMIT as EPIC_UPSTREAM_COMMIT,
     UPSTREAM_REPOSITORY as EPIC_UPSTREAM_REPOSITORY,
     UPSTREAM_TRAINER_SHA256 as EPIC_UPSTREAM_TRAINER_SHA256,
@@ -36,7 +36,7 @@ from opsd.visionzip_aokvqa.epic_official import (
     extract_official_epic_response_logits,
     sample_official_epic_curriculum,
 )
-from opsd.visionzip_aokvqa.losses import (
+from scopd.visionzip_aokvqa.losses import (
     compute_budget_gradient_alignment,
     compute_budget_gradient_geometry,
     compute_budget_gradient_projection_geometry,
@@ -55,7 +55,7 @@ from opsd.visionzip_aokvqa.losses import (
     keep_mask_after_topk_exclusion,
     resolve_token_outlier_top_k,
 )
-from opsd.visionzip_aokvqa.native_budget_weighting import (
+from scopd.visionzip_aokvqa.native_budget_weighting import (
     budget_jsd_conditioned_abs_projection_grouped_weights,
     budget_gradient_aligned_bridge_gate,
     budget_gradient_consensus_weights,
@@ -91,16 +91,16 @@ from opsd.visionzip_aokvqa.native_budget_weighting import (
     symmetric_teacher_gap_stability_weights,
     teacher_gap_persistence_weights,
 )
-from opsd.visionzip_aokvqa.paired_sampling import (
+from scopd.visionzip_aokvqa.paired_sampling import (
     paired_retention_ratio,
     paired_rollout_seed,
     torch_seed_scope,
 )
-from opsd.visionzip_aokvqa.phase_ratio_scaling import (
+from scopd.visionzip_aokvqa.phase_ratio_scaling import (
     resolve_phase_ratio_scale,
     validate_phase_ratio_scaling_config,
 )
-from opsd.visionzip_aokvqa.trajectory_weighting import (
+from scopd.visionzip_aokvqa.trajectory_weighting import (
     AdaptiveBudgetFrontierState,
     ProgressAdaptiveFrontierState,
     RobustnessGatedCurriculumState,
@@ -127,8 +127,8 @@ from opsd.visionzip_aokvqa.trajectory_weighting import (
     trajectory_sigmoid_downweights,
     uniform_trajectory_probability_weights,
 )
-from opsd.visionzip_aokvqa.prompting import build_opsd_teacher_prompt, normalize_prompt_mode, parse_final_answer
-from opsd.visionzip_aokvqa.qwen_wrapper import (
+from scopd.visionzip_aokvqa.prompting import build_scopd_teacher_prompt, normalize_prompt_mode, parse_final_answer
+from scopd.visionzip_aokvqa.qwen_wrapper import (
     apply_lora,
     encode_prompt,
     encode_prompt_and_response,
@@ -150,16 +150,16 @@ METHODS = (
     "grpo",
     "epic",
     "epic_official",
-    "opsd",
-    "opsd_fixed_teacher",
-    "opsd_nogt",
-    "opsd_gt_prompt",
+    "scopd",
+    "scopd_fixed_teacher",
+    "scopd_nogt",
+    "scopd_gt_prompt",
     "offpolicy",
 )
-OPSD_DYNAMIC_TEACHER_ALIASES = {"", "dynamic", "dynamic_shared_current", "shared_current", "latest"}
-OPSD_FIXED_TEACHER_ALIASES = {"fixed_base", "fixed_teacher", "legacy_fixed_base", "base"}
-OPSD_EMA_TEACHER_ALIASES = {"ema", "ema_teacher", "ema_shared", "ema_reference"}
-OPSD_EXTERNAL_TEACHER_ALIASES = {"external", "external_adapter", "teacher_adapter", "sft_teacher"}
+SCOPD_DYNAMIC_TEACHER_ALIASES = {"", "dynamic", "dynamic_shared_current", "shared_current", "latest"}
+SCOPD_FIXED_TEACHER_ALIASES = {"fixed_base", "fixed_teacher", "legacy_fixed_base", "base"}
+SCOPD_EMA_TEACHER_ALIASES = {"ema", "ema_teacher", "ema_shared", "ema_reference"}
+SCOPD_EXTERNAL_TEACHER_ALIASES = {"external", "external_adapter", "teacher_adapter", "sft_teacher"}
 DEFAULT_TEACHER_ADAPTER_NAME = "teacher"
 STUDENT_TEXT_LOG_KEY = "_student_text_log"
 ROLLOUT_CACHE_KEY = "_effective_batch_rollout_cache"
@@ -336,7 +336,7 @@ def setup_distributed() -> tuple[bool, int, int, int]:
             raise RuntimeError("DDP training requires CUDA.")
         torch.cuda.set_device(local_rank)
         if not dist.is_initialized():
-            timeout_minutes = int(os.environ.get("OPSD_DDP_TIMEOUT_MINUTES", "10"))
+            timeout_minutes = int(os.environ.get("SCOPD_DDP_TIMEOUT_MINUTES", "10"))
             dist.init_process_group(backend="nccl", timeout=timedelta(minutes=timeout_minutes))
     return distributed, rank, local_rank, world_size
 
@@ -448,14 +448,14 @@ def image_pixel_bounds_from_config(cfg: dict[str, Any]) -> tuple[int | None, int
 
 def configure_pruning_backend(cfg: dict[str, Any]) -> str:
     method = normalize_pruning_method(str(get_nested(cfg, "pruning.method", "visionzip") or "visionzip"))
-    os.environ["OPSD_PRUNING_METHOD"] = method
+    os.environ["SCOPD_PRUNING_METHOD"] = method
     if method == "random":
-        os.environ["OPSD_RANDOM_PRUNER_SEED"] = str(
+        os.environ["SCOPD_RANDOM_PRUNER_SEED"] = str(
             int(get_nested(cfg, "pruning.random_seed", get_nested(cfg, "training.seed", 42)))
         )
     if method == "fastv":
-        os.environ["OPSD_FASTV_TOKENS_ANCHOR"] = str(get_nested(cfg, "pruning.fastv_tokens_anchor", "all") or "all")
-        os.environ["OPSD_FASTV_TOKENS_PRUNE_LAYERS"] = str(get_nested(cfg, "pruning.fastv_tokens_prune_layers", "4") or "4")
+        os.environ["SCOPD_FASTV_TOKENS_ANCHOR"] = str(get_nested(cfg, "pruning.fastv_tokens_anchor", "all") or "all")
+        os.environ["SCOPD_FASTV_TOKENS_PRUNE_LAYERS"] = str(get_nested(cfg, "pruning.fastv_tokens_prune_layers", "4") or "4")
     return method
 
 
@@ -487,7 +487,7 @@ def build_student_text_log(
         "retention_ratio": float(retention_ratio),
         "generated_tokens": int(generated_tokens),
         "teacher_source": teacher_source,
-        "opsd_teacher_strategy": teacher_strategy,
+        "scopd_teacher_strategy": teacher_strategy,
         "rollout_decoder": rollout_decoder,
         "rollout_use_cache": rollout_use_cache,
         "student_text": generated_text,
@@ -561,7 +561,7 @@ def sample_retention_ratio(
             seed=int(get_nested(cfg, "paired_sampling.ratio_seed", get_nested(cfg, "training.seed", 42))),
             global_index=int(progress_step),
             sample_id=str(sample_id),
-            namespace=str(get_nested(cfg, "paired_sampling.namespace", "opsd_pair_v1")),
+            namespace=str(get_nested(cfg, "paired_sampling.namespace", "scopd_pair_v1")),
         )
     if schedule not in {"random", "weighted_random", "uniform_random"}:
         raise ValueError(f"Unsupported pruning.retention_ratio_schedule={schedule!r}.")
@@ -579,39 +579,39 @@ def sample_retention_ratio(
     return float(rng.choices(ratios, weights=weights, k=1)[0])
 
 
-def resolve_opsd_teacher_strategy(
+def resolve_scopd_teacher_strategy(
     cfg: dict[str, Any],
     teacher_model: Any | None,
     teacher_adapter_name: str = "",
 ) -> str:
-    raw = str(get_nested(cfg, "opsd.teacher_strategy", "") or "").strip().lower()
-    use_ema = bool(get_nested(cfg, "opsd.use_ema_teacher", False))
-    if teacher_model is not None and (use_ema or raw in OPSD_EMA_TEACHER_ALIASES):
+    raw = str(get_nested(cfg, "scopd.teacher_strategy", "") or "").strip().lower()
+    use_ema = bool(get_nested(cfg, "scopd.use_ema_teacher", False))
+    if teacher_model is not None and (use_ema or raw in SCOPD_EMA_TEACHER_ALIASES):
         return "ema"
     if teacher_model is not None:
         return "external"
     if teacher_adapter_name:
-        if use_ema or raw in OPSD_EMA_TEACHER_ALIASES:
+        if use_ema or raw in SCOPD_EMA_TEACHER_ALIASES:
             return "ema"
-        if not raw or raw in OPSD_EXTERNAL_TEACHER_ALIASES:
+        if not raw or raw in SCOPD_EXTERNAL_TEACHER_ALIASES:
             return "external_adapter"
-    fixed_teacher = bool(get_nested(cfg, "opsd.fixed_teacher", False))
+    fixed_teacher = bool(get_nested(cfg, "scopd.fixed_teacher", False))
     if fixed_teacher and not raw:
         return "fixed_base"
     if use_ema:
         return "ema"
-    if raw in OPSD_EMA_TEACHER_ALIASES:
+    if raw in SCOPD_EMA_TEACHER_ALIASES:
         return "ema"
-    if raw in OPSD_DYNAMIC_TEACHER_ALIASES:
+    if raw in SCOPD_DYNAMIC_TEACHER_ALIASES:
         return "dynamic_shared_current"
-    if raw in OPSD_FIXED_TEACHER_ALIASES:
+    if raw in SCOPD_FIXED_TEACHER_ALIASES:
         return "fixed_base"
-    if raw in OPSD_EXTERNAL_TEACHER_ALIASES:
-        raise ValueError("opsd.teacher_strategy='external' requires opsd.teacher_adapter_path.")
+    if raw in SCOPD_EXTERNAL_TEACHER_ALIASES:
+        raise ValueError("scopd.teacher_strategy='external' requires scopd.teacher_adapter_path.")
     raise ValueError(
-        "Unsupported opsd.teacher_strategy="
+        "Unsupported scopd.teacher_strategy="
         f"{raw!r}. Use dynamic_shared_current for the online shared path, ema for the official EMA reference path, "
-        "external with opsd.teacher_adapter_path for a shared teacher LoRA, or fixed_base for the legacy ablation."
+        "external with scopd.teacher_adapter_path for a shared teacher LoRA, or fixed_base for the legacy ablation."
     )
 
 
@@ -635,40 +635,40 @@ def _configured(value: Any) -> bool:
 
 
 def resolve_ema_update_settings(cfg: dict[str, Any]) -> dict[str, Any]:
-    raw_decay = get_nested(cfg, "opsd.ema_decay", None)
-    raw_alpha = get_nested(cfg, "opsd.ema_alpha", None)
+    raw_decay = get_nested(cfg, "scopd.ema_decay", None)
+    raw_alpha = get_nested(cfg, "scopd.ema_alpha", None)
     has_decay = _configured(raw_decay)
     has_alpha = _configured(raw_alpha)
     if has_decay and has_alpha:
-        raise ValueError("Specify only one of opsd.ema_decay (official) or opsd.ema_alpha (legacy ablation).")
+        raise ValueError("Specify only one of scopd.ema_decay (official) or scopd.ema_alpha (legacy ablation).")
     if has_decay:
         decay = float(raw_decay)
         if decay <= 0.0 or decay > 1.0:
-            raise ValueError(f"opsd.ema_decay must be in (0, 1], got {decay}.")
+            raise ValueError(f"scopd.ema_decay must be in (0, 1], got {decay}.")
         return {
             "mode": "official_decay_freeze" if decay == 1.0 else "official_decay",
             "decay": decay,
             "alpha": 1.0 - decay,
-            "lazy_init": bool(get_nested(cfg, "opsd.ema_lazy_init", True)),
+            "lazy_init": bool(get_nested(cfg, "scopd.ema_lazy_init", True)),
         }
     if has_alpha:
         alpha = float(raw_alpha)
         if alpha <= 0.0 or alpha > 1.0:
-            raise ValueError(f"opsd.ema_alpha must be in (0, 1], got {alpha}.")
+            raise ValueError(f"scopd.ema_alpha must be in (0, 1], got {alpha}.")
         return {
             "mode": "legacy_alpha",
             "decay": 1.0 - alpha,
             "alpha": alpha,
-            "lazy_init": bool(get_nested(cfg, "opsd.ema_lazy_init", False)),
+            "lazy_init": bool(get_nested(cfg, "scopd.ema_lazy_init", False)),
         }
-    decay = float(get_nested(cfg, "opsd.ema_decay_default", 0.9999))
+    decay = float(get_nested(cfg, "scopd.ema_decay_default", 0.9999))
     if decay <= 0.0 or decay >= 1.0:
-        raise ValueError(f"opsd.ema_decay_default must be in (0, 1), got {decay}.")
+        raise ValueError(f"scopd.ema_decay_default must be in (0, 1), got {decay}.")
     return {
         "mode": "official_decay_default",
         "decay": decay,
         "alpha": 1.0 - decay,
-        "lazy_init": bool(get_nested(cfg, "opsd.ema_lazy_init", True)),
+        "lazy_init": bool(get_nested(cfg, "scopd.ema_lazy_init", True)),
     }
 
 
@@ -780,7 +780,7 @@ def temporary_eval(model: Any):
 
 @contextmanager
 def temporary_cached_rollout(model: Any):
-    """Match inference-time model state while generating cached OPSD rollouts."""
+    """Match inference-time model state while generating cached SCOPD rollouts."""
 
     target = unwrap_model(model)
     model_config = getattr(target, "config", None)
@@ -794,9 +794,9 @@ def temporary_cached_rollout(model: Any):
             generation_config.use_cache = True
         try:
             if model_config is not None and model_config.use_cache is not True:
-                raise RuntimeError("Failed to enable model KV cache for cached OPSD rollout.")
+                raise RuntimeError("Failed to enable model KV cache for cached SCOPD rollout.")
             if generation_config is not None and generation_config.use_cache is not True:
-                raise RuntimeError("Failed to enable generation KV cache for cached OPSD rollout.")
+                raise RuntimeError("Failed to enable generation KV cache for cached SCOPD rollout.")
             yield
         finally:
             if model_config is not None:
@@ -1082,7 +1082,7 @@ def epic_tcd_step(
     }
 
 
-def opsd_nogt_step(
+def scopd_nogt_step(
     model: Any,
     processor: Any,
     sample: FormattedAOKVQASample,
@@ -1137,11 +1137,11 @@ def opsd_nogt_step(
             )
     rollout_decoder = str(generation_meta.get("rollout_decoder", rollout_decoder))
     if gen_ids.numel() == 0:
-        raise RuntimeError("OPSD student generated zero tokens.")
+        raise RuntimeError("SCOPD student generated zero tokens.")
     student_seq_inputs = sequence_inputs_from_prompt(prompt_inputs, gen_ids)
     student_prompt_len = int(prompt_inputs["input_ids"].shape[1])
     if teacher_uses_ground_truth:
-        teacher_prompt = build_opsd_teacher_prompt(
+        teacher_prompt = build_scopd_teacher_prompt(
             sample.question,
             sample.options,
             sample.target,
@@ -1164,16 +1164,16 @@ def opsd_nogt_step(
         teacher_context = "student_prompt_no_ground_truth"
         source_context = "no_gt"
 
-    raw_teacher_strategy = str(get_nested(cfg, "opsd.teacher_strategy", "") or "").strip()
+    raw_teacher_strategy = str(get_nested(cfg, "scopd.teacher_strategy", "") or "").strip()
     explicit_teacher_strategy = (
         teacher_model is not None
         or bool(teacher_adapter_name)
         or ema_shadow is not None
         or raw_teacher_strategy
-        or bool(get_nested(cfg, "opsd.use_ema_teacher", False))
+        or bool(get_nested(cfg, "scopd.use_ema_teacher", False))
     )
     teacher_strategy = (
-        resolve_opsd_teacher_strategy(cfg, teacher_model, teacher_adapter_name) if explicit_teacher_strategy else "fixed_base"
+        resolve_scopd_teacher_strategy(cfg, teacher_model, teacher_adapter_name) if explicit_teacher_strategy else "fixed_base"
     )
     if teacher_strategy == "external":
         with torch.no_grad():
@@ -1218,9 +1218,9 @@ def opsd_nogt_step(
     ).detach().clone()
     del teacher_outputs
 
-    native_weighting_enabled = bool(get_nested(cfg, "opsd.native_budget_weighting.enabled", False))
+    native_weighting_enabled = bool(get_nested(cfg, "scopd.native_budget_weighting.enabled", False))
     weighting_mode = str(
-        get_nested(cfg, "opsd.native_budget_weighting.mode", "inverse_student_gap")
+        get_nested(cfg, "scopd.native_budget_weighting.mode", "inverse_student_gap")
     ).strip().lower()
     native_requires_b_plus = native_weighting_enabled and weighting_mode not in {
         TOKEN_HELLINGER_CURRICULUM_MODE,
@@ -1232,15 +1232,15 @@ def opsd_nogt_step(
     b_plus_metadata: dict[str, Any] = {}
     if native_requires_b_plus:
         budget_delta_mode = str(
-            get_nested(cfg, "opsd.native_budget_weighting.budget_delta_mode", "absolute")
+            get_nested(cfg, "scopd.native_budget_weighting.budget_delta_mode", "absolute")
         ).strip().lower()
         if budget_delta_mode == "absolute":
             b_plus_ratio = float(retention_ratio) + float(
-                get_nested(cfg, "opsd.native_budget_weighting.budget_delta", 0.05)
+                get_nested(cfg, "scopd.native_budget_weighting.budget_delta", 0.05)
             )
         elif budget_delta_mode == "relative":
             relative_fraction = float(
-                get_nested(cfg, "opsd.native_budget_weighting.budget_delta_fraction", 0.25)
+                get_nested(cfg, "scopd.native_budget_weighting.budget_delta_fraction", 0.25)
             )
             b_plus_ratio = float(retention_ratio) * (1.0 + relative_fraction)
         else:
@@ -1262,11 +1262,11 @@ def opsd_nogt_step(
         scoring_mask_hash = str(pruned["metadata"].get("random_mask_hash", ""))
         if not rollout_mask_hash or rollout_mask_hash != scoring_mask_hash:
             raise RuntimeError(
-                "RandomPruner OPSD must reuse one mask for rollout and student scoring: "
+                "RandomPruner SCOPD must reuse one mask for rollout and student scoring: "
                 f"rollout={rollout_mask_hash!r}, scoring={scoring_mask_hash!r}."
             )
     student_logits = extract_generated_logits(student_outputs.logits, int(pruned["metadata"]["student_prompt_len"]), int(gen_ids.numel()))
-    opsd_temperature = float(get_nested(cfg, "opsd.temperature", 1.0))
+    scopd_temperature = float(get_nested(cfg, "scopd.temperature", 1.0))
     trajectory_scalar_kl: torch.Tensor | None = None
     if native_weighting_enabled and weighting_mode in {
         "trajectory_probe",
@@ -1275,10 +1275,10 @@ def opsd_nogt_step(
         trajectory_scalar_kl = compute_forward_kl(
             teacher_logits,
             student_logits,
-            temperature=opsd_temperature,
+            temperature=scopd_temperature,
         )
     # Preserve the original teacher -> differentiable student forward order.
-    # The auxiliary branch is no-grad and runs only after the OPSD graph exists.
+    # The auxiliary branch is no-grad and runs only after the SCOPD graph exists.
     if native_requires_b_plus:
         if b_plus_ratio is None:
             raise AssertionError("Native budget weighting requires b_plus ratio.")
@@ -1321,7 +1321,7 @@ def opsd_nogt_step(
         "native_budget_weighting_enabled": native_weighting_enabled,
         "native_budget_weighting_mode": weighting_mode if native_weighting_enabled else None,
         "native_budget_delta_mode": (
-            str(get_nested(cfg, "opsd.native_budget_weighting.budget_delta_mode", "absolute"))
+            str(get_nested(cfg, "scopd.native_budget_weighting.budget_delta_mode", "absolute"))
             if native_requires_b_plus
             else None
         ),
@@ -1351,11 +1351,11 @@ def opsd_nogt_step(
     if native_weighting_enabled:
         if native_requires_b_plus and b_plus_logits is None:
             raise AssertionError("Native budget weighting requires b_plus logits.")
-        per_token_opsd = compute_per_token_kl(
+        per_token_scopd = compute_per_token_kl(
             teacher_logits,
             student_logits.detach() if weighting_mode == "trajectory_probe" else student_logits,
-            temperature=opsd_temperature,
-            chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+            temperature=scopd_temperature,
+            chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
         )
         per_token_bridge: torch.Tensor | None = None
         token_projection_partition = None
@@ -1372,19 +1372,19 @@ def opsd_nogt_step(
             per_token_bridge = compute_per_token_kl(
                 b_plus_logits,
                 student_logits,
-                temperature=opsd_temperature,
-                chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                temperature=scopd_temperature,
+                chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
             )
         with torch.no_grad():
             if weighting_mode in {TOKEN_RANDOM_KEEP_MODE, TOKEN_FORWARD_KL_TOP_MODE}:
-                sensitivity = torch.zeros_like(per_token_opsd.detach().float())
+                sensitivity = torch.zeros_like(per_token_scopd.detach().float())
             elif weighting_mode == TOKEN_HELLINGER_CURRICULUM_MODE:
                 affinity = compute_per_token_bhattacharyya_affinity(
                     teacher_logits,
                     student_logits.detach(),
-                    temperature=opsd_temperature,
+                    temperature=scopd_temperature,
                     chunk_size=int(
-                        get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)
+                        get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)
                     ),
                 )
                 sensitivity = 1.0 - affinity
@@ -1408,7 +1408,7 @@ def opsd_nogt_step(
                     temperature=float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.sensitivity_temperature",
+                            "scopd.native_budget_weighting.sensitivity_temperature",
                             1.0,
                         )
                     ),
@@ -1416,7 +1416,7 @@ def opsd_nogt_step(
                     token_clip=None,
                     clip_mode="token",
                     chunk_size=int(
-                        get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)
+                        get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)
                     ),
                 )
             else:
@@ -1426,29 +1426,29 @@ def opsd_nogt_step(
                     temperature=float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.sensitivity_temperature",
+                            "scopd.native_budget_weighting.sensitivity_temperature",
                             1.0,
                         )
                     ),
                     chunk_size=int(
-                        get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)
+                        get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)
                     ),
                 )
             valid_mask = generated_token_valid_mask(gen_ids)
-            eps = float(get_nested(cfg, "opsd.native_budget_weighting.eps", 1e-8))
+            eps = float(get_nested(cfg, "scopd.native_budget_weighting.eps", 1e-8))
             if weighting_mode == TOKEN_RANDOM_KEEP_MODE:
                 top_fraction = float(
-                    get_nested(cfg, "opsd.native_budget_weighting.top_fraction", 0.2)
+                    get_nested(cfg, "scopd.native_budget_weighting.top_fraction", 0.2)
                 )
                 min_teacher_kl = float(
-                    get_nested(cfg, "opsd.native_budget_weighting.min_teacher_kl", 0.0)
+                    get_nested(cfg, "scopd.native_budget_weighting.min_teacher_kl", 0.0)
                 )
                 token_random_keep_partition = deterministic_random_token_keep_partition(
-                    per_token_opsd,
+                    per_token_scopd,
                     valid_mask,
                     sample_key=f"{sample.sample_id}:{rollout_seed}",
                     seed=int(
-                        get_nested(cfg, "opsd.native_budget_weighting.random_keep_seed", 42)
+                        get_nested(cfg, "scopd.native_budget_weighting.random_keep_seed", 42)
                     ),
                     keep_fraction=top_fraction,
                     min_kl=min_teacher_kl,
@@ -1456,7 +1456,7 @@ def opsd_nogt_step(
                 eligible = token_random_keep_partition.eligible_mask
                 valid = token_random_keep_partition.selected_mask
                 excluded = token_random_keep_partition.excluded_mask
-                token_weight = torch.zeros_like(per_token_opsd.detach().float())
+                token_weight = torch.zeros_like(per_token_scopd.detach().float())
                 token_weight[valid] = 1.0
                 eligible_count = int(eligible.sum().cpu())
                 valid_count = int(valid_mask.sum().cpu())
@@ -1468,7 +1468,7 @@ def opsd_nogt_step(
                     "native_token_partition_top_fraction": top_fraction,
                     "native_token_partition_min_teacher_kl": min_teacher_kl,
                     "native_token_partition_random_seed": int(
-                        get_nested(cfg, "opsd.native_budget_weighting.random_keep_seed", 42)
+                        get_nested(cfg, "scopd.native_budget_weighting.random_keep_seed", 42)
                     ),
                     "native_token_partition_valid_tokens": valid_count,
                     "native_token_partition_eligible_tokens": eligible_count,
@@ -1493,16 +1493,16 @@ def opsd_nogt_step(
                     "native_trajectory_weight_mean": 1.0 if selected_count else 0.0,
                     "native_loss_mass_scale": 1.0,
                 }
-                loss_type = "opsd_nogt_token_random_keep20_forward_kl"
+                loss_type = "scopd_nogt_token_random_keep20_forward_kl"
             elif weighting_mode == TOKEN_FORWARD_KL_TOP_MODE:
                 top_fraction = float(
-                    get_nested(cfg, "opsd.native_budget_weighting.top_fraction", 0.2)
+                    get_nested(cfg, "scopd.native_budget_weighting.top_fraction", 0.2)
                 )
                 min_teacher_kl = float(
-                    get_nested(cfg, "opsd.native_budget_weighting.min_teacher_kl", 0.0)
+                    get_nested(cfg, "scopd.native_budget_weighting.min_teacher_kl", 0.0)
                 )
                 token_forward_kl_top_partition = forward_kl_top_fraction_partition(
-                    per_token_opsd,
+                    per_token_scopd,
                     valid_mask,
                     top_fraction=top_fraction,
                     min_kl=min_teacher_kl,
@@ -1510,14 +1510,14 @@ def opsd_nogt_step(
                 eligible = token_forward_kl_top_partition.eligible_mask
                 valid = token_forward_kl_top_partition.selected_mask
                 excluded = token_forward_kl_top_partition.excluded_mask
-                token_weight = valid.to(dtype=per_token_opsd.dtype).detach()
+                token_weight = valid.to(dtype=per_token_scopd.dtype).detach()
                 eligible_count = int(eligible.sum().cpu())
                 valid_count = int(valid_mask.sum().cpu())
                 selected_count = int(valid.sum().cpu())
                 excluded_count = int(excluded.sum().cpu())
                 below_kl_floor_count = int((valid_mask & ~eligible).sum().cpu())
-                selected_kl = per_token_opsd.detach().float()[valid]
-                excluded_kl = per_token_opsd.detach().float()[excluded]
+                selected_kl = per_token_scopd.detach().float()[valid]
+                excluded_kl = per_token_scopd.detach().float()[excluded]
                 mode_metrics = {
                     "native_token_partition": "forward_kl_top20",
                     "native_token_partition_top_fraction": top_fraction,
@@ -1549,10 +1549,10 @@ def opsd_nogt_step(
                     "native_trajectory_weight_mean": 1.0 if selected_count else 0.0,
                     "native_loss_mass_scale": 1.0,
                 }
-                loss_type = "opsd_nogt_token_forward_kl_top20"
+                loss_type = "scopd_nogt_token_forward_kl_top20"
             elif weighting_mode == TOKEN_HELLINGER_CURRICULUM_MODE:
                 curriculum_scale = float(
-                    get_nested(cfg, "opsd.native_budget_weighting.curriculum_scale", 8.0)
+                    get_nested(cfg, "scopd.native_budget_weighting.curriculum_scale", 8.0)
                 )
                 weights = hellinger_curriculum_weights(
                     affinity,
@@ -1576,7 +1576,7 @@ def opsd_nogt_step(
                     "native_trajectory_weight_mean": float(token_weight[valid].mean().cpu()),
                     "native_loss_mass_scale": 1.0,
                 }
-                loss_type = "opsd_nogt_token_hellinger_curriculum_forward_kl"
+                loss_type = "scopd_nogt_token_hellinger_curriculum_forward_kl"
             elif weighting_mode == "inverse_student_gap":
                 weights = native_budget_robustness_weights(
                     sensitivity,
@@ -1589,7 +1589,7 @@ def opsd_nogt_step(
                     "native_tau": float(weights.tau.cpu()),
                     "native_robustness_mean": float(weights.robustness[valid].mean().cpu()),
                 }
-                loss_type = "opsd_nogt_native_budget_weighted_forward_kl"
+                loss_type = "scopd_nogt_native_budget_weighted_forward_kl"
             elif weighting_mode in {
                 "max_kl_fraction_inverse_jsd",
                 "max_kl_fraction_softmax_inverse_jsd",
@@ -1598,13 +1598,13 @@ def opsd_nogt_step(
                 max_kl_fraction = float(
                     get_nested(
                         cfg,
-                        "opsd.native_budget_weighting.max_kl_fraction",
+                        "scopd.native_budget_weighting.max_kl_fraction",
                         0.10,
                     )
                 )
                 if weighting_mode == "max_kl_fraction_inverse_jsd":
                     weights = max_kl_fraction_inverse_jsd_weights(
-                        per_token_opsd,
+                        per_token_scopd,
                         sensitivity,
                         valid_mask,
                         max_kl_fraction=max_kl_fraction,
@@ -1618,12 +1618,12 @@ def opsd_nogt_step(
                     softmax_temperature = float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.softmax_temperature",
+                            "scopd.native_budget_weighting.softmax_temperature",
                             0.05,
                         )
                     )
                     weights = max_kl_fraction_softmax_inverse_jsd_weights(
-                        per_token_opsd,
+                        per_token_scopd,
                         sensitivity,
                         valid_mask,
                         max_kl_fraction=max_kl_fraction,
@@ -1636,19 +1636,19 @@ def opsd_nogt_step(
                     softmax_temperature = float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.softmax_temperature",
+                            "scopd.native_budget_weighting.softmax_temperature",
                             0.05,
                         )
                     )
                     high_group_coefficient = float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.high_group_coefficient",
+                            "scopd.native_budget_weighting.high_group_coefficient",
                             0.10,
                         )
                     )
                     weights = max_kl_fraction_softmax_inverse_jsd_group_balanced_weights(
-                        per_token_opsd,
+                        per_token_scopd,
                         sensitivity,
                         valid_mask,
                         max_kl_fraction=max_kl_fraction,
@@ -1657,7 +1657,7 @@ def opsd_nogt_step(
                     )
                     balanced_unweighted_kl = (
                         weights.balanced_unweighted_weight[weights.valid_mask]
-                        * per_token_opsd[weights.valid_mask]
+                        * per_token_scopd[weights.valid_mask]
                     ).mean()
                     weight_transform = "group_balanced_softmax_inverse"
                 valid = weights.valid_mask
@@ -1704,11 +1704,11 @@ def opsd_nogt_step(
                     "native_loss_mass_scale": 1.0,
                 }
                 loss_type = (
-                    "opsd_nogt_max10_group_inverse_jsd_d25_forward_kl"
+                    "scopd_nogt_max10_group_inverse_jsd_d25_forward_kl"
                     if weighting_mode == "max_kl_fraction_inverse_jsd"
-                    else "opsd_nogt_max10_group_softmax_inverse_jsd_d25_forward_kl"
+                    else "scopd_nogt_max10_group_softmax_inverse_jsd_d25_forward_kl"
                     if weighting_mode == "max_kl_fraction_softmax_inverse_jsd"
-                    else "opsd_nogt_max10_group_lambda_softmax_inverse_jsd_d25_forward_kl"
+                    else "scopd_nogt_max10_group_lambda_softmax_inverse_jsd_d25_forward_kl"
                 )
             elif weighting_mode == TOKEN_TIP_KL_ABS_PROJECTION_MODE:
                 teacher_js_tokens = compute_per_token_generalized_jsd(
@@ -1718,7 +1718,7 @@ def opsd_nogt_step(
                     temperature=float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.sensitivity_temperature",
+                            "scopd.native_budget_weighting.sensitivity_temperature",
                             1.0,
                         )
                     ),
@@ -1726,7 +1726,7 @@ def opsd_nogt_step(
                     token_clip=None,
                     clip_mode="token",
                     chunk_size=int(
-                        get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)
+                        get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)
                     ),
                 ).detach().float()
                 teacher_plus_js_tokens = compute_per_token_generalized_jsd(
@@ -1736,7 +1736,7 @@ def opsd_nogt_step(
                     temperature=float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.sensitivity_temperature",
+                            "scopd.native_budget_weighting.sensitivity_temperature",
                             1.0,
                         )
                     ),
@@ -1744,16 +1744,16 @@ def opsd_nogt_step(
                     token_clip=None,
                     clip_mode="token",
                     chunk_size=int(
-                        get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)
+                        get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)
                     ),
                 ).detach().float()
                 top_fraction = float(
-                    get_nested(cfg, "opsd.native_budget_weighting.top_fraction", 0.20)
+                    get_nested(cfg, "scopd.native_budget_weighting.top_fraction", 0.20)
                 )
                 projection_clip_quantile = float(
                     get_nested(
                         cfg,
-                        "opsd.native_budget_weighting.projection_clip_quantile",
+                        "scopd.native_budget_weighting.projection_clip_quantile",
                         0.98,
                     )
                 )
@@ -1762,7 +1762,7 @@ def opsd_nogt_step(
                         teacher_js_tokens,
                         sensitivity,
                         teacher_plus_js_tokens,
-                        per_token_opsd,
+                        per_token_scopd,
                         valid_mask,
                         top_fraction=top_fraction,
                         projection_clip_quantile=projection_clip_quantile,
@@ -1771,7 +1771,7 @@ def opsd_nogt_step(
                 )
                 weights = token_tip_kl_abs_projection_partition
                 valid = weights.selected_mask
-                token_weight = valid.to(dtype=per_token_opsd.dtype).detach()
+                token_weight = valid.to(dtype=per_token_scopd.dtype).detach()
                 scores = weights.soft_or_score[weights.valid_mask]
                 selected_scores = weights.soft_or_score[valid]
                 unselected = weights.valid_mask & ~valid
@@ -1819,7 +1819,7 @@ def opsd_nogt_step(
                     "native_trajectory_weight_mean": float(token_weight[weights.valid_mask].mean().cpu()),
                     "native_loss_mass_scale": 1.0,
                 }
-                loss_type = "opsd_nogt_tip_kl_abs_projection_topk_forward_kl"
+                loss_type = "scopd_nogt_tip_kl_abs_projection_topk_forward_kl"
             elif weighting_mode in {*TOKEN_PROJECTION_PARTITION_MODES, TOKEN_RANDOM_DROP_MODE}:
                 teacher_js_tokens = compute_per_token_generalized_jsd(
                     teacher_logits,
@@ -1828,7 +1828,7 @@ def opsd_nogt_step(
                     temperature=float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.sensitivity_temperature",
+                            "scopd.native_budget_weighting.sensitivity_temperature",
                             1.0,
                         )
                     ),
@@ -1836,7 +1836,7 @@ def opsd_nogt_step(
                     token_clip=None,
                     clip_mode="token",
                     chunk_size=int(
-                        get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)
+                        get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)
                     ),
                 ).detach().float()
                 teacher_plus_js_tokens = compute_per_token_generalized_jsd(
@@ -1846,7 +1846,7 @@ def opsd_nogt_step(
                     temperature=float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.sensitivity_temperature",
+                            "scopd.native_budget_weighting.sensitivity_temperature",
                             1.0,
                         )
                     ),
@@ -1854,22 +1854,22 @@ def opsd_nogt_step(
                     token_clip=None,
                     clip_mode="token",
                     chunk_size=int(
-                        get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)
+                        get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)
                     ),
                 ).detach().float()
                 top_fraction = float(
-                    get_nested(cfg, "opsd.native_budget_weighting.top_fraction", 0.2)
+                    get_nested(cfg, "scopd.native_budget_weighting.top_fraction", 0.2)
                 )
                 min_teacher_kl = float(
-                    get_nested(cfg, "opsd.native_budget_weighting.min_teacher_kl", 1e-5)
+                    get_nested(cfg, "scopd.native_budget_weighting.min_teacher_kl", 1e-5)
                 )
                 if weighting_mode == TOKEN_RANDOM_DROP_MODE:
                     token_random_drop_partition = deterministic_random_token_drop_partition(
-                        per_token_opsd,
+                        per_token_scopd,
                         valid_mask,
                         sample_key=f"{sample.sample_id}:{rollout_seed}",
                         seed=int(
-                            get_nested(cfg, "opsd.native_budget_weighting.random_drop_seed", 42)
+                            get_nested(cfg, "scopd.native_budget_weighting.random_drop_seed", 42)
                         ),
                         drop_fraction=top_fraction,
                         min_kl=min_teacher_kl,
@@ -1887,7 +1887,7 @@ def opsd_nogt_step(
                         teacher_js_tokens,
                         sensitivity,
                         teacher_plus_js_tokens,
-                        per_token_opsd,
+                        per_token_scopd,
                         valid_mask,
                         top_fraction=top_fraction,
                         min_kl=min_teacher_kl,
@@ -1906,7 +1906,7 @@ def opsd_nogt_step(
                     partition_name = (
                         "top20" if weighting_mode.endswith("top20") else "bottom80"
                     )
-                token_weight = torch.zeros_like(per_token_opsd.detach().float())
+                token_weight = torch.zeros_like(per_token_scopd.detach().float())
                 token_weight[valid] = 1.0
                 eligible_count = int(eligible.sum().cpu())
                 selected_count = int(valid.sum().cpu())
@@ -1922,7 +1922,7 @@ def opsd_nogt_step(
                     "native_token_partition_top_fraction": top_fraction,
                     "native_token_partition_min_teacher_kl": min_teacher_kl,
                     "native_token_partition_random_seed": (
-                        int(get_nested(cfg, "opsd.native_budget_weighting.random_drop_seed", 42))
+                        int(get_nested(cfg, "scopd.native_budget_weighting.random_drop_seed", 42))
                         if weighting_mode == TOKEN_RANDOM_DROP_MODE
                         else None
                     ),
@@ -1983,7 +1983,7 @@ def opsd_nogt_step(
                     ),
                     "native_loss_mass_scale": 1.0,
                 }
-                loss_type = f"opsd_nogt_{weighting_mode}_forward_kl"
+                loss_type = f"scopd_nogt_{weighting_mode}_forward_kl"
             elif weighting_mode == TOKEN_PROJECTION_MASS_GROUPED_MODE:
                 teacher_js_tokens = compute_per_token_generalized_jsd(
                     teacher_logits,
@@ -1992,7 +1992,7 @@ def opsd_nogt_step(
                     temperature=float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.sensitivity_temperature",
+                            "scopd.native_budget_weighting.sensitivity_temperature",
                             1.0,
                         )
                     ),
@@ -2000,7 +2000,7 @@ def opsd_nogt_step(
                     token_clip=None,
                     clip_mode="token",
                     chunk_size=int(
-                        get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)
+                        get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)
                     ),
                 ).detach().float()
                 teacher_plus_js_tokens = compute_per_token_generalized_jsd(
@@ -2010,7 +2010,7 @@ def opsd_nogt_step(
                     temperature=float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.sensitivity_temperature",
+                            "scopd.native_budget_weighting.sensitivity_temperature",
                             1.0,
                         )
                     ),
@@ -2018,23 +2018,23 @@ def opsd_nogt_step(
                     token_clip=None,
                     clip_mode="token",
                     chunk_size=int(
-                        get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)
+                        get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)
                     ),
                 ).detach().float()
                 top_fraction = float(
-                    get_nested(cfg, "opsd.native_budget_weighting.top_fraction", 0.10)
+                    get_nested(cfg, "scopd.native_budget_weighting.top_fraction", 0.10)
                 )
                 high_group_lambda = float(
-                    get_nested(cfg, "opsd.native_budget_weighting.high_group_lambda", 0.30)
+                    get_nested(cfg, "scopd.native_budget_weighting.high_group_lambda", 0.30)
                 )
                 preserve_loss_mass = bool(
-                    get_nested(cfg, "opsd.native_budget_weighting.preserve_loss_mass", False)
+                    get_nested(cfg, "scopd.native_budget_weighting.preserve_loss_mass", False)
                 )
                 token_projection_mass_group = projection_mass_grouped_weights(
                     teacher_js_tokens,
                     sensitivity,
                     teacher_plus_js_tokens,
-                    per_token_opsd,
+                    per_token_scopd,
                     valid_mask,
                     top_fraction=top_fraction,
                     high_group_lambda=high_group_lambda,
@@ -2051,7 +2051,7 @@ def opsd_nogt_step(
                 signed_total = weights.projection_mass[valid].sum()
                 high_signed = weights.projection_mass[high].sum()
                 raw_grouped_kl = (
-                    weights.raw_weight[valid] * per_token_opsd[valid]
+                    weights.raw_weight[valid] * per_token_scopd[valid]
                 ).mean()
                 mode_metrics = {
                     "native_projection_metric": "relu((A+B-C)/2)",
@@ -2085,11 +2085,11 @@ def opsd_nogt_step(
                     "native_projection_mass_max": float(
                         weights.projection_mass[valid].max().cpu()
                     ),
-                    "native_high_group_opsd_kl_mean": float(
-                        per_token_opsd[high].detach().mean().cpu()
+                    "native_high_group_scopd_kl_mean": float(
+                        per_token_scopd[high].detach().mean().cpu()
                     ),
-                    "native_low_group_opsd_kl_mean": float(
-                        per_token_opsd[low].detach().mean().cpu()
+                    "native_low_group_scopd_kl_mean": float(
+                        per_token_scopd[low].detach().mean().cpu()
                     ),
                     "native_raw_grouped_kl": float(raw_grouped_kl.detach().cpu()),
                     "native_raw_token_weight_min": float(
@@ -2104,7 +2104,7 @@ def opsd_nogt_step(
                     "native_loss_mass_scale": float(weights.loss_mass_scale.cpu()),
                     "native_projection_group_degenerate": weights.degenerate,
                 }
-                loss_type = "opsd_nogt_token_projection_mass_grouped_forward_kl"
+                loss_type = "scopd_nogt_token_projection_mass_grouped_forward_kl"
             elif weighting_mode == TOKEN_PROJECTION_FRACTION_GROUPED_MODE:
                 teacher_js_tokens = compute_per_token_generalized_jsd(
                     teacher_logits,
@@ -2113,7 +2113,7 @@ def opsd_nogt_step(
                     temperature=float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.sensitivity_temperature",
+                            "scopd.native_budget_weighting.sensitivity_temperature",
                             1.0,
                         )
                     ),
@@ -2121,7 +2121,7 @@ def opsd_nogt_step(
                     token_clip=None,
                     clip_mode="token",
                     chunk_size=int(
-                        get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)
+                        get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)
                     ),
                 ).detach().float()
                 teacher_plus_js_tokens = compute_per_token_generalized_jsd(
@@ -2131,7 +2131,7 @@ def opsd_nogt_step(
                     temperature=float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.sensitivity_temperature",
+                            "scopd.native_budget_weighting.sensitivity_temperature",
                             1.0,
                         )
                     ),
@@ -2139,33 +2139,33 @@ def opsd_nogt_step(
                     token_clip=None,
                     clip_mode="token",
                     chunk_size=int(
-                        get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)
+                        get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)
                     ),
                 ).detach().float()
                 group_fraction = float(
-                    get_nested(cfg, "opsd.native_budget_weighting.top_fraction", 0.10)
+                    get_nested(cfg, "scopd.native_budget_weighting.top_fraction", 0.10)
                 )
                 selected_group_lambda = float(
                     get_nested(
                         cfg,
-                        "opsd.native_budget_weighting.selected_group_lambda",
+                        "scopd.native_budget_weighting.selected_group_lambda",
                         0.30,
                     )
                 )
                 selection = str(
-                    get_nested(cfg, "opsd.native_budget_weighting.selection", "top")
+                    get_nested(cfg, "scopd.native_budget_weighting.selection", "top")
                 ).strip().lower()
                 min_teacher_kl = float(
-                    get_nested(cfg, "opsd.native_budget_weighting.min_teacher_kl", 1e-5)
+                    get_nested(cfg, "scopd.native_budget_weighting.min_teacher_kl", 1e-5)
                 )
                 preserve_loss_mass = bool(
-                    get_nested(cfg, "opsd.native_budget_weighting.preserve_loss_mass", False)
+                    get_nested(cfg, "scopd.native_budget_weighting.preserve_loss_mass", False)
                 )
                 weights = projection_fraction_grouped_weights(
                     teacher_js_tokens,
                     sensitivity,
                     teacher_plus_js_tokens,
-                    per_token_opsd,
+                    per_token_scopd,
                     valid_mask,
                     group_fraction=group_fraction,
                     selected_group_lambda=selected_group_lambda,
@@ -2179,9 +2179,9 @@ def opsd_nogt_step(
                 selected = weights.selected_mask
                 complement = weights.complement_mask
                 raw_grouped_kl = (
-                    weights.raw_weight[valid] * per_token_opsd[valid]
+                    weights.raw_weight[valid] * per_token_scopd[valid]
                 ).mean()
-                selected_teacher_kl = per_token_opsd.detach().float()[selected]
+                selected_teacher_kl = per_token_scopd.detach().float()[selected]
                 selected_teacher_kl_ge_1e5 = selected_teacher_kl >= 1e-5
                 mode_metrics = {
                     "native_projection_metric": "((A+B-C)/2)/A",
@@ -2215,13 +2215,13 @@ def opsd_nogt_step(
                     "native_projection_fraction_max": float(
                         weights.projection_fraction[valid].max().cpu()
                     ),
-                    "native_selected_group_opsd_kl_mean": (
-                        float(per_token_opsd[selected].detach().mean().cpu())
+                    "native_selected_group_scopd_kl_mean": (
+                        float(per_token_scopd[selected].detach().mean().cpu())
                         if selected.any()
                         else None
                     ),
-                    "native_complement_group_opsd_kl_mean": (
-                        float(per_token_opsd[complement].detach().mean().cpu())
+                    "native_complement_group_scopd_kl_mean": (
+                        float(per_token_scopd[complement].detach().mean().cpu())
                         if complement.any()
                         else None
                     ),
@@ -2238,7 +2238,7 @@ def opsd_nogt_step(
                     "native_loss_mass_scale": float(weights.loss_mass_scale.cpu()),
                     "native_projection_group_degenerate": weights.degenerate,
                 }
-                loss_type = "opsd_nogt_token_projection_fraction_grouped_forward_kl"
+                loss_type = "scopd_nogt_token_projection_fraction_grouped_forward_kl"
             elif weighting_mode == TOKEN_BUDGET_JSD_ABS_F_GROUPED_MODE:
                 teacher_js_tokens = compute_per_token_generalized_jsd(
                     teacher_logits,
@@ -2247,7 +2247,7 @@ def opsd_nogt_step(
                     temperature=float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.sensitivity_temperature",
+                            "scopd.native_budget_weighting.sensitivity_temperature",
                             1.0,
                         )
                     ),
@@ -2255,7 +2255,7 @@ def opsd_nogt_step(
                     token_clip=None,
                     clip_mode="token",
                     chunk_size=int(
-                        get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)
+                        get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)
                     ),
                 ).detach().float()
                 teacher_plus_js_tokens = compute_per_token_generalized_jsd(
@@ -2265,7 +2265,7 @@ def opsd_nogt_step(
                     temperature=float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.sensitivity_temperature",
+                            "scopd.native_budget_weighting.sensitivity_temperature",
                             1.0,
                         )
                     ),
@@ -2273,41 +2273,41 @@ def opsd_nogt_step(
                     token_clip=None,
                     clip_mode="token",
                     chunk_size=int(
-                        get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)
+                        get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)
                     ),
                 ).detach().float()
                 budget_top_fraction = float(
                     get_nested(
                         cfg,
-                        "opsd.native_budget_weighting.budget_top_fraction",
+                        "scopd.native_budget_weighting.budget_top_fraction",
                         0.50,
                     )
                 )
                 within_budget_fraction = float(
                     get_nested(
                         cfg,
-                        "opsd.native_budget_weighting.within_budget_fraction",
+                        "scopd.native_budget_weighting.within_budget_fraction",
                         0.50,
                     )
                 )
                 selected_group_lambda = float(
                     get_nested(
                         cfg,
-                        "opsd.native_budget_weighting.selected_group_lambda",
+                        "scopd.native_budget_weighting.selected_group_lambda",
                         0.50,
                     )
                 )
                 selection = str(
-                    get_nested(cfg, "opsd.native_budget_weighting.selection", "top")
+                    get_nested(cfg, "scopd.native_budget_weighting.selection", "top")
                 ).strip().lower()
                 preserve_loss_mass = bool(
-                    get_nested(cfg, "opsd.native_budget_weighting.preserve_loss_mass", False)
+                    get_nested(cfg, "scopd.native_budget_weighting.preserve_loss_mass", False)
                 )
                 weights = budget_jsd_conditioned_abs_projection_grouped_weights(
                     teacher_js_tokens,
                     sensitivity,
                     teacher_plus_js_tokens,
-                    per_token_opsd,
+                    per_token_scopd,
                     valid_mask,
                     budget_top_fraction=budget_top_fraction,
                     within_budget_fraction=within_budget_fraction,
@@ -2324,7 +2324,7 @@ def opsd_nogt_step(
                 budget_unselected = budget_sensitive & ~selected
                 complement = weights.complement_mask
                 raw_grouped_kl = (
-                    weights.raw_weight[valid] * per_token_opsd[valid]
+                    weights.raw_weight[valid] * per_token_scopd[valid]
                 ).mean()
                 mode_metrics = {
                     "native_budget_prefilter_metric": "B=JSD(p_b,p_b_plus)",
@@ -2381,11 +2381,11 @@ def opsd_nogt_step(
                         if budget_unselected.any()
                         else None
                     ),
-                    "native_selected_group_opsd_kl_mean": float(
-                        per_token_opsd[selected].detach().mean().cpu()
+                    "native_selected_group_scopd_kl_mean": float(
+                        per_token_scopd[selected].detach().mean().cpu()
                     ),
-                    "native_complement_group_opsd_kl_mean": (
-                        float(per_token_opsd[complement].detach().mean().cpu())
+                    "native_complement_group_scopd_kl_mean": (
+                        float(per_token_scopd[complement].detach().mean().cpu())
                         if complement.any()
                         else None
                     ),
@@ -2402,7 +2402,7 @@ def opsd_nogt_step(
                     "native_loss_mass_scale": float(weights.loss_mass_scale.cpu()),
                     "native_projection_group_degenerate": weights.degenerate,
                 }
-                loss_type = "opsd_nogt_token_budget_jsd_abs_f_grouped_forward_kl"
+                loss_type = "scopd_nogt_token_budget_jsd_abs_f_grouped_forward_kl"
             elif weighting_mode in {
                 TOKEN_PROJECTION_BOTTOM_DROP_MODE,
                 TOKEN_PROJECTION_TOP_DROP_MODE,
@@ -2414,7 +2414,7 @@ def opsd_nogt_step(
                     temperature=float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.sensitivity_temperature",
+                            "scopd.native_budget_weighting.sensitivity_temperature",
                             1.0,
                         )
                     ),
@@ -2422,7 +2422,7 @@ def opsd_nogt_step(
                     token_clip=None,
                     clip_mode="token",
                     chunk_size=int(
-                        get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)
+                        get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)
                     ),
                 ).detach().float()
                 teacher_plus_js_tokens = compute_per_token_generalized_jsd(
@@ -2432,7 +2432,7 @@ def opsd_nogt_step(
                     temperature=float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.sensitivity_temperature",
+                            "scopd.native_budget_weighting.sensitivity_temperature",
                             1.0,
                         )
                     ),
@@ -2440,11 +2440,11 @@ def opsd_nogt_step(
                     token_clip=None,
                     clip_mode="token",
                     chunk_size=int(
-                        get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)
+                        get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)
                     ),
                 ).detach().float()
                 drop_fraction = float(
-                    get_nested(cfg, "opsd.native_budget_weighting.drop_fraction", 0.10)
+                    get_nested(cfg, "scopd.native_budget_weighting.drop_fraction", 0.10)
                 )
                 drop_selection = (
                     "bottom"
@@ -2466,11 +2466,11 @@ def opsd_nogt_step(
                 )
                 valid = f_drop.kept_mask
                 dropped = f_drop.dropped_mask
-                token_weight = torch.zeros_like(per_token_opsd.detach().float())
+                token_weight = torch.zeros_like(per_token_scopd.detach().float())
                 token_weight[valid] = 1.0
-                dropped_kl = per_token_opsd.detach().float()[dropped]
-                kept_kl = per_token_opsd.detach().float()[valid]
-                full_kl_mass = per_token_opsd.detach().float()[valid_mask].sum()
+                dropped_kl = per_token_scopd.detach().float()[dropped]
+                kept_kl = per_token_scopd.detach().float()[valid]
+                full_kl_mass = per_token_scopd.detach().float()[valid_mask].sum()
                 dropped_kl_mass = dropped_kl.sum()
                 mode_metrics = {
                     "native_projection_metric": "((A+B-C)/2)/(A+eps)",
@@ -2501,17 +2501,17 @@ def opsd_nogt_step(
                     "native_token_partition_kept_f_max": float(
                         f_drop.projection_fraction[valid].max().cpu()
                     ),
-                    "native_token_partition_dropped_opsd_kl_mean": (
+                    "native_token_partition_dropped_scopd_kl_mean": (
                         float(dropped_kl.mean().cpu()) if dropped.any() else None
                     ),
-                    "native_token_partition_kept_opsd_kl_mean": float(kept_kl.mean().cpu()),
-                    "native_token_partition_dropped_opsd_kl_mass_fraction": float(
+                    "native_token_partition_kept_scopd_kl_mean": float(kept_kl.mean().cpu()),
+                    "native_token_partition_dropped_scopd_kl_mass_fraction": float(
                         (dropped_kl_mass / full_kl_mass.clamp_min(1e-8)).cpu()
                     ),
                     "native_loss_mass_scale": 1.0,
                 }
                 loss_type = (
-                    f"opsd_nogt_token_projection_fraction_drop_{drop_selection}_forward_kl"
+                    f"scopd_nogt_token_projection_fraction_drop_{drop_selection}_forward_kl"
                 )
             elif weighting_mode == "trajectory_probe":
                 student_budget_jsd = compute_generalized_jsd(
@@ -2519,17 +2519,17 @@ def opsd_nogt_step(
                     student_logits.detach(),
                     beta=0.5,
                     temperature=float(
-                        get_nested(cfg, "opsd.native_budget_weighting.sensitivity_temperature", 1.0)
+                        get_nested(cfg, "scopd.native_budget_weighting.sensitivity_temperature", 1.0)
                     ),
                     top_k=None,
                     token_clip=None,
                     clip_mode="token",
                     chunk_size=int(
-                        get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)
+                        get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)
                     ),
                 ).detach().float()
                 trajectory_mode = str(
-                    get_nested(cfg, "opsd.trajectory_weighting.mode", "")
+                    get_nested(cfg, "scopd.trajectory_weighting.mode", "")
                 ).strip().lower()
                 teachability_metrics: dict[str, float] = {}
                 if trajectory_mode in COUNTERFACTUAL_TEACHABILITY_MODES:
@@ -2540,7 +2540,7 @@ def opsd_nogt_step(
                         temperature=float(
                             get_nested(
                                 cfg,
-                                "opsd.native_budget_weighting.sensitivity_temperature",
+                                "scopd.native_budget_weighting.sensitivity_temperature",
                                 1.0,
                             )
                         ),
@@ -2548,7 +2548,7 @@ def opsd_nogt_step(
                         token_clip=None,
                         clip_mode="token",
                         chunk_size=int(
-                            get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)
+                            get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)
                         ),
                     ).detach().float()
                     teacher_student_jsd_b_plus = compute_generalized_jsd(
@@ -2558,7 +2558,7 @@ def opsd_nogt_step(
                         temperature=float(
                             get_nested(
                                 cfg,
-                                "opsd.native_budget_weighting.sensitivity_temperature",
+                                "scopd.native_budget_weighting.sensitivity_temperature",
                                 1.0,
                             )
                         ),
@@ -2566,7 +2566,7 @@ def opsd_nogt_step(
                         token_clip=None,
                         clip_mode="token",
                         chunk_size=int(
-                            get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)
+                            get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)
                         ),
                     ).detach().float()
                     budget_projection_mass = 0.5 * (
@@ -2598,10 +2598,10 @@ def opsd_nogt_step(
                 per_token_b_plus_teacher_gap = compute_per_token_kl(
                     teacher_logits,
                     b_plus_logits,
-                    temperature=opsd_temperature,
-                    chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                    temperature=scopd_temperature,
+                    chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                 ).detach().float()
-                gap_b = per_token_opsd.detach().float()
+                gap_b = per_token_scopd.detach().float()
                 valid = valid_mask
                 token_weight = torch.zeros_like(gap_b)
                 token_weight[valid] = 1.0
@@ -2649,19 +2649,19 @@ def opsd_nogt_step(
                     "native_loss_mass_scale": 1.0,
                     **teachability_metrics,
                 }
-                loss_type = "opsd_nogt_native_budget_trajectory_probe_forward_kl"
+                loss_type = "scopd_nogt_native_budget_trajectory_probe_forward_kl"
             elif weighting_mode == "teacher_gap_persistence":
                 per_token_b_plus_teacher_gap = compute_per_token_kl(
                     teacher_logits,
                     b_plus_logits,
-                    temperature=opsd_temperature,
-                    chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                    temperature=scopd_temperature,
+                    chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                 )
                 weights = teacher_gap_persistence_weights(
-                    per_token_opsd,
+                    per_token_scopd,
                     per_token_b_plus_teacher_gap,
                     valid_mask,
-                    alpha=float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 0.5)),
+                    alpha=float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 0.5)),
                     eps=eps,
                 )
                 valid = weights.valid_mask
@@ -2679,23 +2679,23 @@ def opsd_nogt_step(
                     "native_teacher_gap_confidence_mean": float(weights.confidence[valid].mean().cpu()),
                     "native_teacher_gap_priority_mean": float(weights.priority[valid].mean().cpu()),
                     "native_teacher_gap_alpha": float(
-                        get_nested(cfg, "opsd.native_budget_weighting.alpha", 0.5)
+                        get_nested(cfg, "scopd.native_budget_weighting.alpha", 0.5)
                     ),
                     "native_loss_mass_scale": float(weights.loss_mass_scale.cpu()),
                 }
-                loss_type = "opsd_nogt_native_budget_teacher_gap_persistence_weighted_forward_kl"
+                loss_type = "scopd_nogt_native_budget_teacher_gap_persistence_weighted_forward_kl"
             elif weighting_mode == "symmetric_teacher_gap_stability":
                 per_token_b_plus_teacher_gap = compute_per_token_kl(
                     teacher_logits,
                     b_plus_logits,
-                    temperature=opsd_temperature,
-                    chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                    temperature=scopd_temperature,
+                    chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                 )
                 weights = symmetric_teacher_gap_stability_weights(
-                    per_token_opsd,
+                    per_token_scopd,
                     per_token_b_plus_teacher_gap,
                     valid_mask,
-                    alpha=float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 0.25)),
+                    alpha=float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 0.25)),
                     eps=eps,
                 )
                 valid = weights.valid_mask
@@ -2719,24 +2719,24 @@ def opsd_nogt_step(
                     ),
                     "native_budget_robustness_mean": float(weights.robustness[valid].mean().cpu()),
                     "native_teacher_gap_stability_alpha": float(
-                        get_nested(cfg, "opsd.native_budget_weighting.alpha", 0.25)
+                        get_nested(cfg, "scopd.native_budget_weighting.alpha", 0.25)
                     ),
                     "native_loss_mass_scale": float(weights.loss_mass_scale.cpu()),
                     "native_token_scalar_objective": "compute_forward_kl_plus_zero_value_gradient_redistribution",
                 }
-                loss_type = "opsd_nogt_symmetric_teacher_gap_stability_forward_kl"
+                loss_type = "scopd_nogt_symmetric_teacher_gap_stability_forward_kl"
             elif weighting_mode == "counterfactual_rescue_amplification":
                 per_token_b_plus_teacher_gap = compute_per_token_kl(
                     teacher_logits,
                     b_plus_logits,
-                    temperature=opsd_temperature,
-                    chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                    temperature=scopd_temperature,
+                    chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                 )
                 weights = counterfactual_rescue_amplification_weights(
-                    per_token_opsd,
+                    per_token_scopd,
                     per_token_b_plus_teacher_gap,
                     valid_mask,
-                    alpha=float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 0.5)),
+                    alpha=float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 0.5)),
                     eps=eps,
                 )
                 valid = weights.valid_mask
@@ -2750,12 +2750,12 @@ def opsd_nogt_step(
                         weights.rescue_fraction[valid].mean().cpu()
                     ),
                     "native_counterfactual_rescue_alpha": float(
-                        get_nested(cfg, "opsd.native_budget_weighting.alpha", 0.5)
+                        get_nested(cfg, "scopd.native_budget_weighting.alpha", 0.5)
                     ),
                     "native_loss_mass_scale": float(weights.loss_mass_scale.cpu()),
                 }
                 loss_type = (
-                    "opsd_nogt_native_budget_counterfactual_rescue_amplification_forward_kl"
+                    "scopd_nogt_native_budget_counterfactual_rescue_amplification_forward_kl"
                 )
             elif weighting_mode in {
                 "native_budget_rescue_grouped",
@@ -2765,30 +2765,30 @@ def opsd_nogt_step(
                 per_token_b_plus_teacher_gap = compute_per_token_kl(
                     teacher_logits,
                     b_plus_logits,
-                    temperature=opsd_temperature,
+                    temperature=scopd_temperature,
                     chunk_size=int(
-                        get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)
+                        get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)
                     ),
                 )
                 if weighting_mode == "native_budget_rescue_grouped":
                     ranking_signal = (
-                        per_token_opsd.detach().float()
+                        per_token_scopd.detach().float()
                         - per_token_b_plus_teacher_gap.detach().float()
                     ).clamp_min(0.0)
                     rescue_fraction = (
                         ranking_signal
-                        / per_token_opsd.detach().float().clamp_min(eps)
+                        / per_token_scopd.detach().float().clamp_min(eps)
                     ).clamp(0.0, 1.0)
                 elif weighting_mode == "counterfactual_teachability_grouped":
                     modulation = counterfactual_teachability_modulation_weights(
-                        per_token_opsd,
+                        per_token_scopd,
                         per_token_b_plus_teacher_gap,
                         valid_mask,
                         alpha=0.0,
                         rescue_modulation=float(
                             get_nested(
                                 cfg,
-                                "opsd.native_budget_weighting.rescue_modulation",
+                                "scopd.native_budget_weighting.rescue_modulation",
                                 0.1,
                             )
                         ),
@@ -2797,24 +2797,24 @@ def opsd_nogt_step(
                     ranking_signal = modulation.priority
                     rescue_fraction = modulation.rescue_fraction
                 else:
-                    ranking_signal = per_token_opsd.detach().float()
+                    ranking_signal = per_token_scopd.detach().float()
                     rescue_fraction = torch.zeros_like(ranking_signal)
                 weights = grouped_kl_mass_weights(
-                    per_token_opsd,
+                    per_token_scopd,
                     ranking_signal,
                     valid_mask,
                     top_fraction=float(
-                        get_nested(cfg, "opsd.native_budget_weighting.top_fraction", 0.2)
+                        get_nested(cfg, "scopd.native_budget_weighting.top_fraction", 0.2)
                     ),
                     high_group_mass=float(
-                        get_nested(cfg, "opsd.native_budget_weighting.high_group_mass", 0.5)
+                        get_nested(cfg, "scopd.native_budget_weighting.high_group_mass", 0.5)
                     ),
                     eps=eps,
                 )
                 valid = weights.valid_mask
                 token_weight = weights.weight
                 mode_metrics = {
-                    "native_teacher_gap_b_mean": float(per_token_opsd[valid].mean().cpu()),
+                    "native_teacher_gap_b_mean": float(per_token_scopd[valid].mean().cpu()),
                     "native_teacher_gap_b_plus_mean": float(
                         per_token_b_plus_teacher_gap[valid].mean().cpu()
                     ),
@@ -2828,28 +2828,28 @@ def opsd_nogt_step(
                         weights.high_group_mask[valid].float().mean().cpu()
                     ),
                     "native_group_top_fraction": float(
-                        get_nested(cfg, "opsd.native_budget_weighting.top_fraction", 0.2)
+                        get_nested(cfg, "scopd.native_budget_weighting.top_fraction", 0.2)
                     ),
                     "native_group_high_mass": float(
-                        get_nested(cfg, "opsd.native_budget_weighting.high_group_mass", 0.5)
+                        get_nested(cfg, "scopd.native_budget_weighting.high_group_mass", 0.5)
                     ),
                     "native_loss_mass_scale": float(weights.loss_mass_scale.cpu()),
                 }
-                loss_type = f"opsd_nogt_{weighting_mode}_forward_kl"
+                loss_type = f"scopd_nogt_{weighting_mode}_forward_kl"
             elif weighting_mode == "counterfactual_teachability_mixture":
                 per_token_b_plus_teacher_gap = compute_per_token_kl(
                     teacher_logits,
                     b_plus_logits,
-                    temperature=opsd_temperature,
-                    chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                    temperature=scopd_temperature,
+                    chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                 )
                 weights = counterfactual_teachability_mixture_weights(
-                    per_token_opsd,
+                    per_token_scopd,
                     per_token_b_plus_teacher_gap,
                     valid_mask,
-                    alpha=float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 0.5)),
+                    alpha=float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 0.5)),
                     rescue_mix=float(
-                        get_nested(cfg, "opsd.native_budget_weighting.rescue_mix", 0.1)
+                        get_nested(cfg, "scopd.native_budget_weighting.rescue_mix", 0.1)
                     ),
                     eps=eps,
                 )
@@ -2870,32 +2870,32 @@ def opsd_nogt_step(
                         weights.priority[valid].mean().cpu()
                     ),
                     "native_counterfactual_teachability_alpha": float(
-                        get_nested(cfg, "opsd.native_budget_weighting.alpha", 0.5)
+                        get_nested(cfg, "scopd.native_budget_weighting.alpha", 0.5)
                     ),
                     "native_counterfactual_rescue_mix": float(
-                        get_nested(cfg, "opsd.native_budget_weighting.rescue_mix", 0.1)
+                        get_nested(cfg, "scopd.native_budget_weighting.rescue_mix", 0.1)
                     ),
                     "native_loss_mass_scale": float(weights.loss_mass_scale.cpu()),
                 }
                 loss_type = (
-                    "opsd_nogt_native_budget_counterfactual_teachability_mixture_forward_kl"
+                    "scopd_nogt_native_budget_counterfactual_teachability_mixture_forward_kl"
                 )
             elif weighting_mode == "counterfactual_teachability_modulation":
                 per_token_b_plus_teacher_gap = compute_per_token_kl(
                     teacher_logits,
                     b_plus_logits,
-                    temperature=opsd_temperature,
-                    chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                    temperature=scopd_temperature,
+                    chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                 )
                 weights = counterfactual_teachability_modulation_weights(
-                    per_token_opsd,
+                    per_token_scopd,
                     per_token_b_plus_teacher_gap,
                     valid_mask,
-                    alpha=float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 0.5)),
+                    alpha=float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 0.5)),
                     rescue_modulation=float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.rescue_modulation",
+                            "scopd.native_budget_weighting.rescue_modulation",
                             0.1,
                         )
                     ),
@@ -2918,34 +2918,34 @@ def opsd_nogt_step(
                         weights.priority[valid].mean().cpu()
                     ),
                     "native_counterfactual_teachability_alpha": float(
-                        get_nested(cfg, "opsd.native_budget_weighting.alpha", 0.5)
+                        get_nested(cfg, "scopd.native_budget_weighting.alpha", 0.5)
                     ),
                     "native_counterfactual_rescue_modulation": float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.rescue_modulation",
+                            "scopd.native_budget_weighting.rescue_modulation",
                             0.1,
                         )
                     ),
                     "native_loss_mass_scale": float(weights.loss_mass_scale.cpu()),
                 }
                 loss_type = (
-                    "opsd_nogt_native_budget_counterfactual_teachability_modulation_forward_kl"
+                    "scopd_nogt_native_budget_counterfactual_teachability_modulation_forward_kl"
                 )
             elif weighting_mode == "conditional_rescue_residual":
                 per_token_b_plus_teacher_gap = compute_per_token_kl(
                     teacher_logits,
                     b_plus_logits,
-                    temperature=opsd_temperature,
-                    chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                    temperature=scopd_temperature,
+                    chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                 )
                 weights = conditional_rescue_residual_weights(
-                    per_token_opsd,
+                    per_token_scopd,
                     per_token_b_plus_teacher_gap,
                     valid_mask,
-                    alpha=float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 0.1)),
+                    alpha=float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 0.1)),
                     difficulty_bins=int(
-                        get_nested(cfg, "opsd.native_budget_weighting.difficulty_bins", 5)
+                        get_nested(cfg, "scopd.native_budget_weighting.difficulty_bins", 5)
                     ),
                     eps=eps,
                 )
@@ -2972,28 +2972,28 @@ def opsd_nogt_step(
                         weights.rescue_residual[valid].abs().mean().cpu()
                     ),
                     "native_conditional_rescue_alpha": float(
-                        get_nested(cfg, "opsd.native_budget_weighting.alpha", 0.1)
+                        get_nested(cfg, "scopd.native_budget_weighting.alpha", 0.1)
                     ),
                     "native_difficulty_bins": int(
-                        get_nested(cfg, "opsd.native_budget_weighting.difficulty_bins", 5)
+                        get_nested(cfg, "scopd.native_budget_weighting.difficulty_bins", 5)
                     ),
                     "native_loss_mass_scale": float(weights.loss_mass_scale.cpu()),
                 }
                 loss_type = (
-                    "opsd_nogt_native_budget_conditional_rescue_residual_forward_kl"
+                    "scopd_nogt_native_budget_conditional_rescue_residual_forward_kl"
                 )
             elif weighting_mode == "budget_consistent_rank":
                 per_token_b_plus_teacher_gap = compute_per_token_kl(
                     teacher_logits,
                     b_plus_logits,
-                    temperature=opsd_temperature,
-                    chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                    temperature=scopd_temperature,
+                    chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                 )
                 weights = budget_consistent_rank_weights(
-                    per_token_opsd,
+                    per_token_scopd,
                     per_token_b_plus_teacher_gap,
                     valid_mask,
-                    alpha=float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 1.0)),
+                    alpha=float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 1.0)),
                     eps=eps,
                 )
                 valid = weights.valid_mask
@@ -3004,25 +3004,25 @@ def opsd_nogt_step(
                     "native_persistent_gap_mean": float(weights.persistent_gap[valid].mean().cpu()),
                     "native_persistent_rank_mean": float(weights.persistent_rank[valid].mean().cpu()),
                     "native_teacher_gap_alpha": float(
-                        get_nested(cfg, "opsd.native_budget_weighting.alpha", 1.0)
+                        get_nested(cfg, "scopd.native_budget_weighting.alpha", 1.0)
                     ),
                     "native_loss_mass_scale": float(weights.loss_mass_scale.cpu()),
                 }
-                loss_type = "opsd_nogt_native_budget_consistent_rank_weighted_forward_kl"
+                loss_type = "scopd_nogt_native_budget_consistent_rank_weighted_forward_kl"
             elif weighting_mode == "budget_residual_hardness":
                 per_token_b_plus_teacher_gap = compute_per_token_kl(
                     teacher_logits,
                     b_plus_logits,
-                    temperature=opsd_temperature,
-                    chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                    temperature=scopd_temperature,
+                    chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                 )
                 weights = budget_residual_hardness_weights(
-                    per_token_opsd,
+                    per_token_scopd,
                     per_token_b_plus_teacher_gap,
                     valid_mask,
-                    alpha=float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 1.0)),
+                    alpha=float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 1.0)),
                     persistence_mix=float(
-                        get_nested(cfg, "opsd.native_budget_weighting.persistence_mix", 0.1)
+                        get_nested(cfg, "scopd.native_budget_weighting.persistence_mix", 0.1)
                     ),
                     eps=eps,
                 )
@@ -3036,33 +3036,33 @@ def opsd_nogt_step(
                     "native_persistent_rank_mean": float(weights.persistent_rank[valid].mean().cpu()),
                     "native_budget_residual_priority_mean": float(weights.priority[valid].mean().cpu()),
                     "native_teacher_gap_alpha": float(
-                        get_nested(cfg, "opsd.native_budget_weighting.alpha", 1.0)
+                        get_nested(cfg, "scopd.native_budget_weighting.alpha", 1.0)
                     ),
                     "native_persistence_mix": float(
-                        get_nested(cfg, "opsd.native_budget_weighting.persistence_mix", 0.1)
+                        get_nested(cfg, "scopd.native_budget_weighting.persistence_mix", 0.1)
                     ),
                     "native_loss_mass_scale": float(weights.loss_mass_scale.cpu()),
                 }
-                loss_type = "opsd_nogt_native_budget_residual_hardness_weighted_forward_kl"
+                loss_type = "scopd_nogt_native_budget_residual_hardness_weighted_forward_kl"
             elif weighting_mode == "budget_gradient_consensus":
                 gradient_consensus, gradient_norm_consistency = (
                     compute_teacher_gradient_budget_consensus(
                         teacher_logits,
                         b_plus_logits,
                         student_logits,
-                        temperature=opsd_temperature,
+                        temperature=scopd_temperature,
                         chunk_size=int(
-                            get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)
+                            get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)
                         ),
                         eps=eps,
                     )
                 )
                 weights = budget_gradient_consensus_weights(
-                    per_token_opsd,
+                    per_token_scopd,
                     gradient_consensus,
                     gradient_norm_consistency,
                     valid_mask,
-                    alpha=float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 0.5)),
+                    alpha=float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 0.5)),
                     eps=eps,
                 )
                 valid = weights.valid_mask
@@ -3083,27 +3083,27 @@ def opsd_nogt_step(
                         weights.invariant_priority[valid].mean().cpu()
                     ),
                     "native_teacher_gap_alpha": float(
-                        get_nested(cfg, "opsd.native_budget_weighting.alpha", 0.5)
+                        get_nested(cfg, "scopd.native_budget_weighting.alpha", 0.5)
                     ),
                     "native_loss_mass_scale": float(weights.loss_mass_scale.cpu()),
                 }
-                loss_type = "opsd_nogt_native_budget_gradient_consensus_weighted_forward_kl"
+                loss_type = "scopd_nogt_native_budget_gradient_consensus_weighted_forward_kl"
             elif weighting_mode == "counterfactual_budget_bridge":
                 if per_token_bridge is None:
                     raise AssertionError("Counterfactual budget bridge requires differentiable bridge KL.")
                 per_token_b_plus_teacher_gap = compute_per_token_kl(
                     teacher_logits,
                     b_plus_logits,
-                    temperature=opsd_temperature,
-                    chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                    temperature=scopd_temperature,
+                    chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                 )
                 weights = counterfactual_budget_bridge(
-                    per_token_opsd,
+                    per_token_scopd,
                     per_token_b_plus_teacher_gap,
                     per_token_bridge,
                     valid_mask,
                     max_bridge_fraction=float(
-                        get_nested(cfg, "opsd.native_budget_weighting.max_bridge_fraction", 0.5)
+                        get_nested(cfg, "scopd.native_budget_weighting.max_bridge_fraction", 0.5)
                     ),
                     eps=eps,
                 )
@@ -3120,47 +3120,47 @@ def opsd_nogt_step(
                     "native_full_teacher_weight_mean": float(weights.full_teacher_weight[valid].mean().cpu()),
                     "native_bridge_teacher_weight_mean": float(weights.bridge_teacher_weight[valid].mean().cpu()),
                     "native_max_bridge_fraction": float(
-                        get_nested(cfg, "opsd.native_budget_weighting.max_bridge_fraction", 0.5)
+                        get_nested(cfg, "scopd.native_budget_weighting.max_bridge_fraction", 0.5)
                     ),
                     "native_loss_mass_scale": float(weights.loss_mass_scale.cpu()),
                 }
-                loss_type = "opsd_nogt_counterfactual_budget_bridge_forward_kl"
+                loss_type = "scopd_nogt_counterfactual_budget_bridge_forward_kl"
             elif weighting_mode == "budget_gradient_aligned_bridge":
                 if per_token_bridge is None:
                     raise AssertionError("Gradient-aligned bridge requires differentiable bridge KL.")
                 per_token_b_plus_teacher_gap = compute_per_token_kl(
                     teacher_logits,
                     b_plus_logits,
-                    temperature=opsd_temperature,
-                    chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                    temperature=scopd_temperature,
+                    chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                 )
                 gradient_alignment = compute_budget_gradient_alignment(
                     teacher_logits,
                     b_plus_logits,
                     student_logits,
-                    temperature=opsd_temperature,
-                    chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                    temperature=scopd_temperature,
+                    chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                     eps=eps,
                 )
                 weights = budget_gradient_aligned_bridge_gate(
-                    per_token_opsd,
+                    per_token_scopd,
                     per_token_b_plus_teacher_gap,
                     gradient_alignment,
                     valid_mask,
                     max_bridge_fraction=float(
-                        get_nested(cfg, "opsd.native_budget_weighting.max_bridge_fraction", 0.5)
+                        get_nested(cfg, "scopd.native_budget_weighting.max_bridge_fraction", 0.5)
                     ),
                     eps=eps,
                 )
                 valid = weights.valid_mask
                 with torch.enable_grad():
                     per_token_aligned_candidate = (
-                        per_token_opsd + weights.bridge_fraction * per_token_bridge
+                        per_token_scopd + weights.bridge_fraction * per_token_bridge
                     )
                 mass_normalization = normalize_candidate_loss_mass(
-                    per_token_opsd,
+                    per_token_scopd,
                     per_token_aligned_candidate,
-                    torch.ones_like(per_token_opsd),
+                    torch.ones_like(per_token_scopd),
                     valid,
                     eps=eps,
                 )
@@ -3176,11 +3176,11 @@ def opsd_nogt_step(
                     "native_bridge_fraction_mean": float(weights.bridge_fraction[valid].mean().cpu()),
                     "native_bridge_fraction_max": float(weights.bridge_fraction[valid].max().cpu()),
                     "native_max_bridge_fraction": float(
-                        get_nested(cfg, "opsd.native_budget_weighting.max_bridge_fraction", 0.5)
+                        get_nested(cfg, "scopd.native_budget_weighting.max_bridge_fraction", 0.5)
                     ),
                     "native_loss_mass_scale": float(mass_normalization.loss_mass_scale.cpu()),
                 }
-                loss_type = "opsd_nogt_budget_gradient_aligned_bridge_forward_kl"
+                loss_type = "scopd_nogt_budget_gradient_aligned_bridge_forward_kl"
             elif weighting_mode == "counterfactual_gradient_residual":
                 if per_token_bridge is None:
                     raise AssertionError(
@@ -3189,8 +3189,8 @@ def opsd_nogt_step(
                 per_token_b_plus_teacher_gap = compute_per_token_kl(
                     teacher_logits,
                     b_plus_logits,
-                    temperature=opsd_temperature,
-                    chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                    temperature=scopd_temperature,
+                    chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                 )
                 (
                     gradient_alignment,
@@ -3202,19 +3202,19 @@ def opsd_nogt_step(
                     teacher_logits,
                     b_plus_logits,
                     student_logits,
-                    temperature=opsd_temperature,
-                    chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                    temperature=scopd_temperature,
+                    chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                     eps=eps,
                 )
                 cancellation_schedule = str(
                     get_nested(
                         cfg,
-                        "opsd.native_budget_weighting.cancellation_schedule",
+                        "scopd.native_budget_weighting.cancellation_schedule",
                         "constant",
                     )
                 )
                 base_cancellation_strength = float(
-                    get_nested(cfg, "opsd.native_budget_weighting.cancellation_strength", 0.5)
+                    get_nested(cfg, "scopd.native_budget_weighting.cancellation_strength", 0.5)
                 )
                 effective_cancellation_strength = counterfactual_cancellation_strength(
                     base_cancellation_strength,
@@ -3224,13 +3224,13 @@ def opsd_nogt_step(
                     decay_fraction=float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.cancellation_decay_fraction",
+                            "scopd.native_budget_weighting.cancellation_decay_fraction",
                             0.5,
                         )
                     ),
                 )
                 weights = counterfactual_gradient_residual_gate(
-                    per_token_opsd,
+                    per_token_scopd,
                     per_token_b_plus_teacher_gap,
                     gradient_alignment,
                     projection_coefficient,
@@ -3242,22 +3242,22 @@ def opsd_nogt_step(
                     max_projection_coefficient=float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.max_projection_coefficient",
+                            "scopd.native_budget_weighting.max_projection_coefficient",
                             1.0,
                         )
                     ),
                     eps=eps,
                 )
                 valid = weights.valid_mask
-                token_weight = torch.ones_like(per_token_opsd).detach()
+                token_weight = torch.ones_like(per_token_scopd).detach()
                 with torch.enable_grad():
                     per_token_gradient_residual = (
-                        per_token_opsd
+                        per_token_scopd
                         - weights.cancellation_coefficient * per_token_bridge
                     )
                     raw_residual_mean = per_token_gradient_residual[valid].mean()
-                    unweighted_forward_mean = per_token_opsd[valid].mean()
-                # Preserve the exact vanilla OPSD scalar while retaining the
+                    unweighted_forward_mean = per_token_scopd[valid].mean()
+                # Preserve the exact vanilla SCOPD scalar while retaining the
                 # counterfactual-residual gradient. The correction is detached.
                 gradient_residual_scalar_correction = (
                     unweighted_forward_mean.detach() - raw_residual_mean.detach()
@@ -3293,7 +3293,7 @@ def opsd_nogt_step(
                     "native_cancellation_decay_fraction": float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.cancellation_decay_fraction",
+                            "scopd.native_budget_weighting.cancellation_decay_fraction",
                             0.5,
                         )
                     ),
@@ -3302,7 +3302,7 @@ def opsd_nogt_step(
                     "native_max_projection_coefficient": float(
                         get_nested(
                             cfg,
-                            "opsd.native_budget_weighting.max_projection_coefficient",
+                            "scopd.native_budget_weighting.max_projection_coefficient",
                             1.0,
                         )
                     ),
@@ -3311,30 +3311,30 @@ def opsd_nogt_step(
                         gradient_residual_scalar_correction.cpu()
                     ),
                 }
-                loss_type = "opsd_nogt_counterfactual_gradient_residual_forward_kl"
+                loss_type = "scopd_nogt_counterfactual_gradient_residual_forward_kl"
             elif weighting_mode == "budget_tangent_residual":
                 per_token_b_plus_teacher_gap = compute_per_token_kl(
                     teacher_logits,
                     b_plus_logits,
-                    temperature=opsd_temperature,
-                    chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                    temperature=scopd_temperature,
+                    chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                 )
                 gradient_alignment, explained_fraction, residual_fraction = (
                     compute_budget_gradient_geometry(
                         teacher_logits,
                         b_plus_logits,
                         student_logits,
-                        temperature=opsd_temperature,
-                        chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                        temperature=scopd_temperature,
+                        chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                         eps=eps,
                     )
                 )
                 weights = budget_tangent_residual_weights(
-                    per_token_opsd,
+                    per_token_scopd,
                     gradient_alignment,
                     explained_fraction,
                     valid_mask,
-                    alpha=float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 1.0)),
+                    alpha=float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 1.0)),
                     eps=eps,
                 )
                 valid = weights.valid_mask
@@ -3354,45 +3354,45 @@ def opsd_nogt_step(
                     ),
                     "native_budget_tangent_priority_mean": float(weights.priority[valid].mean().cpu()),
                     "native_teacher_gap_alpha": float(
-                        get_nested(cfg, "opsd.native_budget_weighting.alpha", 1.0)
+                        get_nested(cfg, "scopd.native_budget_weighting.alpha", 1.0)
                     ),
                     "native_loss_mass_scale": float(weights.loss_mass_scale.cpu()),
                 }
-                loss_type = "opsd_nogt_budget_tangent_residual_weighted_forward_kl"
+                loss_type = "scopd_nogt_budget_tangent_residual_weighted_forward_kl"
             elif weighting_mode == "budget_counterfactual_teachability":
                 per_token_b_plus_teacher_gap = compute_per_token_kl(
                     teacher_logits,
                     b_plus_logits,
-                    temperature=opsd_temperature,
-                    chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                    temperature=scopd_temperature,
+                    chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                 )
                 gradient_alignment, explained_fraction, residual_fraction = (
                     compute_budget_gradient_geometry(
                         teacher_logits,
                         b_plus_logits,
                         student_logits,
-                        temperature=opsd_temperature,
-                        chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                        temperature=scopd_temperature,
+                        chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                         eps=eps,
                     )
                 )
                 support_top_k = int(
-                    get_nested(cfg, "opsd.native_budget_weighting.support_top_k", 32)
+                    get_nested(cfg, "scopd.native_budget_weighting.support_top_k", 32)
                 )
                 teacher_support_coverage = compute_teacher_mass_on_student_support(
                     teacher_logits,
                     student_logits,
                     top_k=support_top_k,
-                    temperature=opsd_temperature,
-                    chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                    temperature=scopd_temperature,
+                    chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                 )
                 weights = budget_counterfactual_teachability_weights(
-                    per_token_opsd,
+                    per_token_scopd,
                     gradient_alignment,
                     explained_fraction,
                     teacher_support_coverage,
                     valid_mask,
-                    alpha=float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 1.0)),
+                    alpha=float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 1.0)),
                     eps=eps,
                 )
                 valid = weights.valid_mask
@@ -3420,24 +3420,24 @@ def opsd_nogt_step(
                         weights.priority[valid].mean().cpu()
                     ),
                     "native_teacher_gap_alpha": float(
-                        get_nested(cfg, "opsd.native_budget_weighting.alpha", 1.0)
+                        get_nested(cfg, "scopd.native_budget_weighting.alpha", 1.0)
                     ),
                     "native_support_top_k": support_top_k,
                     "native_loss_mass_scale": float(weights.loss_mass_scale.cpu()),
                 }
-                loss_type = "opsd_nogt_budget_counterfactual_teachability_weighted_forward_kl"
+                loss_type = "scopd_nogt_budget_counterfactual_teachability_weighted_forward_kl"
             elif weighting_mode == "budget_contrastive_target":
                 per_token_b_plus_teacher_gap = compute_per_token_kl(
                     teacher_logits,
                     b_plus_logits,
-                    temperature=opsd_temperature,
-                    chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                    temperature=scopd_temperature,
+                    chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                 )
                 weights = budget_contrastive_gate(
-                    per_token_opsd,
+                    per_token_scopd,
                     per_token_b_plus_teacher_gap,
                     valid_mask,
-                    beta_max=float(get_nested(cfg, "opsd.native_budget_weighting.beta_max", 0.5)),
+                    beta_max=float(get_nested(cfg, "scopd.native_budget_weighting.beta_max", 0.5)),
                     eps=eps,
                 )
                 valid = weights.valid_mask
@@ -3448,16 +3448,16 @@ def opsd_nogt_step(
                         student_logits,
                         weights.shaping_strength,
                         advantage_clip=float(
-                            get_nested(cfg, "opsd.native_budget_weighting.advantage_clip", 2.0)
+                            get_nested(cfg, "scopd.native_budget_weighting.advantage_clip", 2.0)
                         ),
-                        temperature=opsd_temperature,
-                        chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                        temperature=scopd_temperature,
+                        chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                         return_target_shift=True,
                     )
                 mass_normalization = normalize_candidate_loss_mass(
-                    per_token_opsd,
+                    per_token_scopd,
                     per_token_contrastive,
-                    torch.ones_like(per_token_opsd),
+                    torch.ones_like(per_token_scopd),
                     valid,
                     eps=eps,
                 )
@@ -3472,35 +3472,35 @@ def opsd_nogt_step(
                     "native_contrastive_strength_max": float(weights.shaping_strength[valid].max().cpu()),
                     "native_target_shift_mean": float(per_token_target_shift[valid].mean().cpu()),
                     "native_target_shift_max": float(per_token_target_shift[valid].max().cpu()),
-                    "native_beta_max": float(get_nested(cfg, "opsd.native_budget_weighting.beta_max", 0.5)),
+                    "native_beta_max": float(get_nested(cfg, "scopd.native_budget_weighting.beta_max", 0.5)),
                     "native_advantage_clip": float(
-                        get_nested(cfg, "opsd.native_budget_weighting.advantage_clip", 2.0)
+                        get_nested(cfg, "scopd.native_budget_weighting.advantage_clip", 2.0)
                     ),
                     "native_loss_mass_scale": float(loss_mass_scale.cpu()),
                 }
-                loss_type = "opsd_nogt_budget_contrastive_target_forward_kl"
+                loss_type = "scopd_nogt_budget_contrastive_target_forward_kl"
             elif weighting_mode == "dual_budget_decomposition":
                 per_token_b_plus_teacher_gap = compute_per_token_kl(
                     teacher_logits,
                     b_plus_logits,
-                    temperature=opsd_temperature,
-                    chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                    temperature=scopd_temperature,
+                    chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                 )
                 hardness = budget_residual_hardness_weights(
-                    per_token_opsd,
+                    per_token_scopd,
                     per_token_b_plus_teacher_gap,
                     valid_mask,
-                    alpha=float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 1.0)),
+                    alpha=float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 1.0)),
                     persistence_mix=float(
-                        get_nested(cfg, "opsd.native_budget_weighting.persistence_mix", 0.1)
+                        get_nested(cfg, "scopd.native_budget_weighting.persistence_mix", 0.1)
                     ),
                     eps=eps,
                 )
                 gate = budget_contrastive_gate(
-                    per_token_opsd,
+                    per_token_scopd,
                     per_token_b_plus_teacher_gap,
                     valid_mask,
-                    beta_max=float(get_nested(cfg, "opsd.native_budget_weighting.beta_max", 0.5)),
+                    beta_max=float(get_nested(cfg, "scopd.native_budget_weighting.beta_max", 0.5)),
                     eps=eps,
                 )
                 valid = hardness.valid_mask
@@ -3511,14 +3511,14 @@ def opsd_nogt_step(
                         student_logits,
                         gate.shaping_strength,
                         advantage_clip=float(
-                            get_nested(cfg, "opsd.native_budget_weighting.advantage_clip", 2.0)
+                            get_nested(cfg, "scopd.native_budget_weighting.advantage_clip", 2.0)
                         ),
-                        temperature=opsd_temperature,
-                        chunk_size=int(get_nested(cfg, "opsd.native_budget_weighting.kl_chunk_size", 32)),
+                        temperature=scopd_temperature,
+                        chunk_size=int(get_nested(cfg, "scopd.native_budget_weighting.kl_chunk_size", 32)),
                         return_target_shift=True,
                     )
                 mass_normalization = normalize_candidate_loss_mass(
-                    per_token_opsd,
+                    per_token_scopd,
                     per_token_contrastive,
                     hardness.raw_weight,
                     valid,
@@ -3538,23 +3538,23 @@ def opsd_nogt_step(
                     "native_target_shift_mean": float(per_token_target_shift[valid].mean().cpu()),
                     "native_target_shift_max": float(per_token_target_shift[valid].max().cpu()),
                     "native_teacher_gap_alpha": float(
-                        get_nested(cfg, "opsd.native_budget_weighting.alpha", 1.0)
+                        get_nested(cfg, "scopd.native_budget_weighting.alpha", 1.0)
                     ),
                     "native_persistence_mix": float(
-                        get_nested(cfg, "opsd.native_budget_weighting.persistence_mix", 0.1)
+                        get_nested(cfg, "scopd.native_budget_weighting.persistence_mix", 0.1)
                     ),
-                    "native_beta_max": float(get_nested(cfg, "opsd.native_budget_weighting.beta_max", 0.5)),
+                    "native_beta_max": float(get_nested(cfg, "scopd.native_budget_weighting.beta_max", 0.5)),
                     "native_advantage_clip": float(
-                        get_nested(cfg, "opsd.native_budget_weighting.advantage_clip", 2.0)
+                        get_nested(cfg, "scopd.native_budget_weighting.advantage_clip", 2.0)
                     ),
                     "native_loss_mass_scale": float(loss_mass_scale.cpu()),
                 }
-                loss_type = "opsd_nogt_dual_budget_decomposition_forward_kl"
+                loss_type = "scopd_nogt_dual_budget_decomposition_forward_kl"
             else:
                 raise ValueError(f"Unknown native budget weighting mode: {weighting_mode!r}.")
         if weighting_mode in {"trajectory_probe", "symmetric_teacher_gap_stability"}:
             if trajectory_scalar_kl is None:
-                raise AssertionError("Exact-scalar weighting requires the original scalar OPSD KL.")
+                raise AssertionError("Exact-scalar weighting requires the original scalar SCOPD KL.")
             unweighted_kl = trajectory_scalar_kl
             if weighting_mode == "trajectory_probe":
                 kl = trajectory_scalar_kl
@@ -3571,38 +3571,38 @@ def opsd_nogt_step(
                 TOKEN_PROJECTION_BOTTOM_DROP_MODE,
                 TOKEN_PROJECTION_TOP_DROP_MODE,
             }:
-                unweighted_kl = per_token_opsd[valid_mask].mean()
+                unweighted_kl = per_token_scopd[valid_mask].mean()
             elif weighting_mode == TOKEN_RANDOM_DROP_MODE:
                 if token_random_drop_partition is None:
                     raise AssertionError("Random token drop partition was not computed.")
-                unweighted_kl = per_token_opsd[token_random_drop_partition.valid_mask].mean()
+                unweighted_kl = per_token_scopd[token_random_drop_partition.valid_mask].mean()
             elif weighting_mode == TOKEN_RANDOM_KEEP_MODE:
                 if token_random_keep_partition is None:
                     raise AssertionError("Random token keep partition was not computed.")
-                unweighted_kl = per_token_opsd[token_random_keep_partition.valid_mask].mean()
+                unweighted_kl = per_token_scopd[token_random_keep_partition.valid_mask].mean()
             elif weighting_mode == TOKEN_FORWARD_KL_TOP_MODE:
                 if token_forward_kl_top_partition is None:
                     raise AssertionError("Forward-KL top partition was not computed.")
-                unweighted_kl = per_token_opsd[
+                unweighted_kl = per_token_scopd[
                     token_forward_kl_top_partition.valid_mask
                 ].mean()
             elif weighting_mode == TOKEN_TIP_KL_ABS_PROJECTION_MODE:
                 if token_tip_kl_abs_projection_partition is None:
                     raise AssertionError("KL/absolute-P SoftOR partition was not computed.")
-                unweighted_kl = per_token_opsd[
+                unweighted_kl = per_token_scopd[
                     token_tip_kl_abs_projection_partition.valid_mask
                 ].mean()
             else:
                 if token_projection_partition is None:
                     raise AssertionError("Token projection partition was not computed.")
-                unweighted_kl = per_token_opsd[token_projection_partition.valid_mask].mean()
+                unweighted_kl = per_token_scopd[token_projection_partition.valid_mask].mean()
         else:
-            unweighted_kl = per_token_opsd[valid].mean()
+            unweighted_kl = per_token_scopd[valid].mean()
         if weighting_mode == "trajectory_probe":
             pass
         elif weighting_mode == "symmetric_teacher_gap_stability":
-            weighted_token_kl = (token_weight[valid] * per_token_opsd[valid]).mean()
-            unweighted_token_kl = per_token_opsd[valid].mean()
+            weighted_token_kl = (token_weight[valid] * per_token_scopd[valid]).mean()
+            unweighted_token_kl = per_token_scopd[valid].mean()
             kl = trajectory_scalar_kl + weighted_token_kl - unweighted_token_kl
         elif weighting_mode in {
             *TOKEN_PROJECTION_PARTITION_MODES,
@@ -3616,15 +3616,15 @@ def opsd_nogt_step(
             # Keep a graph-connected zero for a legitimately empty partition.
             # This preserves strict top/complement semantics without a vanilla-loss fallback.
             kl = (
-                per_token_opsd[valid].mean()
+                per_token_scopd[valid].mean()
                 if valid.any()
-                else per_token_opsd.sum() * 0.0
+                else per_token_scopd.sum() * 0.0
             )
         elif weighting_mode == "counterfactual_budget_bridge":
             if per_token_bridge is None:
                 raise AssertionError("Counterfactual budget bridge KL was not computed.")
             kl = (
-                weights.full_teacher_weight[valid] * per_token_opsd[valid]
+                weights.full_teacher_weight[valid] * per_token_scopd[valid]
                 + weights.bridge_teacher_weight[valid] * per_token_bridge[valid]
             ).mean()
         elif weighting_mode == "budget_gradient_aligned_bridge":
@@ -3641,13 +3641,13 @@ def opsd_nogt_step(
             low = valid & ~high
             if high.any() and low.any():
                 high_group_kl = (
-                    weights.within_high_weight[high] * per_token_opsd[high]
+                    weights.within_high_weight[high] * per_token_scopd[high]
                 ).mean()
-                low_group_kl = per_token_opsd[low].mean()
+                low_group_kl = per_token_scopd[low].mean()
                 coefficient = float(weights.high_group_coefficient)
                 kl = coefficient * high_group_kl + (1.0 - coefficient) * low_group_kl
                 equivalent_token_weight_kl = (
-                    token_weight[valid] * per_token_opsd[valid]
+                    token_weight[valid] * per_token_scopd[valid]
                 ).mean()
                 mode_metrics.update(
                     {
@@ -3660,7 +3660,7 @@ def opsd_nogt_step(
                     }
                 )
             else:
-                kl = per_token_opsd[valid].mean()
+                kl = per_token_scopd[valid].mean()
                 mode_metrics.update(
                     {
                         "native_group_objective": "vanilla_fallback_for_degenerate_group",
@@ -3670,7 +3670,7 @@ def opsd_nogt_step(
                     }
                 )
         else:
-            kl = (token_weight[valid] * per_token_opsd[valid]).mean()
+            kl = (token_weight[valid] * per_token_scopd[valid]).mean()
         sensitivity_valid = sensitivity.detach().float()[valid]
         weight_valid = token_weight[valid]
         kl_mass_ratio = kl.detach().float() / unweighted_kl.detach().float().clamp_min(1e-8)
@@ -3725,20 +3725,20 @@ def opsd_nogt_step(
         del b_plus_logits
     else:
         kl_floor_filter_enabled = bool(
-            get_nested(cfg, "opsd.token_kl_floor_filter.enabled", False)
+            get_nested(cfg, "scopd.token_kl_floor_filter.enabled", False)
         )
         outlier_exclusion_enabled = bool(
-            get_nested(cfg, "opsd.token_outlier_exclusion.enabled", False)
+            get_nested(cfg, "scopd.token_outlier_exclusion.enabled", False)
         )
         if kl_floor_filter_enabled:
-            min_kl = float(get_nested(cfg, "opsd.token_kl_floor_filter.min_kl", 1e-5))
+            min_kl = float(get_nested(cfg, "scopd.token_kl_floor_filter.min_kl", 1e-5))
             valid = generated_token_valid_mask(gen_ids)
             forward_per_token_kl = compute_per_token_kl(
                 teacher_logits,
                 student_logits,
-                temperature=opsd_temperature,
+                temperature=scopd_temperature,
                 chunk_size=int(
-                    get_nested(cfg, "opsd.token_kl_floor_filter.kl_chunk_size", 32)
+                    get_nested(cfg, "scopd.token_kl_floor_filter.kl_chunk_size", 32)
                 ),
             )
             keep_mask, removed_indices = keep_mask_above_kl_floor(
@@ -3762,7 +3762,7 @@ def opsd_nogt_step(
             removed_count = int(removed_indices.numel())
             weighting_metrics.update(
                 {
-                    "loss_type": "opsd_nogt_forward_kl_floor_filtered",
+                    "loss_type": "scopd_nogt_forward_kl_floor_filtered",
                     "unweighted_kl_loss": float(unfiltered_forward_kl.detach().cpu()),
                     "weighted_kl_loss": float(kl.detach().cpu()),
                     "token_kl_floor_direction": "KL(teacher || student)",
@@ -3789,17 +3789,17 @@ def opsd_nogt_step(
             )
         elif outlier_exclusion_enabled:
             requested_top_k = resolve_token_outlier_top_k(
-                int(get_nested(cfg, "opsd.token_outlier_exclusion.top_k", 0) or 0),
-                get_nested(cfg, "opsd.token_outlier_exclusion.top_k_by_ratio", None),
+                int(get_nested(cfg, "scopd.token_outlier_exclusion.top_k", 0) or 0),
+                get_nested(cfg, "scopd.token_outlier_exclusion.top_k_by_ratio", None),
                 retention_ratio,
             )
             valid = generated_token_valid_mask(gen_ids)
             forward_per_token_kl = compute_per_token_kl(
                 teacher_logits,
                 student_logits,
-                temperature=opsd_temperature,
+                temperature=scopd_temperature,
                 chunk_size=int(
-                    get_nested(cfg, "opsd.token_outlier_exclusion.kl_chunk_size", 32)
+                    get_nested(cfg, "scopd.token_outlier_exclusion.kl_chunk_size", 32)
                 ),
             )
             keep_mask, removed_indices = keep_mask_after_topk_exclusion(
@@ -3825,9 +3825,9 @@ def opsd_nogt_step(
             weighting_metrics.update(
                 {
                     "loss_type": (
-                        "opsd_nogt_forward_kl_topk_excluded"
+                        "scopd_nogt_forward_kl_topk_excluded"
                         if not teacher_uses_ground_truth
-                        else "opsd_gt_prompt_forward_kl_topk_excluded"
+                        else "scopd_gt_prompt_forward_kl_topk_excluded"
                     ),
                     "unweighted_kl_loss": float(unfiltered_forward_kl.detach().cpu()),
                     "weighted_kl_loss": float(kl.detach().cpu()),
@@ -3857,10 +3857,10 @@ def opsd_nogt_step(
                 }
             )
         else:
-            kl = compute_forward_kl(teacher_logits, student_logits, temperature=opsd_temperature)
+            kl = compute_forward_kl(teacher_logits, student_logits, temperature=scopd_temperature)
             weighting_metrics.update(
                 {
-                    "loss_type": "opsd_gt_prompt_forward_kl" if teacher_uses_ground_truth else "opsd_nogt_forward_kl",
+                    "loss_type": "scopd_gt_prompt_forward_kl" if teacher_uses_ground_truth else "scopd_nogt_forward_kl",
                     "unweighted_kl_loss": float(kl.detach().cpu()),
                     "weighted_kl_loss": None,
                 }
@@ -3873,7 +3873,7 @@ def opsd_nogt_step(
         "parseable": parsed is not None,
         "student_correct": parsed == sample.correct_letter,
         "teacher_source": teacher_source,
-        "opsd_teacher_strategy": teacher_strategy,
+        "scopd_teacher_strategy": teacher_strategy,
         "teacher_context": teacher_context,
         "teacher_ground_truth_access": teacher_uses_ground_truth,
         "teacher_prompt_tokens": teacher_prompt_len,
@@ -3901,7 +3901,7 @@ def opsd_nogt_step(
             rollout_decoder=rollout_decoder,
             rollout_use_cache=not manual_rollout,
         ),
-        "opsd_reference": (
+        "scopd_reference": (
             "privileged_gt_prompt_ema_teacher_ablation"
             if teacher_uses_ground_truth and teacher_strategy == "ema"
             else "privileged_gt_prompt_teacher_ablation"
@@ -3930,7 +3930,7 @@ def opsd_nogt_step(
     return kl, output_metrics
 
 
-def opsd_step(
+def scopd_step(
     model: Any,
     processor: Any,
     sample: FormattedAOKVQASample,
@@ -3940,11 +3940,11 @@ def opsd_step(
     ema_shadow: dict[str, torch.Tensor] | None = None,
     teacher_adapter_name: str = "",
 ) -> tuple[torch.Tensor, dict[str, Any]]:
-    """Official-style OPSD adapted to A-OKVQA/Qwen2.5-VL/VisionZip.
+    """Official-style SCOPD adapted to A-OKVQA/Qwen2.5-VL/VisionZip.
 
     Student rolls out from the normal visual-question prompt.  Teacher scores
     the same generated suffix from a privileged prompt containing the reference
-    A-OKVQA solution, matching the official OPSD student/teacher context split.
+    A-OKVQA solution, matching the official SCOPD student/teacher context split.
     """
 
     device = primary_device(model)
@@ -3966,12 +3966,12 @@ def opsd_step(
         stop_on_parse=generation_stop_on_parse(cfg),
     )
     if gen_ids.numel() == 0:
-        raise RuntimeError("OPSD student generated zero tokens.")
+        raise RuntimeError("SCOPD student generated zero tokens.")
 
     student_seq_inputs = sequence_inputs_from_prompt(student_prompt_inputs, gen_ids)
     student_prompt_len = int(student_prompt_inputs["input_ids"].shape[1])
 
-    teacher_prompt = build_opsd_teacher_prompt(
+    teacher_prompt = build_scopd_teacher_prompt(
         sample.question,
         sample.options,
         sample.target,
@@ -3981,7 +3981,7 @@ def opsd_step(
     teacher_seq_inputs = sequence_inputs_from_prompt(teacher_prompt_inputs, gen_ids)
     teacher_prompt_len = int(teacher_prompt_inputs["input_ids"].shape[1])
 
-    teacher_strategy = resolve_opsd_teacher_strategy(cfg, teacher_model, teacher_adapter_name)
+    teacher_strategy = resolve_scopd_teacher_strategy(cfg, teacher_model, teacher_adapter_name)
     if teacher_strategy == "external":
         with torch.no_grad():
             teacher_outputs = teacher_model(**model_input_subset(teacher_seq_inputs), use_cache=False)
@@ -4031,17 +4031,17 @@ def opsd_step(
     )
     student_logits = extract_generated_logits(student_outputs.logits, int(pruned["metadata"]["student_prompt_len"]), token_count)
 
-    gt_weight = float(get_nested(cfg, "opsd.ground_truth_ce_weight", 0.0) or 0.0)
+    gt_weight = float(get_nested(cfg, "scopd.ground_truth_ce_weight", 0.0) or 0.0)
     if gt_weight != 0.0:
         raise ValueError(
-            "opsd.ground_truth_ce_weight is not part of the official-aligned OPSD path. "
-            "Use training.method=opsd_nogt for the legacy no-GT ablation or create a separate explicit CE ablation."
+            "scopd.ground_truth_ce_weight is not part of the official-aligned SCOPD path. "
+            "Use training.method=scopd_nogt for the legacy no-GT ablation or create a separate explicit CE ablation."
         )
-    beta = float(get_nested(cfg, "opsd.beta", 0.0))
-    temperature = float(get_nested(cfg, "opsd.temperature", 1.0))
-    top_k_raw = int(get_nested(cfg, "opsd.top_k_loss", 0) or 0)
+    beta = float(get_nested(cfg, "scopd.beta", 0.0))
+    temperature = float(get_nested(cfg, "scopd.temperature", 1.0))
+    top_k_raw = int(get_nested(cfg, "scopd.top_k_loss", 0) or 0)
     top_k = top_k_raw if top_k_raw > 0 else None
-    token_clip_raw = float(get_nested(cfg, "opsd.jsd_token_clip", 0.05) or 0.0)
+    token_clip_raw = float(get_nested(cfg, "scopd.jsd_token_clip", 0.05) or 0.0)
     token_clip = token_clip_raw if token_clip_raw > 0.0 else None
     distillation_loss = compute_generalized_jsd(
         teacher_logits,
@@ -4050,31 +4050,31 @@ def opsd_step(
         temperature=temperature,
         top_k=top_k,
         token_clip=token_clip,
-        clip_mode=str(get_nested(cfg, "opsd.jsd_clip_mode", "token")),
+        clip_mode=str(get_nested(cfg, "scopd.jsd_clip_mode", "token")),
     )
     parsed = parse_final_answer(gen_text)
     return distillation_loss, {
-        "loss_type": "official_opsd_generalized_jsd",
+        "loss_type": "official_scopd_generalized_jsd",
         "generated_tokens": token_count,
         "distillation_loss": float(distillation_loss.detach().cpu()),
         "kl_loss": float(distillation_loss.detach().cpu()) if beta == 0.0 else None,
         "parseable": parsed is not None,
         "student_correct": parsed == sample.correct_letter,
         "teacher_source": teacher_source,
-        "opsd_teacher_strategy": teacher_strategy,
+        "scopd_teacher_strategy": teacher_strategy,
         "teacher_context": "ground_truth_reference_solution",
         "teacher_prompt_tokens": teacher_prompt_len,
         "student_prompt_tokens": student_prompt_len,
-        "opsd_beta": beta,
-        "opsd_temperature": temperature,
-        "opsd_top_k_loss": top_k_raw,
-        "opsd_jsd_token_clip": token_clip_raw,
-        "opsd_jsd_clip_mode": str(get_nested(cfg, "opsd.jsd_clip_mode", "token")),
-        "opsd_reference": (
-            "siyan-zhao/OPSD EMA reference teacher adapted to Qwen2.5-VL/VisionZip"
+        "scopd_beta": beta,
+        "scopd_temperature": temperature,
+        "scopd_top_k_loss": top_k_raw,
+        "scopd_jsd_token_clip": token_clip_raw,
+        "scopd_jsd_clip_mode": str(get_nested(cfg, "scopd.jsd_clip_mode", "token")),
+        "scopd_reference": (
+            "siyan-zhao/SCOPD EMA reference teacher adapted to Qwen2.5-VL/VisionZip"
             if teacher_strategy == "ema"
             else
-            "siyan-zhao/OPSD latest dynamic shared-current teacher adapted to Qwen2.5-VL/VisionZip"
+            "siyan-zhao/SCOPD latest dynamic shared-current teacher adapted to Qwen2.5-VL/VisionZip"
             if teacher_strategy == "dynamic_shared_current"
             else "legacy_fixed_base_teacher_ablation"
             if teacher_strategy == "fixed_base"
@@ -4216,15 +4216,15 @@ def aggregate_microbatch_metrics(metrics: list[dict[str, Any]]) -> dict[str, Any
 
 
 def trajectory_probability_mode(cfg: dict[str, Any]) -> str | None:
-    if not bool(get_nested(cfg, "opsd.trajectory_weighting.enabled", False)):
+    if not bool(get_nested(cfg, "scopd.trajectory_weighting.enabled", False)):
         return None
-    mode = str(get_nested(cfg, "opsd.trajectory_weighting.mode", "")).strip().lower()
+    mode = str(get_nested(cfg, "scopd.trajectory_weighting.mode", "")).strip().lower()
     return mode if mode in EFFECTIVE_BATCH_PROBABILITY_MODES else None
 
 
 def ratio_group_weight_transform(cfg: dict[str, Any]) -> tuple[str, float | None]:
     transform = str(
-        get_nested(cfg, "opsd.trajectory_weighting.group_transform", "linear")
+        get_nested(cfg, "scopd.trajectory_weighting.group_transform", "linear")
     ).strip().lower()
     if transform not in {"linear", "softmax"}:
         raise ValueError(
@@ -4233,7 +4233,7 @@ def ratio_group_weight_transform(cfg: dict[str, Any]) -> tuple[str, float | None
     if transform == "linear":
         return transform, None
     temperature = float(
-        get_nested(cfg, "opsd.trajectory_weighting.temperature", float("nan"))
+        get_nested(cfg, "scopd.trajectory_weighting.temperature", float("nan"))
     )
     if not math.isfinite(temperature) or temperature <= 0.0:
         raise ValueError(
@@ -4246,7 +4246,7 @@ def ratio_group_statistic(cfg: dict[str, Any]) -> str:
     statistic = str(
         get_nested(
             cfg,
-            "opsd.trajectory_weighting.group_statistic",
+            "scopd.trajectory_weighting.group_statistic",
             "teacher_directed_projection_mass_over_teacher_js_mass",
         )
     ).strip().lower()
@@ -4264,7 +4264,7 @@ def ratio_group_statistic(cfg: dict[str, Any]) -> str:
 
 
 def global_trajectory_calibration(cfg: dict[str, Any]) -> dict[str, float]:
-    calibration = get_nested(cfg, "opsd.trajectory_weighting.calibration", None)
+    calibration = get_nested(cfg, "scopd.trajectory_weighting.calibration", None)
     if not isinstance(calibration, dict):
         raise ValueError(
             "global_calibrated_counterfactual_teachability_batch requires a frozen "
@@ -4277,7 +4277,7 @@ def global_trajectory_calibration(cfg: dict[str, Any]) -> dict[str, float]:
             calibration.get("normalized_mean", float("nan"))
         ),
         "coefficient": float(
-            get_nested(cfg, "opsd.trajectory_weighting.coefficient", 1.0)
+            get_nested(cfg, "scopd.trajectory_weighting.coefficient", 1.0)
         ),
     }
     if not all(math.isfinite(value) for value in values.values()):
@@ -4300,7 +4300,7 @@ def trajectory_sensitivity_signal(
     cfg: dict[str, Any],
     mode: str,
 ) -> float:
-    eps = float(get_nested(cfg, "opsd.trajectory_weighting.eps", 1e-8))
+    eps = float(get_nested(cfg, "scopd.trajectory_weighting.eps", 1e-8))
     jsd = max(float(metrics["native_student_budget_jsd_mean"]), 0.0)
     if mode in {
         "jsd_over_current_kl_batch",
@@ -4311,7 +4311,7 @@ def trajectory_sensitivity_signal(
     elif mode == "jsd_over_step0_kl_batch":
         calibration = get_nested(
             cfg,
-            "opsd.trajectory_weighting.step0_teacher_kl_by_ratio",
+            "scopd.trajectory_weighting.step0_teacher_kl_by_ratio",
             None,
         )
         if not isinstance(calibration, dict):
@@ -4342,7 +4342,7 @@ def trajectory_sensitivity_signal(
             sampler_metric = str(
                 get_nested(
                     cfg,
-                    "opsd.trajectory_weighting.sampler_metric",
+                    "scopd.trajectory_weighting.sampler_metric",
                     "robust_need",
                 )
             ).strip().lower()
@@ -4443,10 +4443,10 @@ def prepare_effective_batch_probability_window(
             ),
             global_index=global_index,
             sample_id=sample.sample_id,
-            namespace=str(get_nested(cfg, "paired_sampling.namespace", "opsd_pair_v1")),
+            namespace=str(get_nested(cfg, "paired_sampling.namespace", "scopd_pair_v1")),
         )
         with torch.no_grad():
-            probe_loss, probe_metrics = opsd_nogt_step(
+            probe_loss, probe_metrics = scopd_nogt_step(
                 probe_model,
                 processor,
                 sample,
@@ -4542,7 +4542,7 @@ def prepare_effective_batch_probability_window(
             for record in local_records
         ]
 
-    eps = float(get_nested(cfg, "opsd.trajectory_weighting.eps", 1e-8))
+    eps = float(get_nested(cfg, "scopd.trajectory_weighting.eps", 1e-8))
     weight_transform = "median_inverse"
     weight_temperature: float | None = None
     frontier_state_metrics: dict[str, Any] = {}
@@ -4614,7 +4614,7 @@ def prepare_effective_batch_probability_window(
             "trajectory_global_batch_renormalized": False,
         }
     elif mode == "global_f_intermediate_curriculum_batch":
-        gamma = float(get_nested(cfg, "opsd.trajectory_weighting.gamma", 4.0))
+        gamma = float(get_nested(cfg, "scopd.trajectory_weighting.gamma", 4.0))
         weights = global_f_curriculum_trajectory_weights(
             global_signals,
             gamma=gamma,
@@ -4658,7 +4658,7 @@ def prepare_effective_batch_probability_window(
         weights = hard_trajectory_partition_weights(
             global_signals,
             top_fraction=float(
-                get_nested(cfg, "opsd.trajectory_weighting.top_fraction", 0.2)
+                get_nested(cfg, "scopd.trajectory_weighting.top_fraction", 0.2)
             ),
             batch_ordinal=batch_ordinal,
             select=selection,
@@ -4669,7 +4669,7 @@ def prepare_effective_batch_probability_window(
         frontier_state_metrics = {
             "trajectory_partition_selection": selection,
             "trajectory_partition_top_fraction": float(
-                get_nested(cfg, "opsd.trajectory_weighting.top_fraction", 0.2)
+                get_nested(cfg, "scopd.trajectory_weighting.top_fraction", 0.2)
             ),
             "trajectory_partition_batch_ordinal": batch_ordinal,
             "trajectory_partition_top_count": int(weights.top_count),
@@ -4731,7 +4731,7 @@ def prepare_effective_batch_probability_window(
         )
         group_signal = global_signals
         batch_tau = tau_before
-        weight_transform = "adaptive_budget_frontier_sampling_with_vanilla_opsd_loss"
+        weight_transform = "adaptive_budget_frontier_sampling_with_vanilla_scopd_loss"
         state_update = curriculum_state.update(
             [float(record["ratio"]) for record in global_records],
             [float(record["signal"]) for record in global_records],
@@ -4740,7 +4740,7 @@ def prepare_effective_batch_probability_window(
             "budget_sampler_metric": str(
                 get_nested(
                     cfg,
-                    "opsd.trajectory_weighting.sampler_metric",
+                    "scopd.trajectory_weighting.sampler_metric",
                     "robust_need",
                 )
             ).strip().lower(),
@@ -4837,7 +4837,7 @@ def prepare_effective_batch_probability_window(
         weight_temperature = group_temperature
     elif mode == "trajectory_counterfactual_teachability_softmax_batch":
         weight_temperature = float(
-            get_nested(cfg, "opsd.trajectory_weighting.temperature")
+            get_nested(cfg, "scopd.trajectory_weighting.temperature")
         )
         weights = softmax_trajectory_signal_probability_weights(
             global_signals,
@@ -4855,14 +4855,14 @@ def prepare_effective_batch_probability_window(
         weights = softmax_inverse_sensitivity_probability_weights(
             global_signals,
             temperature=float(
-                get_nested(cfg, "opsd.trajectory_weighting.temperature")
+                get_nested(cfg, "scopd.trajectory_weighting.temperature")
             ),
         )
         batch_tau = None
         group_signal = global_signals
         weight_transform = "softmax_negative_sensitivity"
         weight_temperature = float(
-            get_nested(cfg, "opsd.trajectory_weighting.temperature")
+            get_nested(cfg, "scopd.trajectory_weighting.temperature")
         )
     else:
         weights = inverse_sensitivity_probability_weights(global_signals, eps=eps)
@@ -5017,9 +5017,9 @@ def initialize_trajectory_curriculum_state(
     | SensitivityFrontierState
     | None
 ):
-    if not bool(get_nested(cfg, "opsd.trajectory_weighting.enabled", False)):
+    if not bool(get_nested(cfg, "scopd.trajectory_weighting.enabled", False)):
         return None
-    mode = str(get_nested(cfg, "opsd.trajectory_weighting.mode", "")).strip().lower()
+    mode = str(get_nested(cfg, "scopd.trajectory_weighting.mode", "")).strip().lower()
     if mode == "adaptive_budget_frontier_sampler_batch":
         ratios = tuple(
             float(value)
@@ -5032,14 +5032,14 @@ def initialize_trajectory_curriculum_state(
             calibration_target_per_ratio=int(
                 get_nested(
                     cfg,
-                    "opsd.trajectory_weighting.calibration_target_per_ratio",
+                    "scopd.trajectory_weighting.calibration_target_per_ratio",
                     64,
                 )
             ),
             ema_half_life_per_ratio=float(
                 get_nested(
                     cfg,
-                    "opsd.trajectory_weighting.ema_half_life_per_ratio",
+                    "scopd.trajectory_weighting.ema_half_life_per_ratio",
                     64.0,
                 )
             ),
@@ -5051,13 +5051,13 @@ def initialize_trajectory_curriculum_state(
                 )
             ),
             namespace=str(
-                get_nested(cfg, "paired_sampling.namespace", "opsd_pair_v1")
+                get_nested(cfg, "paired_sampling.namespace", "scopd_pair_v1")
             )
             + ":adaptive_budget_frontier",
-            eps=float(get_nested(cfg, "opsd.trajectory_weighting.eps", 1e-8)),
+            eps=float(get_nested(cfg, "scopd.trajectory_weighting.eps", 1e-8)),
         )
     if mode == "progress_adaptive_robust_frontier_batch":
-        calibration = get_nested(cfg, "opsd.trajectory_weighting.calibration", None)
+        calibration = get_nested(cfg, "scopd.trajectory_weighting.calibration", None)
         if not isinstance(calibration, dict):
             raise ValueError(
                 "progress_adaptive_robust_frontier_batch requires frozen calibration."
@@ -5071,7 +5071,7 @@ def initialize_trajectory_curriculum_state(
             ema_half_life_trajectories=float(
                 get_nested(
                     cfg,
-                    "opsd.trajectory_weighting.ema_half_life_trajectories",
+                    "scopd.trajectory_weighting.ema_half_life_trajectories",
                     256.0,
                 )
             ),
@@ -5079,21 +5079,21 @@ def initialize_trajectory_curriculum_state(
     if mode == "sensitivity_frontier":
         return SensitivityFrontierState(
             calibration_target_per_ratio=int(
-                get_nested(cfg, "opsd.trajectory_weighting.calibration_target_per_ratio", 64)
+                get_nested(cfg, "scopd.trajectory_weighting.calibration_target_per_ratio", 64)
             ),
             ema_half_life_trajectories=float(
-                get_nested(cfg, "opsd.trajectory_weighting.ema_half_life_trajectories", 256.0)
+                get_nested(cfg, "scopd.trajectory_weighting.ema_half_life_trajectories", 256.0)
             ),
             progress_drop_scale=float(
-                get_nested(cfg, "opsd.trajectory_weighting.progress_drop_scale", 0.5)
+                get_nested(cfg, "scopd.trajectory_weighting.progress_drop_scale", 0.5)
             ),
             progress_power=float(
-                get_nested(cfg, "opsd.trajectory_weighting.progress_power", 2.0)
+                get_nested(cfg, "scopd.trajectory_weighting.progress_power", 2.0)
             ),
         )
     if mode != "robustness_gated_curriculum":
         return None
-    calibration = get_nested(cfg, "opsd.trajectory_weighting.calibration", None)
+    calibration = get_nested(cfg, "scopd.trajectory_weighting.calibration", None)
     if not isinstance(calibration, dict):
         raise ValueError(
             "robustness_gated_curriculum requires a frozen trajectory_weighting.calibration mapping."
@@ -5103,9 +5103,9 @@ def initialize_trajectory_curriculum_state(
         initial_teacher_gap_mean=initial_gap,
         ema_teacher_gap_mean=initial_gap,
         ema_half_life_trajectories=float(
-            get_nested(cfg, "opsd.trajectory_weighting.ema_half_life_trajectories", 256.0)
+            get_nested(cfg, "scopd.trajectory_weighting.ema_half_life_trajectories", 256.0)
         ),
-        progress_power=float(get_nested(cfg, "opsd.trajectory_weighting.progress_power", 3.0)),
+        progress_power=float(get_nested(cfg, "scopd.trajectory_weighting.progress_power", 3.0)),
     )
 
 
@@ -5126,13 +5126,13 @@ def apply_distributed_trajectory_weighting(
         | None
     ) = None,
 ) -> tuple[torch.Tensor, dict[str, Any]]:
-    """Redistribute whole-trajectory OPSD gradients across a synchronized DDP block."""
+    """Redistribute whole-trajectory SCOPD gradients across a synchronized DDP block."""
 
-    enabled = bool(get_nested(cfg, "opsd.trajectory_weighting.enabled", False))
+    enabled = bool(get_nested(cfg, "scopd.trajectory_weighting.enabled", False))
     vanilla = torch.stack(batch_losses).mean()
     if not enabled:
         return vanilla, {"trajectory_weighting_enabled": False}
-    mode = str(get_nested(cfg, "opsd.trajectory_weighting.mode", "closure_rank")).strip().lower()
+    mode = str(get_nested(cfg, "scopd.trajectory_weighting.mode", "closure_rank")).strip().lower()
     probability_modes = {
         "global_calibrated_counterfactual_teachability_batch",
         "global_f_intermediate_curriculum_batch",
@@ -5311,7 +5311,7 @@ def apply_distributed_trajectory_weighting(
         sampler_metric = str(
             get_nested(
                 cfg,
-                "opsd.trajectory_weighting.sampler_metric",
+                "scopd.trajectory_weighting.sampler_metric",
                 "robust_need",
             )
         ).strip().lower()
@@ -5439,7 +5439,7 @@ def apply_distributed_trajectory_weighting(
         "jsd_over_current_kl_direct_inverse_batch",
         "jsd_over_current_kl_softmax_batch",
     }:
-        eps = float(get_nested(cfg, "opsd.trajectory_weighting.eps", 1e-8))
+        eps = float(get_nested(cfg, "scopd.trajectory_weighting.eps", 1e-8))
         local_signals = torch.tensor(
             [
                 max(float(item["native_student_budget_jsd_mean"]), 0.0)
@@ -5452,7 +5452,7 @@ def apply_distributed_trajectory_weighting(
     elif mode == "jsd_over_step0_kl_batch":
         calibration = get_nested(
             cfg,
-            "opsd.trajectory_weighting.step0_teacher_kl_by_ratio",
+            "scopd.trajectory_weighting.step0_teacher_kl_by_ratio",
             None,
         )
         if not isinstance(calibration, dict):
@@ -5479,7 +5479,7 @@ def apply_distributed_trajectory_weighting(
             device=device,
         )
     elif mode in {"residual_robustness_rank", "residual_robustness_soft"}:
-        calibration = get_nested(cfg, "opsd.trajectory_weighting.residual_calibration", None)
+        calibration = get_nested(cfg, "scopd.trajectory_weighting.residual_calibration", None)
         if not isinstance(calibration, dict):
             raise ValueError("Residual robustness requires a frozen residual_calibration mapping.")
         local_signals = residualized_budget_sensitivity(
@@ -5506,7 +5506,7 @@ def apply_distributed_trajectory_weighting(
                 for key, value in calibration["ratio_log_teacher_gap_coefficients"].items()
             },
             ratio_scales={str(key): float(value) for key, value in calibration["ratio_scales"].items()},
-            eps=float(get_nested(cfg, "opsd.trajectory_weighting.eps", 1e-8)),
+            eps=float(get_nested(cfg, "scopd.trajectory_weighting.eps", 1e-8)),
         )
     else:
         local_signals = torch.tensor(
@@ -5566,8 +5566,8 @@ def apply_distributed_trajectory_weighting(
             global_projection_mass = local_projection_mass
             global_teacher_js_mass = local_teacher_js_mass
             global_budget_js_mass = local_budget_js_mass
-    strength = float(get_nested(cfg, "opsd.trajectory_weighting.downweight_strength", 0.25))
-    eps = float(get_nested(cfg, "opsd.trajectory_weighting.eps", 1e-8))
+    strength = float(get_nested(cfg, "scopd.trajectory_weighting.downweight_strength", 0.25))
+    eps = float(get_nested(cfg, "scopd.trajectory_weighting.eps", 1e-8))
     curriculum_metrics: dict[str, Any] = {}
     frontier_ratio_gate: torch.Tensor | None = None
     frontier_local_robustness: torch.Tensor | None = None
@@ -5617,7 +5617,7 @@ def apply_distributed_trajectory_weighting(
                 "trajectory_global_batch_renormalized": False,
             }
         elif mode == "global_f_intermediate_curriculum_batch":
-            gamma = float(get_nested(cfg, "opsd.trajectory_weighting.gamma", 4.0))
+            gamma = float(get_nested(cfg, "scopd.trajectory_weighting.gamma", 4.0))
             probability = global_f_curriculum_trajectory_weights(
                 global_signals,
                 gamma=gamma,
@@ -5692,12 +5692,12 @@ def apply_distributed_trajectory_weighting(
             )
             batch_tau = tau_before
             group_signal = global_signals
-            weight_transform = "adaptive_budget_frontier_sampling_with_vanilla_opsd_loss"
+            weight_transform = "adaptive_budget_frontier_sampling_with_vanilla_scopd_loss"
             curriculum_metrics = {
                 "budget_sampler_metric": str(
                     get_nested(
                         cfg,
-                        "opsd.trajectory_weighting.sampler_metric",
+                        "scopd.trajectory_weighting.sampler_metric",
                         "robust_need",
                     )
                 ).strip().lower(),
@@ -5805,7 +5805,7 @@ def apply_distributed_trajectory_weighting(
             weight_temperature = group_temperature
         elif mode == "trajectory_counterfactual_teachability_softmax_batch":
             weight_temperature = float(
-                get_nested(cfg, "opsd.trajectory_weighting.temperature")
+                get_nested(cfg, "scopd.trajectory_weighting.temperature")
             )
             probability = softmax_trajectory_signal_probability_weights(
                 global_signals,
@@ -5825,14 +5825,14 @@ def apply_distributed_trajectory_weighting(
             probability = softmax_inverse_sensitivity_probability_weights(
                 global_signals,
                 temperature=float(
-                    get_nested(cfg, "opsd.trajectory_weighting.temperature")
+                    get_nested(cfg, "scopd.trajectory_weighting.temperature")
                 ),
             )
             batch_tau = None
             group_signal = global_signals
             weight_transform = "softmax_negative_sensitivity"
             weight_temperature = float(
-                get_nested(cfg, "opsd.trajectory_weighting.temperature")
+                get_nested(cfg, "scopd.trajectory_weighting.temperature")
             )
         else:
             probability = inverse_sensitivity_probability_weights(global_signals, eps=eps)
@@ -5898,7 +5898,7 @@ def apply_distributed_trajectory_weighting(
     if mode == "robustness_gated_curriculum":
         if curriculum_state is None or global_teacher_gaps is None:
             raise AssertionError("Curriculum state and teacher gaps must be available.")
-        calibration = get_nested(cfg, "opsd.trajectory_weighting.calibration", None)
+        calibration = get_nested(cfg, "scopd.trajectory_weighting.calibration", None)
         if not isinstance(calibration, dict):
             raise ValueError("Missing frozen robustness-gated curriculum calibration.")
         stage = curriculum_state.stage
@@ -5909,7 +5909,7 @@ def apply_distributed_trajectory_weighting(
             curriculum_stage=stage,
             log_teacher_gap_center=float(calibration["log_teacher_gap_center"]),
             log_teacher_gap_scale=float(calibration["log_teacher_gap_scale"]),
-            weight_floor=float(get_nested(cfg, "opsd.trajectory_weighting.weight_floor", 0.1)),
+            weight_floor=float(get_nested(cfg, "scopd.trajectory_weighting.weight_floor", 0.1)),
             eps=eps,
         )
         state_update = curriculum_state.update(
@@ -5938,7 +5938,7 @@ def apply_distributed_trajectory_weighting(
         ready_before = curriculum_state.ready
         progress_before = curriculum_state.progress
         frontier_before = curriculum_state.frontier_index
-        weight_floor = float(get_nested(cfg, "opsd.trajectory_weighting.weight_floor", 0.1))
+        weight_floor = float(get_nested(cfg, "scopd.trajectory_weighting.weight_floor", 0.1))
         if ready_before:
             result = sensitivity_frontier_weights(
                 global_losses,
@@ -6015,7 +6015,7 @@ def apply_distributed_trajectory_weighting(
             global_signals,
             downweight_strength=strength,
             temperature=float(
-                get_nested(cfg, "opsd.trajectory_weighting.residual_temperature", 1.0)
+                get_nested(cfg, "scopd.trajectory_weighting.residual_temperature", 1.0)
             ),
             eps=eps,
         )
@@ -6051,12 +6051,12 @@ def apply_distributed_trajectory_weighting(
         "trajectory_global_scalar_error": float(scalar_error.cpu()),
         "trajectory_rank_block_size": int(global_losses.numel()),
         "trajectory_downweight_strength": float(
-            1.0 - float(get_nested(cfg, "opsd.trajectory_weighting.weight_floor", 0.1))
+            1.0 - float(get_nested(cfg, "scopd.trajectory_weighting.weight_floor", 0.1))
             if mode == "sensitivity_frontier"
-            else get_nested(cfg, "opsd.trajectory_weighting.downweight_strength", 0.25)
+            else get_nested(cfg, "scopd.trajectory_weighting.downweight_strength", 0.25)
         ),
         "trajectory_residual_temperature": (
-            float(get_nested(cfg, "opsd.trajectory_weighting.residual_temperature", 1.0))
+            float(get_nested(cfg, "scopd.trajectory_weighting.residual_temperature", 1.0))
             if mode == "residual_robustness_soft"
             else None
         ),
@@ -6073,7 +6073,7 @@ def apply_distributed_trajectory_weighting(
                     result.mean_normalized_weight[current_slice].mean().cpu()
                 ),
                 "trajectory_weight_floor": float(
-                    get_nested(cfg, "opsd.trajectory_weighting.weight_floor", 0.1)
+                    get_nested(cfg, "scopd.trajectory_weighting.weight_floor", 0.1)
                 ),
                 **curriculum_metrics,
             }
@@ -6091,7 +6091,7 @@ def apply_distributed_trajectory_weighting(
                     frontier_local_robustness[current_slice].mean().cpu()
                 ),
                 "trajectory_weight_floor": float(
-                    get_nested(cfg, "opsd.trajectory_weighting.weight_floor", 0.1)
+                    get_nested(cfg, "scopd.trajectory_weighting.weight_floor", 0.1)
                 ),
                 **curriculum_metrics,
             }
@@ -6106,11 +6106,11 @@ def validate_paired_native_budget_config(
     pruning_method: str,
 ) -> None:
     paired = bool(get_nested(cfg, "paired_sampling.enabled", False))
-    weighted = bool(get_nested(cfg, "opsd.native_budget_weighting.enabled", False))
+    weighted = bool(get_nested(cfg, "scopd.native_budget_weighting.enabled", False))
     if not paired and not weighted:
         return
-    if method != "opsd_nogt":
-        raise ValueError("Paired native-budget training is implemented only for training.method=opsd_nogt.")
+    if method != "scopd_nogt":
+        raise ValueError("Paired native-budget training is implemented only for training.method=scopd_nogt.")
     if parameter_scope != "language_decoder_only":
         raise ValueError("Paired native-budget training requires LLM-only LoRA scope.")
     if pruning_method not in {"visionzip", "random"}:
@@ -6123,7 +6123,7 @@ def validate_paired_native_budget_config(
         get_nested(cfg, "pruning.retention_ratio_schedule", "")
     ).strip().lower()
     trajectory_mode = str(
-        get_nested(cfg, "opsd.trajectory_weighting.mode", "")
+        get_nested(cfg, "scopd.trajectory_weighting.mode", "")
     ).strip().lower()
     adaptive_sampler = (
         trajectory_mode == "adaptive_budget_frontier_sampler_batch"
@@ -6153,7 +6153,7 @@ def validate_paired_native_budget_config(
         raise ValueError("Paired runs require max_sample_retries=0 so corresponding sample order cannot diverge.")
     if weighted:
         weighting_mode = str(
-            get_nested(cfg, "opsd.native_budget_weighting.mode", "inverse_student_gap")
+            get_nested(cfg, "scopd.native_budget_weighting.mode", "inverse_student_gap")
         ).strip().lower()
         if weighting_mode not in {
             TOKEN_HELLINGER_CURRICULUM_MODE,
@@ -6161,11 +6161,11 @@ def validate_paired_native_budget_config(
             TOKEN_FORWARD_KL_TOP_MODE,
         }:
             delta_mode = str(
-                get_nested(cfg, "opsd.native_budget_weighting.budget_delta_mode", "absolute")
+                get_nested(cfg, "scopd.native_budget_weighting.budget_delta_mode", "absolute")
             ).strip().lower()
             if delta_mode == "absolute":
                 delta = float(
-                    get_nested(cfg, "opsd.native_budget_weighting.budget_delta", float("nan"))
+                    get_nested(cfg, "scopd.native_budget_weighting.budget_delta", float("nan"))
                 )
                 allowed_deltas = (0.01, 0.02, 0.03, 0.05, 0.075, 0.10)
                 if not any(
@@ -6179,7 +6179,7 @@ def validate_paired_native_budget_config(
                 fraction = float(
                     get_nested(
                         cfg,
-                        "opsd.native_budget_weighting.budget_delta_fraction",
+                        "scopd.native_budget_weighting.budget_delta_fraction",
                         float("nan"),
                     )
                 )
@@ -6190,7 +6190,7 @@ def validate_paired_native_budget_config(
             else:
                 raise ValueError(f"Unsupported native budget delta mode: {delta_mode!r}.")
             if float(
-                get_nested(cfg, "opsd.native_budget_weighting.sensitivity_temperature", 1.0)
+                get_nested(cfg, "scopd.native_budget_weighting.sensitivity_temperature", 1.0)
             ) <= 0.0:
                 raise ValueError("Sensitivity KL temperature must be positive.")
         allowed_modes = {
@@ -6240,7 +6240,7 @@ def validate_paired_native_budget_config(
             curriculum_scale = float(
                 get_nested(
                     cfg,
-                    "opsd.native_budget_weighting.curriculum_scale",
+                    "scopd.native_budget_weighting.curriculum_scale",
                     float("nan"),
                 )
             )
@@ -6256,7 +6256,7 @@ def validate_paired_native_budget_config(
             max_kl_fraction = float(
                 get_nested(
                     cfg,
-                    "opsd.native_budget_weighting.max_kl_fraction",
+                    "scopd.native_budget_weighting.max_kl_fraction",
                     float("nan"),
                 )
             )
@@ -6273,14 +6273,14 @@ def validate_paired_native_budget_config(
             top_fraction = float(
                 get_nested(
                     cfg,
-                    "opsd.native_budget_weighting.top_fraction",
+                    "scopd.native_budget_weighting.top_fraction",
                     float("nan"),
                 )
             )
             min_teacher_kl = float(
                 get_nested(
                     cfg,
-                    "opsd.native_budget_weighting.min_teacher_kl",
+                    "scopd.native_budget_weighting.min_teacher_kl",
                     float("nan"),
                 )
             )
@@ -6294,14 +6294,14 @@ def validate_paired_native_budget_config(
             top_fraction = float(
                 get_nested(
                     cfg,
-                    "opsd.native_budget_weighting.top_fraction",
+                    "scopd.native_budget_weighting.top_fraction",
                     float("nan"),
                 )
             )
             projection_clip_quantile = float(
                 get_nested(
                     cfg,
-                    "opsd.native_budget_weighting.projection_clip_quantile",
+                    "scopd.native_budget_weighting.projection_clip_quantile",
                     float("nan"),
                 )
             )
@@ -6318,14 +6318,14 @@ def validate_paired_native_budget_config(
             top_fraction = float(
                 get_nested(
                     cfg,
-                    "opsd.native_budget_weighting.top_fraction",
+                    "scopd.native_budget_weighting.top_fraction",
                     float("nan"),
                 )
             )
             high_group_lambda = float(
                 get_nested(
                     cfg,
-                    "opsd.native_budget_weighting.high_group_lambda",
+                    "scopd.native_budget_weighting.high_group_lambda",
                     float("nan"),
                 )
             )
@@ -6339,24 +6339,24 @@ def validate_paired_native_budget_config(
             group_fraction = float(
                 get_nested(
                     cfg,
-                    "opsd.native_budget_weighting.top_fraction",
+                    "scopd.native_budget_weighting.top_fraction",
                     float("nan"),
                 )
             )
             selected_group_lambda = float(
                 get_nested(
                     cfg,
-                    "opsd.native_budget_weighting.selected_group_lambda",
+                    "scopd.native_budget_weighting.selected_group_lambda",
                     float("nan"),
                 )
             )
             selection = str(
-                get_nested(cfg, "opsd.native_budget_weighting.selection", "")
+                get_nested(cfg, "scopd.native_budget_weighting.selection", "")
             ).strip().lower()
             min_teacher_kl = float(
                 get_nested(
                     cfg,
-                    "opsd.native_budget_weighting.min_teacher_kl",
+                    "scopd.native_budget_weighting.min_teacher_kl",
                     float("nan"),
                 )
             )
@@ -6379,26 +6379,26 @@ def validate_paired_native_budget_config(
             budget_top_fraction = float(
                 get_nested(
                     cfg,
-                    "opsd.native_budget_weighting.budget_top_fraction",
+                    "scopd.native_budget_weighting.budget_top_fraction",
                     float("nan"),
                 )
             )
             within_budget_fraction = float(
                 get_nested(
                     cfg,
-                    "opsd.native_budget_weighting.within_budget_fraction",
+                    "scopd.native_budget_weighting.within_budget_fraction",
                     float("nan"),
                 )
             )
             selected_group_lambda = float(
                 get_nested(
                     cfg,
-                    "opsd.native_budget_weighting.selected_group_lambda",
+                    "scopd.native_budget_weighting.selected_group_lambda",
                     float("nan"),
                 )
             )
             selection = str(
-                get_nested(cfg, "opsd.native_budget_weighting.selection", "")
+                get_nested(cfg, "scopd.native_budget_weighting.selection", "")
             ).strip().lower()
             if not math.isfinite(budget_top_fraction) or not 0.0 < budget_top_fraction < 1.0:
                 raise ValueError("B-JSD prefilter requires budget_top_fraction in (0, 1).")
@@ -6423,7 +6423,7 @@ def validate_paired_native_budget_config(
             drop_fraction = float(
                 get_nested(
                     cfg,
-                    "opsd.native_budget_weighting.drop_fraction",
+                    "scopd.native_budget_weighting.drop_fraction",
                     float("nan"),
                 )
             )
@@ -6436,7 +6436,7 @@ def validate_paired_native_budget_config(
             softmax_temperature = float(
                 get_nested(
                     cfg,
-                    "opsd.native_budget_weighting.softmax_temperature",
+                    "scopd.native_budget_weighting.softmax_temperature",
                     float("nan"),
                 )
             )
@@ -6449,7 +6449,7 @@ def validate_paired_native_budget_config(
             high_group_coefficient = float(
                 get_nested(
                     cfg,
-                    "opsd.native_budget_weighting.high_group_coefficient",
+                    "scopd.native_budget_weighting.high_group_coefficient",
                     float("nan"),
                 )
             )
@@ -6460,15 +6460,15 @@ def validate_paired_native_budget_config(
                 raise ValueError(
                     "Group-balanced max-KL weighting requires high_group_coefficient in (0, 1)."
                 )
-        trajectory_enabled = bool(get_nested(cfg, "opsd.trajectory_weighting.enabled", False))
+        trajectory_enabled = bool(get_nested(cfg, "scopd.trajectory_weighting.enabled", False))
         if trajectory_enabled:
             if weighting_mode != "trajectory_probe":
                 raise ValueError(
                     "Trajectory weighting requires native_budget_weighting.mode=trajectory_probe "
-                    "so tokenwise OPSD remains unchanged."
+                    "so tokenwise SCOPD remains unchanged."
                 )
             trajectory_mode = str(
-                get_nested(cfg, "opsd.trajectory_weighting.mode", "closure_rank")
+                get_nested(cfg, "scopd.trajectory_weighting.mode", "closure_rank")
             ).strip().lower()
             if trajectory_mode not in {
                 "closure_rank",
@@ -6496,7 +6496,7 @@ def validate_paired_native_budget_config(
             if trajectory_mode == "jsd_over_step0_kl_batch":
                 calibration = get_nested(
                     cfg,
-                    "opsd.trajectory_weighting.step0_teacher_kl_by_ratio",
+                    "scopd.trajectory_weighting.step0_teacher_kl_by_ratio",
                     None,
                 )
                 expected_keys = {"0.10", "0.20", "0.30", "0.40"}
@@ -6512,7 +6512,7 @@ def validate_paired_native_budget_config(
                     raise ValueError("Step-0 teacher KL calibration values must be finite and positive.")
             if trajectory_mode == "jsd_over_current_kl_softmax_batch":
                 temperature = float(
-                    get_nested(cfg, "opsd.trajectory_weighting.temperature", float("nan"))
+                    get_nested(cfg, "scopd.trajectory_weighting.temperature", float("nan"))
                 )
                 if not math.isfinite(temperature) or temperature <= 0.0:
                     raise ValueError(
@@ -6530,7 +6530,7 @@ def validate_paired_native_budget_config(
                     and str(
                         get_nested(
                             cfg,
-                            "opsd.trajectory_weighting.group_transform",
+                            "scopd.trajectory_weighting.group_transform",
                             "linear",
                         )
                     ).strip().lower()
@@ -6541,7 +6541,7 @@ def validate_paired_native_budget_config(
                     )
             if trajectory_mode == "trajectory_counterfactual_teachability_softmax_batch":
                 temperature = float(
-                    get_nested(cfg, "opsd.trajectory_weighting.temperature", float("nan"))
+                    get_nested(cfg, "scopd.trajectory_weighting.temperature", float("nan"))
                 )
                 if not math.isfinite(temperature) or temperature <= 0.0:
                     raise ValueError(
@@ -6551,12 +6551,12 @@ def validate_paired_native_budget_config(
             if trajectory_mode == "global_calibrated_counterfactual_teachability_batch":
                 global_trajectory_calibration(cfg)
                 normalization = str(
-                    get_nested(cfg, "opsd.trajectory_weighting.normalization", "")
+                    get_nested(cfg, "scopd.trajectory_weighting.normalization", "")
                 ).strip().lower()
                 normalization_scope = str(
                     get_nested(
                         cfg,
-                        "opsd.trajectory_weighting.normalization_scope",
+                        "scopd.trajectory_weighting.normalization_scope",
                         "",
                     )
                 ).strip().lower()
@@ -6576,7 +6576,7 @@ def validate_paired_native_budget_config(
                 top_fraction = float(
                     get_nested(
                         cfg,
-                        "opsd.trajectory_weighting.top_fraction",
+                        "scopd.trajectory_weighting.top_fraction",
                         float("nan"),
                     )
                 )
@@ -6586,17 +6586,17 @@ def validate_paired_native_budget_config(
                     )
             if trajectory_mode == "global_f_intermediate_curriculum_batch":
                 gamma = float(
-                    get_nested(cfg, "opsd.trajectory_weighting.gamma", float("nan"))
+                    get_nested(cfg, "scopd.trajectory_weighting.gamma", float("nan"))
                 )
                 if not math.isfinite(gamma) or gamma <= 0.0:
                     raise ValueError(
                         "Global F intermediate curriculum requires finite positive gamma."
                     )
                 normalization = str(
-                    get_nested(cfg, "opsd.trajectory_weighting.normalization", "")
+                    get_nested(cfg, "scopd.trajectory_weighting.normalization", "")
                 ).strip().lower()
                 normalization_scope = str(
-                    get_nested(cfg, "opsd.trajectory_weighting.normalization_scope", "")
+                    get_nested(cfg, "scopd.trajectory_weighting.normalization_scope", "")
                 ).strip().lower()
                 if normalization != "fixed_global_gate_no_batch_renormalization":
                     raise ValueError(
@@ -6610,7 +6610,7 @@ def validate_paired_native_budget_config(
                     )
             if trajectory_mode == "progress_adaptive_robust_frontier_batch":
                 calibration = get_nested(
-                    cfg, "opsd.trajectory_weighting.calibration", None
+                    cfg, "scopd.trajectory_weighting.calibration", None
                 )
                 if not isinstance(calibration, dict):
                     raise ValueError(
@@ -6627,7 +6627,7 @@ def validate_paired_native_budget_config(
                 half_life = float(
                     get_nested(
                         cfg,
-                        "opsd.trajectory_weighting.ema_half_life_trajectories",
+                        "scopd.trajectory_weighting.ema_half_life_trajectories",
                         256.0,
                     )
                 )
@@ -6636,7 +6636,7 @@ def validate_paired_native_budget_config(
                         "Progress-adaptive frontier EMA half-life must be finite and positive."
                     )
                 normalization = str(
-                    get_nested(cfg, "opsd.trajectory_weighting.normalization", "")
+                    get_nested(cfg, "scopd.trajectory_weighting.normalization", "")
                 ).strip().lower()
                 if normalization != "kl_mass_preserving":
                     raise ValueError(
@@ -6651,7 +6651,7 @@ def validate_paired_native_budget_config(
                 sampler_metric = str(
                     get_nested(
                         cfg,
-                        "opsd.trajectory_weighting.sampler_metric",
+                        "scopd.trajectory_weighting.sampler_metric",
                         "robust_need",
                     )
                 ).strip().lower()
@@ -6662,7 +6662,7 @@ def validate_paired_native_budget_config(
                 if int(
                     get_nested(
                         cfg,
-                        "opsd.trajectory_weighting.calibration_target_per_ratio",
+                        "scopd.trajectory_weighting.calibration_target_per_ratio",
                         64,
                     )
                 ) <= 0:
@@ -6672,7 +6672,7 @@ def validate_paired_native_budget_config(
                 half_life = float(
                     get_nested(
                         cfg,
-                        "opsd.trajectory_weighting.ema_half_life_per_ratio",
+                        "scopd.trajectory_weighting.ema_half_life_per_ratio",
                         64.0,
                     )
                 )
@@ -6681,12 +6681,12 @@ def validate_paired_native_budget_config(
                         "Adaptive budget EMA half-life must be finite and positive."
                     )
                 normalization = str(
-                    get_nested(cfg, "opsd.trajectory_weighting.normalization", "")
+                    get_nested(cfg, "scopd.trajectory_weighting.normalization", "")
                 ).strip().lower()
                 normalization_scope = str(
                     get_nested(
                         cfg,
-                        "opsd.trajectory_weighting.normalization_scope",
+                        "scopd.trajectory_weighting.normalization_scope",
                         "",
                     )
                 ).strip().lower()
@@ -6703,10 +6703,10 @@ def validate_paired_native_budget_config(
                 and trajectory_mode not in DIRECT_GLOBAL_F_MODES
             ):
                 normalization = str(
-                    get_nested(cfg, "opsd.trajectory_weighting.normalization", "")
+                    get_nested(cfg, "scopd.trajectory_weighting.normalization", "")
                 ).strip().lower()
                 normalization_scope = str(
-                    get_nested(cfg, "opsd.trajectory_weighting.normalization_scope", "")
+                    get_nested(cfg, "scopd.trajectory_weighting.normalization_scope", "")
                 ).strip().lower()
                 if normalization != "probability_sum_one":
                     raise ValueError(
@@ -6717,13 +6717,13 @@ def validate_paired_native_budget_config(
                         "JSD trajectory weighting requires normalization_scope=effective_batch."
                     )
             if trajectory_mode in {"residual_robustness_rank", "residual_robustness_soft"}:
-                calibration = get_nested(cfg, "opsd.trajectory_weighting.residual_calibration", None)
+                calibration = get_nested(cfg, "scopd.trajectory_weighting.residual_calibration", None)
                 if not isinstance(calibration, dict):
                     raise ValueError(
                         "residual_robustness_rank requires a frozen residual_calibration mapping."
                     )
             if trajectory_mode == "robustness_gated_curriculum":
-                calibration = get_nested(cfg, "opsd.trajectory_weighting.calibration", None)
+                calibration = get_nested(cfg, "scopd.trajectory_weighting.calibration", None)
                 if not isinstance(calibration, dict):
                     raise ValueError(
                         "robustness_gated_curriculum requires a frozen calibration mapping."
@@ -6739,20 +6739,20 @@ def validate_paired_native_budget_config(
                     raise ValueError("Curriculum initial_teacher_gap_mean must be positive.")
                 if float(calibration["log_teacher_gap_scale"]) <= 0.0:
                     raise ValueError("Curriculum log_teacher_gap_scale must be positive.")
-                if float(get_nested(cfg, "opsd.trajectory_weighting.progress_power", 3.0)) <= 0.0:
+                if float(get_nested(cfg, "scopd.trajectory_weighting.progress_power", 3.0)) <= 0.0:
                     raise ValueError("Curriculum progress_power must be positive.")
                 if float(
-                    get_nested(cfg, "opsd.trajectory_weighting.ema_half_life_trajectories", 256.0)
+                    get_nested(cfg, "scopd.trajectory_weighting.ema_half_life_trajectories", 256.0)
                 ) <= 0.0:
                     raise ValueError("Curriculum EMA half-life must be positive.")
-                weight_floor = float(get_nested(cfg, "opsd.trajectory_weighting.weight_floor", 0.1))
+                weight_floor = float(get_nested(cfg, "scopd.trajectory_weighting.weight_floor", 0.1))
                 if not 0.0 < weight_floor <= 1.0:
                     raise ValueError("Curriculum weight_floor must be in (0, 1].")
             if trajectory_mode == "sensitivity_frontier":
                 fraction = float(
                     get_nested(
                         cfg,
-                        "opsd.native_budget_weighting.budget_delta_fraction",
+                        "scopd.native_budget_weighting.budget_delta_fraction",
                         float("nan"),
                     )
                 )
@@ -6763,7 +6763,7 @@ def validate_paired_native_budget_config(
                         "sensitivity_frontier requires a 25% relative native budget expansion."
                     )
                 if int(
-                    get_nested(cfg, "opsd.trajectory_weighting.calibration_target_per_ratio", 64)
+                    get_nested(cfg, "scopd.trajectory_weighting.calibration_target_per_ratio", 64)
                 ) <= 0:
                     raise ValueError("Sensitivity frontier calibration target must be positive.")
                 for key, default in (
@@ -6771,35 +6771,35 @@ def validate_paired_native_budget_config(
                     ("progress_drop_scale", 0.5),
                     ("progress_power", 2.0),
                 ):
-                    value = float(get_nested(cfg, f"opsd.trajectory_weighting.{key}", default))
+                    value = float(get_nested(cfg, f"scopd.trajectory_weighting.{key}", default))
                     if not math.isfinite(value) or value <= 0.0:
                         raise ValueError(f"Sensitivity frontier {key} must be finite and positive.")
                 if float(
-                    get_nested(cfg, "opsd.trajectory_weighting.progress_drop_scale", 0.5)
+                    get_nested(cfg, "scopd.trajectory_weighting.progress_drop_scale", 0.5)
                 ) > 1.0:
                     raise ValueError("Sensitivity frontier progress_drop_scale must be at most one.")
                 weight_floor = float(
-                    get_nested(cfg, "opsd.trajectory_weighting.weight_floor", 0.1)
+                    get_nested(cfg, "scopd.trajectory_weighting.weight_floor", 0.1)
                 )
                 if not 0.0 < weight_floor <= 1.0:
                     raise ValueError("Sensitivity frontier weight_floor must be in (0, 1].")
-            strength = float(get_nested(cfg, "opsd.trajectory_weighting.downweight_strength", 0.25))
+            strength = float(get_nested(cfg, "scopd.trajectory_weighting.downweight_strength", 0.25))
             if not 0.0 <= strength < 1.0:
                 raise ValueError(
-                    "opsd.trajectory_weighting.downweight_strength must be in [0, 1)."
+                    "scopd.trajectory_weighting.downweight_strength must be in [0, 1)."
                 )
         if weighting_mode == "symmetric_teacher_gap_stability":
-            alpha = float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 0.25))
+            alpha = float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 0.25))
             if not 0.0 <= alpha < 1.0:
                 raise ValueError(
                     f"Symmetric teacher-gap stability alpha must be in [0, 1); got {alpha}."
                 )
         elif weighting_mode == "teacher_gap_persistence":
-            alpha = float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 0.5))
+            alpha = float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 0.5))
             if not 0.0 <= alpha <= 1.0:
                 raise ValueError(f"Teacher-gap persistence alpha must be in [0, 1]; got {alpha}.")
         elif weighting_mode == "counterfactual_rescue_amplification":
-            alpha = float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 0.5))
+            alpha = float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 0.5))
             if not 0.0 <= alpha <= 4.0:
                 raise ValueError(
                     "Counterfactual rescue amplification alpha must be in [0, 4]; "
@@ -6811,10 +6811,10 @@ def validate_paired_native_budget_config(
             "teacher_gap_grouped_control",
         }:
             top_fraction = float(
-                get_nested(cfg, "opsd.native_budget_weighting.top_fraction", 0.2)
+                get_nested(cfg, "scopd.native_budget_weighting.top_fraction", 0.2)
             )
             high_group_mass = float(
-                get_nested(cfg, "opsd.native_budget_weighting.high_group_mass", 0.5)
+                get_nested(cfg, "scopd.native_budget_weighting.high_group_mass", 0.5)
             )
             if not 0.0 < top_fraction < 1.0:
                 raise ValueError(
@@ -6829,7 +6829,7 @@ def validate_paired_native_budget_config(
                 rescue_modulation = float(
                     get_nested(
                         cfg,
-                        "opsd.native_budget_weighting.rescue_modulation",
+                        "scopd.native_budget_weighting.rescue_modulation",
                         0.1,
                     )
                 )
@@ -6839,9 +6839,9 @@ def validate_paired_native_budget_config(
                         f"got {rescue_modulation}."
                     )
         elif weighting_mode == "counterfactual_teachability_mixture":
-            alpha = float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 0.5))
+            alpha = float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 0.5))
             rescue_mix = float(
-                get_nested(cfg, "opsd.native_budget_weighting.rescue_mix", 0.1)
+                get_nested(cfg, "scopd.native_budget_weighting.rescue_mix", 0.1)
             )
             if not 0.0 <= alpha <= 4.0:
                 raise ValueError(
@@ -6854,11 +6854,11 @@ def validate_paired_native_budget_config(
                     f"got {rescue_mix}."
                 )
         elif weighting_mode == "counterfactual_teachability_modulation":
-            alpha = float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 0.5))
+            alpha = float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 0.5))
             rescue_modulation = float(
                 get_nested(
                     cfg,
-                    "opsd.native_budget_weighting.rescue_modulation",
+                    "scopd.native_budget_weighting.rescue_modulation",
                     0.1,
                 )
             )
@@ -6873,9 +6873,9 @@ def validate_paired_native_budget_config(
                     f"got {rescue_modulation}."
                 )
         elif weighting_mode == "conditional_rescue_residual":
-            alpha = float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 0.1))
+            alpha = float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 0.1))
             difficulty_bins = int(
-                get_nested(cfg, "opsd.native_budget_weighting.difficulty_bins", 5)
+                get_nested(cfg, "scopd.native_budget_weighting.difficulty_bins", 5)
             )
             if not 0.0 <= alpha < 1.0:
                 raise ValueError(
@@ -6888,13 +6888,13 @@ def validate_paired_native_budget_config(
                     f"got {difficulty_bins}."
                 )
         elif weighting_mode == "budget_consistent_rank":
-            alpha = float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 1.0))
+            alpha = float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 1.0))
             if not 0.0 <= alpha <= 4.0:
                 raise ValueError(f"Budget-consistent rank alpha must be in [0, 4]; got {alpha}.")
         elif weighting_mode == "budget_residual_hardness":
-            alpha = float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 1.0))
+            alpha = float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 1.0))
             persistence_mix = float(
-                get_nested(cfg, "opsd.native_budget_weighting.persistence_mix", 0.1)
+                get_nested(cfg, "scopd.native_budget_weighting.persistence_mix", 0.1)
             )
             if not 0.0 <= alpha <= 4.0:
                 raise ValueError(f"Budget-residual alpha must be in [0, 4]; got {alpha}.")
@@ -6904,12 +6904,12 @@ def validate_paired_native_budget_config(
                     f"got {persistence_mix}."
                 )
         elif weighting_mode == "budget_gradient_consensus":
-            alpha = float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 0.5))
+            alpha = float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 0.5))
             if not 0.0 <= alpha <= 4.0:
                 raise ValueError(f"Budget-gradient consensus alpha must be in [0, 4]; got {alpha}.")
         elif weighting_mode == "counterfactual_budget_bridge":
             fraction = float(
-                get_nested(cfg, "opsd.native_budget_weighting.max_bridge_fraction", 0.5)
+                get_nested(cfg, "scopd.native_budget_weighting.max_bridge_fraction", 0.5)
             )
             if not 0.0 <= fraction <= 1.0:
                 raise ValueError(
@@ -6918,7 +6918,7 @@ def validate_paired_native_budget_config(
                 )
         elif weighting_mode == "budget_gradient_aligned_bridge":
             fraction = float(
-                get_nested(cfg, "opsd.native_budget_weighting.max_bridge_fraction", 0.5)
+                get_nested(cfg, "scopd.native_budget_weighting.max_bridge_fraction", 0.5)
             )
             if not 0.0 <= fraction <= 1.0:
                 raise ValueError(
@@ -6927,12 +6927,12 @@ def validate_paired_native_budget_config(
                 )
         elif weighting_mode == "counterfactual_gradient_residual":
             strength = float(
-                get_nested(cfg, "opsd.native_budget_weighting.cancellation_strength", 0.5)
+                get_nested(cfg, "scopd.native_budget_weighting.cancellation_strength", 0.5)
             )
             max_projection = float(
                 get_nested(
                     cfg,
-                    "opsd.native_budget_weighting.max_projection_coefficient",
+                    "scopd.native_budget_weighting.max_projection_coefficient",
                     1.0,
                 )
             )
@@ -6949,7 +6949,7 @@ def validate_paired_native_budget_config(
             cancellation_schedule = str(
                 get_nested(
                     cfg,
-                    "opsd.native_budget_weighting.cancellation_schedule",
+                    "scopd.native_budget_weighting.cancellation_schedule",
                     "constant",
                 )
             ).strip().lower()
@@ -6961,7 +6961,7 @@ def validate_paired_native_budget_config(
             decay_fraction = float(
                 get_nested(
                     cfg,
-                    "opsd.native_budget_weighting.cancellation_decay_fraction",
+                    "scopd.native_budget_weighting.cancellation_decay_fraction",
                     0.5,
                 )
             )
@@ -6971,12 +6971,12 @@ def validate_paired_native_budget_config(
                     f"got {decay_fraction}."
                 )
         elif weighting_mode == "budget_tangent_residual":
-            alpha = float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 1.0))
+            alpha = float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 1.0))
             if not 0.0 <= alpha <= 4.0:
                 raise ValueError(f"Budget-tangent residual alpha must be in [0, 4]; got {alpha}.")
         elif weighting_mode == "budget_counterfactual_teachability":
-            alpha = float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 1.0))
-            support_top_k = int(get_nested(cfg, "opsd.native_budget_weighting.support_top_k", 32))
+            alpha = float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 1.0))
+            support_top_k = int(get_nested(cfg, "scopd.native_budget_weighting.support_top_k", 32))
             if not 0.0 <= alpha <= 4.0:
                 raise ValueError(
                     f"Budget-counterfactual teachability alpha must be in [0, 4]; got {alpha}."
@@ -6986,8 +6986,8 @@ def validate_paired_native_budget_config(
                     f"Budget-counterfactual support_top_k must be positive; got {support_top_k}."
                 )
         elif weighting_mode == "budget_contrastive_target":
-            beta_max = float(get_nested(cfg, "opsd.native_budget_weighting.beta_max", 0.5))
-            advantage_clip = float(get_nested(cfg, "opsd.native_budget_weighting.advantage_clip", 2.0))
+            beta_max = float(get_nested(cfg, "scopd.native_budget_weighting.beta_max", 0.5))
+            advantage_clip = float(get_nested(cfg, "scopd.native_budget_weighting.advantage_clip", 2.0))
             if not 0.0 <= beta_max <= 2.0:
                 raise ValueError(f"Budget-contrastive beta_max must be in [0, 2]; got {beta_max}.")
             if advantage_clip <= 0.0:
@@ -6995,12 +6995,12 @@ def validate_paired_native_budget_config(
                     f"Budget-contrastive advantage_clip must be positive; got {advantage_clip}."
                 )
         elif weighting_mode == "dual_budget_decomposition":
-            alpha = float(get_nested(cfg, "opsd.native_budget_weighting.alpha", 1.0))
+            alpha = float(get_nested(cfg, "scopd.native_budget_weighting.alpha", 1.0))
             persistence_mix = float(
-                get_nested(cfg, "opsd.native_budget_weighting.persistence_mix", 0.1)
+                get_nested(cfg, "scopd.native_budget_weighting.persistence_mix", 0.1)
             )
-            beta_max = float(get_nested(cfg, "opsd.native_budget_weighting.beta_max", 0.5))
-            advantage_clip = float(get_nested(cfg, "opsd.native_budget_weighting.advantage_clip", 2.0))
+            beta_max = float(get_nested(cfg, "scopd.native_budget_weighting.beta_max", 0.5))
+            advantage_clip = float(get_nested(cfg, "scopd.native_budget_weighting.advantage_clip", 2.0))
             if not 0.0 <= alpha <= 4.0:
                 raise ValueError(f"Dual-budget alpha must be in [0, 4]; got {alpha}.")
             if not 0.0 <= persistence_mix <= 1.0:
@@ -7269,54 +7269,54 @@ def train(cfg: dict[str, Any]) -> Path:
     if method not in METHODS:
         raise ValueError(f"Unknown method {method!r}.")
     token_outlier_exclusion_enabled = bool(
-        get_nested(cfg, "opsd.token_outlier_exclusion.enabled", False)
+        get_nested(cfg, "scopd.token_outlier_exclusion.enabled", False)
     )
     token_kl_floor_filter_enabled = bool(
-        get_nested(cfg, "opsd.token_kl_floor_filter.enabled", False)
+        get_nested(cfg, "scopd.token_kl_floor_filter.enabled", False)
     )
     if token_kl_floor_filter_enabled:
-        if method != "opsd_nogt":
-            raise ValueError("Token KL floor filtering is restricted to training.method=opsd_nogt.")
-        min_kl = float(get_nested(cfg, "opsd.token_kl_floor_filter.min_kl", float("nan")))
+        if method != "scopd_nogt":
+            raise ValueError("Token KL floor filtering is restricted to training.method=scopd_nogt.")
+        min_kl = float(get_nested(cfg, "scopd.token_kl_floor_filter.min_kl", float("nan")))
         if not math.isfinite(min_kl) or min_kl < 0.0:
-            raise ValueError("opsd.token_kl_floor_filter.min_kl must be finite and nonnegative.")
+            raise ValueError("scopd.token_kl_floor_filter.min_kl must be finite and nonnegative.")
         reduction = str(
-            get_nested(cfg, "opsd.token_kl_floor_filter.reduction", "mean_kept")
+            get_nested(cfg, "scopd.token_kl_floor_filter.reduction", "mean_kept")
         ).strip().lower()
         if reduction != "mean_kept":
             raise ValueError("Token KL floor filtering requires reduction=mean_kept.")
         direction = str(
             get_nested(
                 cfg,
-                "opsd.token_kl_floor_filter.kl_direction",
+                "scopd.token_kl_floor_filter.kl_direction",
                 "teacher_to_student",
             )
         ).strip().lower()
         if direction != "teacher_to_student":
             raise ValueError(
-                "Token KL floor filtering must preserve OPSD KL(q_teacher || p_student)."
+                "Token KL floor filtering must preserve SCOPD KL(q_teacher || p_student)."
             )
         kl_chunk_size = int(
-            get_nested(cfg, "opsd.token_kl_floor_filter.kl_chunk_size", 32)
+            get_nested(cfg, "scopd.token_kl_floor_filter.kl_chunk_size", 32)
         )
         if kl_chunk_size <= 0:
-            raise ValueError("opsd.token_kl_floor_filter.kl_chunk_size must be positive.")
+            raise ValueError("scopd.token_kl_floor_filter.kl_chunk_size must be positive.")
         if token_outlier_exclusion_enabled:
             raise ValueError("Token KL floor filtering cannot be combined with top-k exclusion.")
-        if bool(get_nested(cfg, "opsd.native_budget_weighting.enabled", False)):
+        if bool(get_nested(cfg, "scopd.native_budget_weighting.enabled", False)):
             raise ValueError("Token KL floor filtering cannot be combined with native budget weighting.")
-        if bool(get_nested(cfg, "opsd.trajectory_weighting.enabled", False)):
+        if bool(get_nested(cfg, "scopd.trajectory_weighting.enabled", False)):
             raise ValueError("Token KL floor filtering cannot be combined with trajectory weighting.")
     if token_outlier_exclusion_enabled:
-        if method != "opsd_nogt":
-            raise ValueError("Token outlier exclusion is restricted to training.method=opsd_nogt.")
-        top_k = int(get_nested(cfg, "opsd.token_outlier_exclusion.top_k", 0) or 0)
+        if method != "scopd_nogt":
+            raise ValueError("Token outlier exclusion is restricted to training.method=scopd_nogt.")
+        top_k = int(get_nested(cfg, "scopd.token_outlier_exclusion.top_k", 0) or 0)
         top_k_by_ratio = get_nested(
-            cfg, "opsd.token_outlier_exclusion.top_k_by_ratio", None
+            cfg, "scopd.token_outlier_exclusion.top_k_by_ratio", None
         )
         if top_k_by_ratio is None and top_k <= 0:
             raise ValueError(
-                "opsd.token_outlier_exclusion.top_k must be positive when exclusion is enabled."
+                "scopd.token_outlier_exclusion.top_k must be positive when exclusion is enabled."
             )
         if top_k_by_ratio is not None:
             train_ratios = get_nested(cfg, "pruning.train_retention_ratios", [])
@@ -7331,54 +7331,54 @@ def train(cfg: dict[str, Any]) -> Path:
         ranking_direction = str(
             get_nested(
                 cfg,
-                "opsd.token_outlier_exclusion.ranking_kl_direction",
+                "scopd.token_outlier_exclusion.ranking_kl_direction",
                 "teacher_to_student",
             )
         ).strip().lower()
         if ranking_direction != "teacher_to_student":
             raise ValueError(
-                "Token outlier exclusion must rank the same forward KL as OPSD and requires "
+                "Token outlier exclusion must rank the same forward KL as SCOPD and requires "
                 "ranking_kl_direction=teacher_to_student."
             )
         training_direction = str(
             get_nested(
                 cfg,
-                "opsd.token_outlier_exclusion.training_kl_direction",
+                "scopd.token_outlier_exclusion.training_kl_direction",
                 "teacher_to_student",
             )
         ).strip().lower()
         if training_direction != "teacher_to_student":
             raise ValueError(
-                "Token outlier exclusion preserves OPSD and requires "
+                "Token outlier exclusion preserves SCOPD and requires "
                 "training_kl_direction=teacher_to_student."
             )
         kl_chunk_size = int(
-            get_nested(cfg, "opsd.token_outlier_exclusion.kl_chunk_size", 32)
+            get_nested(cfg, "scopd.token_outlier_exclusion.kl_chunk_size", 32)
         )
         if kl_chunk_size <= 0:
-            raise ValueError("opsd.token_outlier_exclusion.kl_chunk_size must be positive.")
+            raise ValueError("scopd.token_outlier_exclusion.kl_chunk_size must be positive.")
         if not bool(
-            get_nested(cfg, "opsd.token_outlier_exclusion.renormalize_remaining_mean", True)
+            get_nested(cfg, "scopd.token_outlier_exclusion.renormalize_remaining_mean", True)
         ):
             raise ValueError(
                 "Token outlier exclusion requires renormalize_remaining_mean=true to avoid loss-scale shrinkage."
             )
-        if bool(get_nested(cfg, "opsd.native_budget_weighting.enabled", False)):
+        if bool(get_nested(cfg, "scopd.native_budget_weighting.enabled", False)):
             raise ValueError("Token outlier exclusion cannot be combined with native budget weighting.")
-        if bool(get_nested(cfg, "opsd.trajectory_weighting.enabled", False)):
+        if bool(get_nested(cfg, "scopd.trajectory_weighting.enabled", False)):
             raise ValueError("Token outlier exclusion cannot be combined with trajectory weighting.")
     validate_paired_native_budget_config(cfg, method, parameter_scope, pruning_method)
     validate_phase_ratio_scaling_config(
-        get_nested(cfg, "opsd.phase_ratio_scaling", None),
+        get_nested(cfg, "scopd.phase_ratio_scaling", None),
         method=method,
         train_retention_ratios=get_nested(cfg, "pruning.train_retention_ratios", []),
     )
     curriculum_state = initialize_trajectory_curriculum_state(cfg)
-    teacher_ground_truth_access = bool(get_nested(cfg, "opsd.teacher_ground_truth_access", False))
-    if method == "opsd_gt_prompt" and not teacher_ground_truth_access:
-        raise ValueError("training.method=opsd_gt_prompt requires opsd.teacher_ground_truth_access=true.")
-    if method == "opsd_nogt" and teacher_ground_truth_access:
-        raise ValueError("training.method=opsd_nogt requires opsd.teacher_ground_truth_access=false.")
+    teacher_ground_truth_access = bool(get_nested(cfg, "scopd.teacher_ground_truth_access", False))
+    if method == "scopd_gt_prompt" and not teacher_ground_truth_access:
+        raise ValueError("training.method=scopd_gt_prompt requires scopd.teacher_ground_truth_access=true.")
+    if method == "scopd_nogt" and teacher_ground_truth_access:
+        raise ValueError("training.method=scopd_nogt requires scopd.teacher_ground_truth_access=false.")
     if method == "epic_official":
         required_values = {
             "epic.alpha": 0.5,
@@ -7426,16 +7426,16 @@ def train(cfg: dict[str, Any]) -> Path:
         if torch.cuda.is_available():
             torch.backends.cuda.matmul.allow_tf32 = True
             torch.backends.cudnn.allow_tf32 = True
-    if method == "opsd_fixed_teacher":
-        set_nested(cfg, "opsd.teacher_strategy", "fixed_base")
-        set_nested(cfg, "opsd.fixed_teacher", True)
+    if method == "scopd_fixed_teacher":
+        set_nested(cfg, "scopd.teacher_strategy", "fixed_base")
+        set_nested(cfg, "scopd.fixed_teacher", True)
     elif (
-        method == "opsd"
-        and not str(get_nested(cfg, "opsd.teacher_strategy", "") or "").strip()
-        and not str(get_nested(cfg, "opsd.teacher_adapter_path", "") or "").strip()
+        method == "scopd"
+        and not str(get_nested(cfg, "scopd.teacher_strategy", "") or "").strip()
+        and not str(get_nested(cfg, "scopd.teacher_adapter_path", "") or "").strip()
     ):
-        set_nested(cfg, "opsd.teacher_strategy", "dynamic_shared_current")
-        set_nested(cfg, "opsd.fixed_teacher", False)
+        set_nested(cfg, "scopd.teacher_strategy", "dynamic_shared_current")
+        set_nested(cfg, "scopd.fixed_teacher", False)
     output_dir = Path(str(cfg.get("output_dir", OUTPUT_ROOT / "checkpoints" / method)))
     resume_checkpoint, resume_metadata = prepare_resume_config(cfg, output_dir)
     log_path = output_dir / "training_log.jsonl"
@@ -7523,7 +7523,7 @@ def train(cfg: dict[str, Any]) -> Path:
     device_map = get_nested(cfg, "training.device_map", "auto")
     if distributed:
         device_map = {"": local_rank}
-        stagger = float(os.environ.get("OPSD_DDP_STAGGER_LOAD_SECONDS", "0"))
+        stagger = float(os.environ.get("SCOPD_DDP_STAGGER_LOAD_SECONDS", "0"))
         if stagger > 0:
             time.sleep(float(local_rank) * stagger)
     min_pixels, max_pixels = image_pixel_bounds_from_config(cfg)
@@ -7569,20 +7569,20 @@ def train(cfg: dict[str, Any]) -> Path:
     teacher_adapter_name = ""
     ema_shadow: dict[str, torch.Tensor] | None = None
     ema_parameter_names: list[str] = []
-    teacher_adapter_path = str(get_nested(cfg, "opsd.teacher_adapter_path", "") or "").strip()
-    ema_teacher_enabled = bool(get_nested(cfg, "opsd.use_ema_teacher", False)) or (
-        str(get_nested(cfg, "opsd.teacher_strategy", "") or "").strip().lower() in OPSD_EMA_TEACHER_ALIASES
+    teacher_adapter_path = str(get_nested(cfg, "scopd.teacher_adapter_path", "") or "").strip()
+    ema_teacher_enabled = bool(get_nested(cfg, "scopd.use_ema_teacher", False)) or (
+        str(get_nested(cfg, "scopd.teacher_strategy", "") or "").strip().lower() in SCOPD_EMA_TEACHER_ALIASES
     )
     ema_settings = resolve_ema_update_settings(cfg) if ema_teacher_enabled else {}
     if teacher_adapter_path:
         if not Path(teacher_adapter_path).exists():
-            raise FileNotFoundError(f"OPSD teacher adapter path does not exist: {teacher_adapter_path}")
-        teacher_adapter_name = str(get_nested(cfg, "opsd.teacher_adapter_name", DEFAULT_TEACHER_ADAPTER_NAME) or "")
+            raise FileNotFoundError(f"SCOPD teacher adapter path does not exist: {teacher_adapter_path}")
+        teacher_adapter_name = str(get_nested(cfg, "scopd.teacher_adapter_name", DEFAULT_TEACHER_ADAPTER_NAME) or "")
         if not teacher_adapter_name:
-            raise ValueError("opsd.teacher_adapter_name must be non-empty when opsd.teacher_adapter_path is set.")
+            raise ValueError("scopd.teacher_adapter_name must be non-empty when scopd.teacher_adapter_path is set.")
         if teacher_adapter_name == student_adapter_name:
             raise ValueError(
-                f"opsd.teacher_adapter_name={teacher_adapter_name!r} conflicts with the student adapter name."
+                f"scopd.teacher_adapter_name={teacher_adapter_name!r} conflicts with the student adapter name."
             )
         load_shared_teacher_lora_adapter(model, teacher_adapter_path, teacher_adapter_name)
     if ema_teacher_enabled:
@@ -7617,7 +7617,7 @@ def train(cfg: dict[str, Any]) -> Path:
         ]
         if unexpected_trainable:
             raise ValueError(
-                "Paired LLM-only OPSD found trainable parameters outside decoder LoRA: "
+                "Paired LLM-only SCOPD found trainable parameters outside decoder LoRA: "
                 f"{unexpected_trainable[:10]}"
             )
         expected_tensors = int(get_nested(cfg, "training.expected_trainable_tensors", 392))
@@ -7636,30 +7636,30 @@ def train(cfg: dict[str, Any]) -> Path:
             f"distributed={distributed}\nworld_size={world_size}\n"
             f"prompt_mode={prompt_mode}\n"
             f"pruning_method={pruning_method}\n"
-            f"fastv_tokens_anchor={os.environ.get('OPSD_FASTV_TOKENS_ANCHOR', '')}\n"
-            f"fastv_tokens_prune_layers={os.environ.get('OPSD_FASTV_TOKENS_PRUNE_LAYERS', '')}\n"
+            f"fastv_tokens_anchor={os.environ.get('SCOPD_FASTV_TOKENS_ANCHOR', '')}\n"
+            f"fastv_tokens_prune_layers={os.environ.get('SCOPD_FASTV_TOKENS_PRUNE_LAYERS', '')}\n"
             f"dataset_min_pixels={min_pixels}\n"
             f"dataset_max_pixels={max_pixels}\n"
             f"generation_max_new_tokens={get_nested(cfg, 'generation.max_new_tokens', 128)}\n"
             f"generation_max_unparseable_new_tokens={get_nested(cfg, 'generation.max_unparseable_new_tokens', '')}\n"
-            f"opsd_teacher_adapter_path={teacher_adapter_path}\n"
-            f"opsd_shared_teacher_adapter_name={teacher_adapter_name}\n"
-            f"opsd_student_adapter_name={student_adapter_name}\n"
-            f"opsd_teacher_strategy={get_nested(cfg, 'opsd.teacher_strategy', '')}\n"
-            f"opsd_use_ema_teacher={ema_teacher_enabled}\n"
-            f"opsd_ema_mode={ema_settings.get('mode', '')}\n"
-            f"opsd_ema_decay={ema_settings.get('decay', '')}\n"
-            f"opsd_ema_alpha={ema_settings.get('alpha', '')}\n"
-            f"opsd_ema_lazy_init={ema_settings.get('lazy_init', '')}\n"
-            f"opsd_ema_parameter_count={len(ema_parameter_names)}\n"
-            f"opsd_ema_shadow={ema_shadow is not None}\n"
-            f"opsd_token_outlier_exclusion={token_outlier_exclusion_enabled}\n"
-            f"opsd_token_outlier_top_k={get_nested(cfg, 'opsd.token_outlier_exclusion.top_k', 0)}\n"
-            f"opsd_token_outlier_top_k_by_ratio={get_nested(cfg, 'opsd.token_outlier_exclusion.top_k_by_ratio', None)}\n"
-            f"opsd_token_outlier_ranking_kl_direction={get_nested(cfg, 'opsd.token_outlier_exclusion.ranking_kl_direction', '')}\n"
-            f"opsd_token_kl_floor_filter={token_kl_floor_filter_enabled}\n"
-            f"opsd_token_kl_floor_min_kl={get_nested(cfg, 'opsd.token_kl_floor_filter.min_kl', '')}\n"
-            f"opsd_token_kl_floor_reduction={get_nested(cfg, 'opsd.token_kl_floor_filter.reduction', '')}\n"
+            f"scopd_teacher_adapter_path={teacher_adapter_path}\n"
+            f"scopd_shared_teacher_adapter_name={teacher_adapter_name}\n"
+            f"scopd_student_adapter_name={student_adapter_name}\n"
+            f"scopd_teacher_strategy={get_nested(cfg, 'scopd.teacher_strategy', '')}\n"
+            f"scopd_use_ema_teacher={ema_teacher_enabled}\n"
+            f"scopd_ema_mode={ema_settings.get('mode', '')}\n"
+            f"scopd_ema_decay={ema_settings.get('decay', '')}\n"
+            f"scopd_ema_alpha={ema_settings.get('alpha', '')}\n"
+            f"scopd_ema_lazy_init={ema_settings.get('lazy_init', '')}\n"
+            f"scopd_ema_parameter_count={len(ema_parameter_names)}\n"
+            f"scopd_ema_shadow={ema_shadow is not None}\n"
+            f"scopd_token_outlier_exclusion={token_outlier_exclusion_enabled}\n"
+            f"scopd_token_outlier_top_k={get_nested(cfg, 'scopd.token_outlier_exclusion.top_k', 0)}\n"
+            f"scopd_token_outlier_top_k_by_ratio={get_nested(cfg, 'scopd.token_outlier_exclusion.top_k_by_ratio', None)}\n"
+            f"scopd_token_outlier_ranking_kl_direction={get_nested(cfg, 'scopd.token_outlier_exclusion.ranking_kl_direction', '')}\n"
+            f"scopd_token_kl_floor_filter={token_kl_floor_filter_enabled}\n"
+            f"scopd_token_kl_floor_min_kl={get_nested(cfg, 'scopd.token_kl_floor_filter.min_kl', '')}\n"
+            f"scopd_token_kl_floor_reduction={get_nested(cfg, 'scopd.token_kl_floor_filter.reduction', '')}\n"
             f"gradient_checkpointing={gradient_checkpointing_enabled}\n"
             f"gradient_checkpointing_use_reentrant={get_nested(cfg, 'training.gradient_checkpointing_use_reentrant', '') if gradient_checkpointing_enabled else ''}\n"
             f"epic_upstream_repository={EPIC_UPSTREAM_REPOSITORY if method == 'epic_official' else ''}\n"
@@ -7712,22 +7712,22 @@ def train(cfg: dict[str, Any]) -> Path:
     effective_batch_size = global_step_unit * grad_accum
     probability_mode = trajectory_probability_mode(cfg)
     trajectory_mode = str(
-        get_nested(cfg, "opsd.trajectory_weighting.mode", "")
+        get_nested(cfg, "scopd.trajectory_weighting.mode", "")
     ).strip().lower()
     adaptive_sampler_online = (
-        bool(get_nested(cfg, "opsd.trajectory_weighting.enabled", False))
+        bool(get_nested(cfg, "scopd.trajectory_weighting.enabled", False))
         and trajectory_mode == "adaptive_budget_frontier_sampler_batch"
     )
     probability_scope = str(
-        get_nested(cfg, "opsd.trajectory_weighting.normalization_scope", "synchronized_block")
+        get_nested(cfg, "scopd.trajectory_weighting.normalization_scope", "synchronized_block")
     ).strip().lower()
     effective_batch_probability_weighting = (
         probability_mode is not None and probability_scope == "effective_batch"
     )
     replay_cfg: dict[str, Any] | None = None
     if effective_batch_probability_weighting:
-        if method != "opsd_nogt":
-            raise ValueError("Effective-batch JSD weighting requires training.method=opsd_nogt.")
+        if method != "scopd_nogt":
+            raise ValueError("Effective-batch JSD weighting requires training.method=scopd_nogt.")
         if micro_batch_size != 1:
             raise ValueError("Effective-batch JSD weighting currently requires micro_batch_size=1.")
         if not bool(get_nested(cfg, "paired_sampling.enabled", False)):
@@ -7735,8 +7735,8 @@ def train(cfg: dict[str, Any]) -> Path:
         if int(get_nested(cfg, "training.max_sample_retries", 0) or 0) != 0:
             raise ValueError("Effective-batch JSD weighting requires max_sample_retries=0.")
         replay_cfg = copy.deepcopy(cfg)
-        set_nested(replay_cfg, "opsd.native_budget_weighting.enabled", False)
-        set_nested(replay_cfg, "opsd.trajectory_weighting.enabled", False)
+        set_nested(replay_cfg, "scopd.native_budget_weighting.enabled", False)
+        set_nested(replay_cfg, "scopd.trajectory_weighting.enabled", False)
     checkpointing_enabled = bool(get_nested(cfg, "checkpointing.enabled", False))
     eval_snapshot_every = int(get_nested(cfg, "checkpointing.eval_snapshot_every", 0) or 0)
     resumable_every = int(get_nested(cfg, "checkpointing.resumable_every", 0) or 0)
@@ -8071,7 +8071,7 @@ def train(cfg: dict[str, Any]) -> Path:
                                 ),
                                 global_index=global_index,
                                 sample_id=sample.sample_id,
-                                namespace=str(get_nested(cfg, "paired_sampling.namespace", "opsd_pair_v1")),
+                                namespace=str(get_nested(cfg, "paired_sampling.namespace", "scopd_pair_v1")),
                             )
                             if bool(get_nested(cfg, "paired_sampling.enabled", False))
                             else None
@@ -8096,8 +8096,8 @@ def train(cfg: dict[str, Any]) -> Path:
                                 sample_metrics.update(official_epic_sample.metrics())
                             elif method == "grpo":
                                 sample_loss, sample_metrics = grpo_step(model, processor, sample, cfg, ratio)
-                            elif method in {"opsd", "opsd_fixed_teacher"}:
-                                sample_loss, sample_metrics = opsd_step(
+                            elif method in {"scopd", "scopd_fixed_teacher"}:
+                                sample_loss, sample_metrics = scopd_step(
                                     model,
                                     processor,
                                     sample,
@@ -8107,7 +8107,7 @@ def train(cfg: dict[str, Any]) -> Path:
                                     ema_shadow=ema_shadow,
                                     teacher_adapter_name=teacher_adapter_name,
                                 )
-                            elif method in {"opsd_nogt", "opsd_gt_prompt"}:
+                            elif method in {"scopd_nogt", "scopd_gt_prompt"}:
                                 effective_record = (
                                     effective_batch_window[accum]
                                     if effective_batch_probability_weighting
@@ -8134,7 +8134,7 @@ def train(cfg: dict[str, Any]) -> Path:
                                     active_cfg = cfg
                                 if active_cfg is None:
                                     raise AssertionError("Effective-batch replay config was not initialized.")
-                                sample_loss, sample_metrics = opsd_nogt_step(
+                                sample_loss, sample_metrics = scopd_nogt_step(
                                     model,
                                     processor,
                                     sample,
@@ -8143,7 +8143,7 @@ def train(cfg: dict[str, Any]) -> Path:
                                     teacher_model=teacher_model,
                                     ema_shadow=ema_shadow,
                                     teacher_adapter_name=teacher_adapter_name,
-                                    teacher_uses_ground_truth=method == "opsd_gt_prompt",
+                                    teacher_uses_ground_truth=method == "scopd_gt_prompt",
                                     rollout_seed=rollout_seed,
                                     progress_step=global_index,
                                     total_steps=max_steps,
@@ -8243,7 +8243,7 @@ def train(cfg: dict[str, Any]) -> Path:
                                 sample_loss, sample_metrics = offpolicy_step(model, processor, sample, cfg, ratio)
                             else:
                                 raise AssertionError(method)
-                            phase_ratio_config = get_nested(cfg, "opsd.phase_ratio_scaling", None)
+                            phase_ratio_config = get_nested(cfg, "scopd.phase_ratio_scaling", None)
                             if isinstance(phase_ratio_config, dict) and bool(
                                 phase_ratio_config.get("enabled", False)
                             ):
@@ -8370,10 +8370,10 @@ def train(cfg: dict[str, Any]) -> Path:
                             decay=float(ema_settings["decay"]),
                         )
                         ema_update_metrics = {
-                            "opsd_ema_update": "updated_teacher_adapter",
-                            "opsd_ema_mode": ema_settings["mode"],
-                            "opsd_ema_decay": float(ema_settings["decay"]),
-                            "opsd_ema_teacher_adapter": teacher_adapter_name,
+                            "scopd_ema_update": "updated_teacher_adapter",
+                            "scopd_ema_mode": ema_settings["mode"],
+                            "scopd_ema_decay": float(ema_settings["decay"]),
+                            "scopd_ema_teacher_adapter": teacher_adapter_name,
                         }
                     elif ema_teacher_enabled and ema_shadow is not None:
                         update_ema_shadow(
@@ -8383,16 +8383,16 @@ def train(cfg: dict[str, Any]) -> Path:
                             decay=float(ema_settings["decay"]),
                         )
                         ema_update_metrics = {
-                            "opsd_ema_update": "updated",
-                            "opsd_ema_mode": ema_settings["mode"],
-                            "opsd_ema_decay": float(ema_settings["decay"]),
+                            "scopd_ema_update": "updated",
+                            "scopd_ema_mode": ema_settings["mode"],
+                            "scopd_ema_decay": float(ema_settings["decay"]),
                         }
                     elif ema_teacher_enabled and ema_shadow is None and teacher_model is None:
                         ema_shadow = create_ema_shadow(model, ema_parameter_names)
                         ema_update_metrics = {
-                            "opsd_ema_update": "initialized",
-                            "opsd_ema_mode": ema_settings["mode"],
-                            "opsd_ema_decay": float(ema_settings["decay"]),
+                            "scopd_ema_update": "initialized",
+                            "scopd_ema_mode": ema_settings["mode"],
+                            "scopd_ema_decay": float(ema_settings["decay"]),
                         }
                     elif ema_teacher_enabled and teacher_model is not None:
                         update_ema_teacher(
@@ -8402,9 +8402,9 @@ def train(cfg: dict[str, Any]) -> Path:
                             decay=float(ema_settings["decay"]),
                         )
                         ema_update_metrics = {
-                            "opsd_ema_update": "updated_external_teacher",
-                            "opsd_ema_mode": ema_settings["mode"],
-                            "opsd_ema_decay": float(ema_settings["decay"]),
+                            "scopd_ema_update": "updated_external_teacher",
+                            "scopd_ema_mode": ema_settings["mode"],
+                            "scopd_ema_decay": float(ema_settings["decay"]),
                         }
                         teacher_model.eval()
                     optimizer.zero_grad(set_to_none=True)
@@ -8472,13 +8472,13 @@ def train(cfg: dict[str, Any]) -> Path:
                     print(json.dumps(row, ensure_ascii=False), flush=True)
                     if not checkpointing_enabled and save_every > 0 and global_step % save_every == 0:
                         save_checkpoint(model, output_dir / f"step_{global_step}", ema_shadow=ema_shadow)
-                if bool(get_nested(cfg, "opsd.native_budget_weighting.enabled", False)):
+                if bool(get_nested(cfg, "scopd.native_budget_weighting.enabled", False)):
                     write_jsonl(output_dir / f"rank{rank}_native_budget_metrics.jsonl", row)
-                if bool(get_nested(cfg, "opsd.token_outlier_exclusion.enabled", False)):
+                if bool(get_nested(cfg, "scopd.token_outlier_exclusion.enabled", False)):
                     write_jsonl(outlier_rank_log_path, row)
-                if bool(get_nested(cfg, "opsd.token_kl_floor_filter.enabled", False)):
+                if bool(get_nested(cfg, "scopd.token_kl_floor_filter.enabled", False)):
                     write_jsonl(kl_floor_rank_log_path, row)
-                if bool(get_nested(cfg, "opsd.phase_ratio_scaling.enabled", False)):
+                if bool(get_nested(cfg, "scopd.phase_ratio_scaling.enabled", False)):
                     write_jsonl(output_dir / f"rank{rank}_phase_ratio_scaling.jsonl", row)
                 if bool(get_nested(cfg, "paired_sampling.enabled", False)):
                     write_jsonl(

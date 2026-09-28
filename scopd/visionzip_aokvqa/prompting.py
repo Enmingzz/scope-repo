@@ -71,7 +71,7 @@ ANALYSIS_TARGET_TEMPLATE = """<analysis>
 <answer>{correct_option_letter}</answer>"""
 
 
-OPSD_TEACHER_PROMPT_TEMPLATE = """<image>
+SCOPD_TEACHER_PROMPT_TEMPLATE = """<image>
 
 You are given an image and a multiple-choice visual reasoning question.
 
@@ -98,7 +98,7 @@ Reasoning: ...
 Final answer: ..."""
 
 
-OPSD_TEACHER_THINKING_PROMPT_TEMPLATE = """<image>
+SCOPD_TEACHER_THINKING_PROMPT_TEMPLATE = """<image>
 
 You are given an image and a multiple-choice visual reasoning question.
 
@@ -121,7 +121,7 @@ After reading the reference solution above, make sure you truly understand the r
 {thinking_instruction}"""
 
 
-OPSD_TEACHER_OPEN_PROMPT_TEMPLATE = """<image>
+SCOPD_TEACHER_OPEN_PROMPT_TEMPLATE = """<image>
 
 {question}
 
@@ -133,7 +133,7 @@ Here is a reference solution to this problem:
 After reading the reference solution above, make sure you truly understand the reasoning behind each step - do not copy or paraphrase it. Now, using your own words and independent reasoning, derive the same final answer to the problem above. Think step by step, explore different approaches, and do not be afraid to backtrack or reconsider if something does not work out."""
 
 
-OPSD_TEACHER_OPEN_THINKING_PROMPT_TEMPLATE = """<image>
+SCOPD_TEACHER_OPEN_THINKING_PROMPT_TEMPLATE = """<image>
 
 {question}
 
@@ -262,17 +262,17 @@ def build_target(
     )
 
 
-def build_opsd_teacher_prompt(
+def build_scopd_teacher_prompt(
     question: str,
     options: list[str],
     reference_solution: str,
     prompt_mode: str | bool | None = None,
     enable_thinking: bool | None = None,
 ) -> str:
-    """Build the privileged teacher prompt used by the official OPSD setup."""
+    """Build the privileged teacher prompt used by the official SCOPD setup."""
 
     if len(options) not in {0, 4}:
-        raise ValueError(f"OPSD teacher prompt requires either zero or four options, got {len(options)}.")
+        raise ValueError(f"SCOPD teacher prompt requires either zero or four options, got {len(options)}.")
     clean_options = [str(option).strip() for option in options]
     reference = str(reference_solution or "").strip()
     if not reference:
@@ -280,15 +280,15 @@ def build_opsd_teacher_prompt(
     mode = normalize_prompt_mode(prompt_mode, enable_thinking=enable_thinking)
     if clean_options:
         template = (
-            OPSD_TEACHER_THINKING_PROMPT_TEMPLATE
+            SCOPD_TEACHER_THINKING_PROMPT_TEMPLATE
             if mode in {"thinking", "analysis"}
-            else OPSD_TEACHER_PROMPT_TEMPLATE
+            else SCOPD_TEACHER_PROMPT_TEMPLATE
         )
     else:
         template = (
-            OPSD_TEACHER_OPEN_THINKING_PROMPT_TEMPLATE
+            SCOPD_TEACHER_OPEN_THINKING_PROMPT_TEMPLATE
             if mode in {"thinking", "analysis"}
-            else OPSD_TEACHER_OPEN_PROMPT_TEMPLATE
+            else SCOPD_TEACHER_OPEN_PROMPT_TEMPLATE
         )
     return template.format(
         question=strip_image_tokens(question),

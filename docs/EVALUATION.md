@@ -7,7 +7,7 @@ checkpoint revision or local content digest. Use the same checkpoint for every
 method, retention ratio and benchmark.
 
 The actual system prompt is the `SYSTEM_PROMPT` constant in
-`scope_eval/protocol.py`. It is hashed into every fallback request. The request
+`scopd_eval/protocol.py`. It is hashed into every fallback request. The request
 contains a JSON object with `question`, `options`, `reference_answer`,
 `candidate_final_answer`, and `candidate_extraction`, followed by one image
 content block per original image. Paths are resolved locally and image bytes are
@@ -64,9 +64,9 @@ fingerprints match; a running directory is protected against concurrent writers.
 
 ```bash
 source runtime/activate.sh eval
-python -m scope_eval.import_results --dataset mmstar \
+python -m scopd_eval.import_results --dataset mmstar \
   --result-file "$OLD_RESULT_XLSX" --output "$NEW_INPUT_JSONL"
-python -m scope_eval.postprocess --input "$NEW_INPUT_JSONL" \
+python -m scopd_eval.postprocess --input "$NEW_INPUT_JSONL" \
   --output-dir "$NEW_POSTPROCESS_DIR" --judge-revision "$JUDGE_MODEL_REVISION"
 ```
 

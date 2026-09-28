@@ -55,8 +55,8 @@ def validate_phase_ratio_scaling_config(
 ) -> None:
     if not config or not bool(config.get("enabled", False)):
         return
-    if method != "opsd_nogt":
-        raise ValueError("Direct phase-ratio scaling is supported only for training.method=opsd_nogt.")
+    if method != "scopd_nogt":
+        raise ValueError("Direct phase-ratio scaling is supported only for training.method=scopd_nogt.")
     normalization = str(config.get("normalization", "none")).strip().lower()
     if normalization != "none":
         raise ValueError("Direct phase-ratio scaling requires normalization=none.")

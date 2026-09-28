@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Core SCOPE and SCOPD+ training, with one shared reproduction entry point.
+"""Core SCOPD and SCOPD+ training, with one shared reproduction entry point.
 
-SCOPE:  mean_t KL(q_full_EMA || p_b) on a student-generated response.
+SCOPD:  mean_t KL(q_full_EMA || p_b) on a student-generated response.
 SCOPD+: the same loss, averaged over the top ceil(rho * T) response positions
         ranked by B_t = JSD(p_b, p_{b+delta}). Selection is stop-gradient.
-Naming: former OPSD -> SCOPE; former SCOPE -> SCOPD+. The algorithms are unchanged.
 
 Defaults: Qwen2.5-VL-7B, native VisionZip b=.10, delta=.01 (10% -> 11%),
 rho=.10, LLM-only LoRA r16/alpha32/dropout0, greedy rollout cap1024, BF16,
@@ -12,23 +11,23 @@ FP32 divergences, EMA decay .9999, constant AdamW LR2e-5, effective batch32.
 Image budget: min_pixels=max_pixels=1280*28*28=1003520. Native resize rounding
 can make the actual visual-token count differ from this nominal budget.
 Training rollouts generate at most 1024 response tokens, excluding the prompt
-and image tokens. This is the current default, not a historical-run claim.
+and image tokens.
 --max-samples 10240 means 320 optimizer updates, NOT 10240 updates.
 
 This file contains the algorithm, not a fork of the model/trainer. Run inside
-the opsd checkout: it reuses visionzip_aokvqa for the patched Qwen/VisionZip
+the scopd checkout: it reuses visionzip_aokvqa for the patched Qwen/VisionZip
 backend, data/prompt processing, DDP, accumulation, EMA updates, and complete
 resume checkpoints. No experiment-directory imports are used. Stock PyPI
 Transformers does not implement this VisionZip backend.
 
 Usage (same arguments and data order for both methods):
-  python train_opsd_scope.py --method scope --dataset DATA.jsonl \
-      --image-root IMAGES --output-dir OUT/scope
-  torchrun --standalone --nproc_per_node=4 train_opsd_scope.py --method scopd+ \
+  python train_scopd.py --method scopd --dataset DATA.jsonl \
+      --image-root IMAGES --output-dir OUT/scopd
+  torchrun --standalone --nproc_per_node=4 train_scopd.py --method scopd+ \
       --dataset DATA.jsonl --image-root IMAGES --output-dir OUT/scopd_plus
 Resume with the original arguments plus --resume-latest. See
-docs/OPSD_SCOPE_REPRODUCTION.md for the runtime and data requirements.
-Pre-rename checkpoint contracts are not silently migrated to the new names.
+docs/TRAINING.md for the runtime and data requirements.
+Resume requires a matching method and configuration contract.
 """
 
 from __future__ import annotations
@@ -126,11 +125,11 @@ def training_step(model: Any, processor: Any, sample: Any, cfg: dict,
     so temporary parameter swapping cannot mutate saved student activations.
     Native b and b+delta selection/merging are independent, not nested masks.
     """
-    from opsd.visionzip_aokvqa import train as runtime
+    from scopd.visionzip_aokvqa import train as runtime
 
     if (teacher_model is not None or teacher_adapter_name or teacher_uses_ground_truth
             or fixed_rollout_token_ids is not None):
-        raise ValueError("This entry point supports on-policy, no-GT, EMA-LoRA SCOPE/SCOPD+ only")
+        raise ValueError("This entry point supports on-policy, no-GT, EMA-LoRA SCOPD/SCOPD+ only")
     if retention_ratio != cfg["pruning"]["train_retention_ratios"][0]:
         raise ValueError("Unexpected student retention ratio")
     device = runtime.primary_device(model)
@@ -180,7 +179,7 @@ def training_step(model: Any, processor: Any, sample: Any, cfg: dict,
     selected = valid.nonzero().flatten()
     signal = None
     probe_meta = None
-    selection = cfg["opsd"]["budget_token_selection"]
+    selection = cfg["scopd"]["budget_token_selection"]
     if selection["enabled"]:
         plus = round(retention_ratio + selection["delta"], 8)
         raw_model = runtime.unwrap_model(model)
@@ -211,14 +210,14 @@ def training_step(model: Any, processor: Any, sample: Any, cfg: dict,
         with torch.no_grad():
             unselected_loss = forward_kl(q, p, selection["kl_chunk_size"])
     metrics = {
-        "loss_type": "scopd_plus_top_budget_jsd_forward_kl" if signal is not None else "scope_nogt_forward_kl",
+        "loss_type": "scopd_plus_top_budget_jsd_forward_kl" if signal is not None else "scopd_nogt_forward_kl",
         "kl_loss": float(loss.detach()), "unweighted_kl_loss": float(unselected_loss),
         "generated_tokens": count, "selected_tokens": selected.numel(),
         "sampled_b": retention_ratio,
         "sampled_b_plus": round(retention_ratio + selection["delta"], 8) if signal is not None else None,
         "teacher_context": "student_prompt_no_ground_truth", "teacher_ground_truth_access": False,
         "teacher_source": "ema_lora_shadow" if ema_shadow is not None else "ema_uninitialized_current",
-        "opsd_teacher_strategy": "ema", "rollout_use_cache": True,
+        "scopd_teacher_strategy": "ema", "rollout_use_cache": True,
         "teacher_visual_tokens": teacher_meta["num_kept_visual_tokens"],
         "student_visual_tokens": meta["num_kept_visual_tokens"],
         "probe_visual_tokens": probe_meta["num_kept_visual_tokens"] if probe_meta else None,
@@ -248,8 +247,8 @@ def training_step(model: Any, processor: Any, sample: Any, cfg: dict,
 
 def parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--method", choices=("scope", "scopd+"), required=True,
-                   help="scope: all response tokens (formerly opsd); scopd+: top budget-JSD tokens (formerly scope)")
+    p.add_argument("--method", choices=("scopd", "scopd+"), required=True,
+                   help="scopd: all response tokens; scopd+: top budget-JSD response tokens")
     p.add_argument("--model", default="Qwen/Qwen2.5-VL-7B-Instruct", help="Local pinned base-model snapshot or HF ID")
     p.add_argument("--dataset", type=Path, required=True, help="Ordered training JSONL, not validation data")
     p.add_argument("--image-root", type=Path, required=True)
@@ -290,13 +289,13 @@ def build_config(args: argparse.Namespace, world_size: int) -> dict:
     return {
         "base_model": args.model,
         "experiment": {"name": args.method, "parameter_scope": "language_decoder_only",
-                       "entrypoint": "train_opsd_scope.py", "algorithm_version": 2},
+                       "entrypoint": "train_scopd.py", "algorithm_version": 3},
         "dataset": {"name": str(args.dataset.resolve()), "image_root": str(args.image_root.resolve()),
                     "shuffle": False, "use_splits": ["train"], "limit": 0,
                     "min_pixels": args.image_token_budget * 28 * 28,
                     "max_pixels": args.image_token_budget * 28 * 28},
         "prompt": {"enable_thinking": True},
-        "training": {"method": "opsd_nogt", "max_steps": args.max_samples, "start_step": 0,
+        "training": {"method": "scopd_nogt", "max_steps": args.max_samples, "start_step": 0,
                      "seed": args.seed, "bf16": True, "attn_implementation": "flash_attention_2",
                      "device_map": {"": 0}, "use_lora": True,
                      "lora_r": 16, "lora_alpha": 32, "lora_dropout": 0.0,
@@ -312,9 +311,9 @@ def build_config(args: argparse.Namespace, world_size: int) -> dict:
         "pruning": {"method": "visionzip", "retention_ratio_schedule": "paired_deterministic_uniform",
                     "train_retention_ratios": [args.retention], "allow_embedding_fallback": False},
         "paired_sampling": {"enabled": True, "allow_custom_retention_ratios": True,
-                            "namespace": "opsd_original10240_r010_budget_jsd_top10_gap01_20260905_v1",
+                            "namespace": "scopd_pair_v1",
                             "ratio_seed": args.seed, "rollout_seed": args.seed},
-        "opsd": {"teacher_strategy": "ema", "use_ema_teacher": True, "ema_decay": 0.9999,
+        "scopd": {"teacher_strategy": "ema", "use_ema_teacher": True, "ema_decay": 0.9999,
                  "ema_lazy_init": True, "teacher_ground_truth_access": False, "temperature": 1.0,
                  "native_budget_weighting": {"enabled": False},
                  "budget_token_selection": {"enabled": args.method == "scopd+", "top_fraction": args.top_fraction,
@@ -353,7 +352,7 @@ def record_runtime(output_dir: str, resumed_adapter: str) -> None:
     names = ("torch", "transformers", "peft", "tokenizers", "PIL", "flash_attn",
              "transformers.models.qwen2_5_vl.modeling_qwen2_5_vl",
              "transformers.modeling_flash_attention_utils",
-             "opsd.visionzip_aokvqa.qwen_wrapper", "opsd.visionzip_aokvqa.train")
+             "scopd.visionzip_aokvqa.qwen_wrapper", "scopd.visionzip_aokvqa.train")
     modules = {}
     for name in names:
         module = sys.modules.get(name)
@@ -373,19 +372,19 @@ def record_runtime(output_dir: str, resumed_adapter: str) -> None:
 @contextmanager
 def install_core(runtime, output_dir: str | None = None):
     """Process-local hooks only; existing trainer files/runs are not changed."""
-    old_step, old_lora = runtime.opsd_nogt_step, runtime.apply_lora
-    runtime.opsd_nogt_step = training_step
+    old_step, old_lora = runtime.scopd_nogt_step, runtime.apply_lora
+    runtime.scopd_nogt_step = training_step
     runtime.apply_lora = checked_adapter_loader(old_lora, output_dir)
     try:
         yield
     finally:
-        runtime.opsd_nogt_step, runtime.apply_lora = old_step, old_lora
+        runtime.scopd_nogt_step, runtime.apply_lora = old_step, old_lora
 
 
 def prepare_run(cfg: dict, resume_latest: bool) -> bool:
     """Fail closed on changed data, incomplete resume state, or reused outputs."""
-    from opsd.visionzip_aokvqa import train as runtime
-    from opsd.visionzip_aokvqa.data_integrity import sha256_file
+    from scopd.visionzip_aokvqa import train as runtime
+    from scopd.visionzip_aokvqa.data_integrity import sha256_file
 
     dataset = Path(cfg["dataset"]["name"])
     if not dataset.is_file() or not Path(cfg["dataset"]["image_root"]).is_dir():
@@ -432,7 +431,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if not torch.cuda.is_available():
         raise RuntimeError("Training needs an allocated CUDA GPU; use --print-config on a login node")
-    from opsd.visionzip_aokvqa import train as runtime
+    from scopd.visionzip_aokvqa import train as runtime
     distributed, _, _, _ = runtime.setup_distributed()
     try:
         if not prepare_run(cfg, args.resume_latest):

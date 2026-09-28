@@ -47,11 +47,11 @@ def enable_visual_checkpoint_input_grads(model: Any) -> str:
             raise TypeError(f"visual.patch_embed returned {type(output)!r}, expected torch.Tensor.")
         output.requires_grad_(True)
 
-    prior = getattr(model, "_opsd_visual_checkpoint_input_grad_hook", None)
+    prior = getattr(model, "_scopd_visual_checkpoint_input_grad_hook", None)
     if prior is not None:
         prior.remove()
     handle = module.register_forward_hook(require_output_grad)
-    setattr(model, "_opsd_visual_checkpoint_input_grad_hook", handle)
+    setattr(model, "_scopd_visual_checkpoint_input_grad_hook", handle)
     return name
 
 

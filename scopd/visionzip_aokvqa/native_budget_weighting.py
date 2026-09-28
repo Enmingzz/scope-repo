@@ -827,7 +827,7 @@ def kl_abs_projection_soft_or_topk_partition(
     """Select response tokens using TIP-style SoftOR over KL and ``abs(P)``.
 
     Both signals are normalized independently within one response.  Only the
-    absolute projection signal is winsorized; the differentiable OPSD KL is
+    absolute projection signal is winsorized; the differentiable SCOPD KL is
     detached for ranking and remains unchanged in the selected-token loss.
     """
 
@@ -878,7 +878,7 @@ def kl_abs_projection_soft_or_topk_partition(
         teacher = teacher.clamp_min(0.0)
         budget = budget.clamp_min(0.0)
         teacher_plus = teacher_plus.clamp_min(0.0)
-        # Ranking is detached, so this does not alter the differentiable OPSD loss.
+        # Ranking is detached, so this does not alter the differentiable SCOPD loss.
         kl = kl.clamp_min(0.0)
         projection = 0.5 * (teacher + budget - teacher_plus)
         absolute_projection = projection.abs()
@@ -912,7 +912,7 @@ def kl_abs_projection_soft_or_topk_partition(
         uniform_fallback = kl_degenerate and projection_degenerate
         selected = torch.zeros_like(valid)
         if uniform_fallback:
-            # Preserve vanilla OPSD instead of selecting arbitrary token positions.
+            # Preserve vanilla SCOPD instead of selecting arbitrary token positions.
             selected[valid] = True
         else:
             valid_indices = torch.nonzero(valid, as_tuple=False).reshape(-1)
@@ -1000,7 +1000,7 @@ def projection_mass_grouped_weights(
             or (teacher_plus[valid] < -1e-6).any()
             or (loss[valid] < -1e-6).any()
         ):
-            raise ValueError("JSD and OPSD loss inputs must be nonnegative.")
+            raise ValueError("JSD and SCOPD loss inputs must be nonnegative.")
 
         projection = 0.5 * (teacher + budget - teacher_plus)
         positive_projection = projection.clamp_min(0.0)
@@ -1039,7 +1039,7 @@ def projection_mass_grouped_weights(
         grouped_mass = (raw_weight[valid] * loss[valid]).sum()
         if preserve_loss_mass and float(reference_mass) > eps:
             if not torch.isfinite(grouped_mass) or float(grouped_mass) <= 0.0:
-                raise FloatingPointError(f"Invalid grouped OPSD loss mass: {float(grouped_mass)}")
+                raise FloatingPointError(f"Invalid grouped SCOPD loss mass: {float(grouped_mass)}")
             loss_mass_scale = reference_mass / grouped_mass
         else:
             loss_mass_scale = torch.ones((), device=loss.device, dtype=torch.float32)
@@ -1140,7 +1140,7 @@ def projection_fraction_grouped_weights(
             or (teacher_plus[valid] < -1e-6).any()
             or (loss[valid] < -1e-6).any()
         ):
-            raise ValueError("JSD and OPSD loss inputs must be nonnegative.")
+            raise ValueError("JSD and SCOPD loss inputs must be nonnegative.")
 
         projection = 0.5 * (teacher + budget - teacher_plus)
         projection_fraction = projection / teacher.clamp_min(eps)
@@ -1188,7 +1188,7 @@ def projection_fraction_grouped_weights(
         if preserve_loss_mass and float(reference_mass) > eps:
             if not torch.isfinite(grouped_mass) or float(grouped_mass) <= 0.0:
                 raise FloatingPointError(
-                    f"Invalid grouped OPSD loss mass: {float(grouped_mass)}"
+                    f"Invalid grouped SCOPD loss mass: {float(grouped_mass)}"
                 )
             loss_mass_scale = reference_mass / grouped_mass
         else:
@@ -1279,7 +1279,7 @@ def budget_jsd_conditioned_abs_projection_grouped_weights(
             or (teacher_plus[valid] < -1e-6).any()
             or (loss[valid] < -1e-6).any()
         ):
-            raise ValueError("JSD and OPSD loss inputs must be nonnegative.")
+            raise ValueError("JSD and SCOPD loss inputs must be nonnegative.")
 
         projection = 0.5 * (teacher + budget - teacher_plus)
         projection_fraction = projection / teacher.clamp_min(eps)
@@ -1334,7 +1334,7 @@ def budget_jsd_conditioned_abs_projection_grouped_weights(
         if preserve_loss_mass and float(reference_mass) > eps:
             if not torch.isfinite(grouped_mass) or float(grouped_mass) <= 0.0:
                 raise FloatingPointError(
-                    f"Invalid B-JSD/absolute-F grouped OPSD loss mass: {float(grouped_mass)}"
+                    f"Invalid B-JSD/absolute-F grouped SCOPD loss mass: {float(grouped_mass)}"
                 )
             loss_mass_scale = reference_mass / grouped_mass
         else:
@@ -1420,7 +1420,7 @@ def teacher_gap_persistence_weights(
     """Prioritize hard teacher gaps that an extra visual budget does not rescue.
 
     The final scale preserves the detached, per-sample KL mass exactly. This
-    keeps the scalar loss scale matched to vanilla OPSD while redistributing
+    keeps the scalar loss scale matched to vanilla SCOPD while redistributing
     gradients across valid generated-token positions.
     """
 
@@ -1506,7 +1506,7 @@ def symmetric_teacher_gap_stability_weights(
     """Downweight tokens whose teacher gap changes under a nearby visual budget.
 
     The symmetric relative change removes the absolute KL scale. The detached
-    KL-mass normalization preserves each sample's vanilla OPSD scalar loss and
+    KL-mass normalization preserves each sample's vanilla SCOPD scalar loss and
     changes only the distribution of gradients across generated tokens.
     """
 
@@ -1585,12 +1585,12 @@ def counterfactual_rescue_amplification_weights(
     alpha: float = 0.5,
     eps: float = 1e-8,
 ) -> CounterfactualRescueAmplificationWeights:
-    """Amplify full-teacher OPSD where extra visual budget closes the gap.
+    """Amplify full-teacher SCOPD where extra visual budget closes the gap.
 
     The adjacent native budget is used only as a detached teachability probe.
     It never replaces or mixes the full-token teacher target. A bounded rescue
     fraction mildly amplifies the original forward-KL gradient, while detached
-    per-sample KL-mass normalization preserves vanilla OPSD's scalar loss.
+    per-sample KL-mass normalization preserves vanilla SCOPD's scalar loss.
     """
 
     if not 0.0 <= float(alpha) <= 4.0:
@@ -1642,7 +1642,7 @@ def counterfactual_teachability_mixture_weights(
     counterfactual probe of whether the same model can absorb that correction
     when given slightly more visual evidence. The full-token teacher remains
     the sole target and detached KL-mass normalization preserves the vanilla
-    OPSD scalar loss for every sample.
+    SCOPD scalar loss for every sample.
     """
 
     if not 0.0 <= float(alpha) <= 4.0:
@@ -1707,7 +1707,7 @@ def counterfactual_teachability_modulation_weights(
     that priority by a bounded multiplicative factor, so an easy token cannot
     outrank a hard correction solely because its relative rescue is large.
     The probe and all weights are detached, the full-token teacher remains the
-    sole target, and per-sample KL-mass normalization preserves vanilla OPSD's
+    sole target, and per-sample KL-mass normalization preserves vanilla SCOPD's
     scalar loss exactly.
     """
 
@@ -1774,7 +1774,7 @@ def conditional_rescue_residual_weights(
     teacher gap. We remove that first-order confound by subtracting the median
     rescue in each within-response teacher-gap quantile. The residual is then
     centered over valid tokens and used as a small symmetric perturbation of
-    unit weights. Detached KL-mass normalization preserves vanilla OPSD's
+    unit weights. Detached KL-mass normalization preserves vanilla SCOPD's
     scalar loss exactly for every response.
     """
 
@@ -1853,7 +1853,7 @@ def grouped_kl_mass_weights(
     candidate and its teacher-gap-only control. The detached ranking signal
     chooses the high group; the full-teacher KL remains the sole objective.
     A final detached KL-mass correction makes the forward scalar exactly match
-    vanilla OPSD for each response while retaining the grouped gradient ratio.
+    vanilla SCOPD for each response while retaining the grouped gradient ratio.
     """
 
     if not 0.0 < float(top_fraction) < 1.0:
@@ -1932,7 +1932,7 @@ def max_kl_fraction_inverse_jsd_weights(
 ) -> MaxKLFractionInverseJSDWeights:
     """Apply mean-one inverse-JSD weights inside a high teacher-KL group.
 
-    The high group contains valid tokens whose forward OPSD KL is strictly
+    The high group contains valid tokens whose forward SCOPD KL is strictly
     greater than ``max_kl_fraction`` times the trajectory maximum. Tokens
     outside the group retain unit weight. Inverse-JSD weights are normalized
     to mean one inside the group, which also makes the complete trajectory's
@@ -2224,7 +2224,7 @@ def budget_consistent_rank_weights(
     ``min(K_b, K_b_plus)`` is a conservative lower bound on the teacher gap
     across the two budgets. Per-sample ranks remove absolute KL-scale and
     response-length confounds. KL-mass normalization keeps the forward scalar
-    loss identical to vanilla OPSD while changing token-level gradients.
+    loss identical to vanilla SCOPD while changing token-level gradients.
     """
 
     if not 0.0 <= float(alpha) <= 4.0:
@@ -2283,7 +2283,7 @@ def budget_residual_hardness_weights(
     The deployed-budget teacher gap remains the primary signal. A small,
     preregistered persistence term favors gaps that remain large after adding
     native visual tokens. Per-sample ranks make the two terms commensurate;
-    KL-mass normalization preserves vanilla OPSD's detached scalar loss.
+    KL-mass normalization preserves vanilla SCOPD's detached scalar loss.
     """
 
     if not 0.0 <= float(alpha) <= 4.0:
@@ -2369,7 +2369,7 @@ def counterfactual_budget_bridge(
 
     The bridge is enabled only where the native ``b_plus`` student is closer
     to the full teacher than the deployed-budget student. The routed loss is
-    KL-mass normalized so its detached scalar value equals vanilla OPSD.
+    KL-mass normalized so its detached scalar value equals vanilla SCOPD.
     """
 
     if not 0.0 <= float(max_bridge_fraction) <= 1.0:
@@ -2551,7 +2551,7 @@ def counterfactual_gradient_residual_gate(
     the positive orthogonal-projection coefficient, so the residual cannot
     reverse the teacher gradient along the budget direction. All values are
     detached; this gate is used with a stop-gradient scalar correction that
-    preserves the vanilla OPSD forward loss exactly.
+    preserves the vanilla SCOPD forward loss exactly.
     """
 
     if not 0.0 <= float(cancellation_strength) <= 1.0:
@@ -2657,7 +2657,7 @@ def budget_tangent_residual_weights(
     tangent in vocabulary-probability space. A token receives high priority
     only when its deployed-budget teacher KL is high and that tangent explains
     little of the full-teacher gradient. Detached KL-mass normalization keeps
-    the scalar objective exactly equal to vanilla OPSD for each sample.
+    the scalar objective exactly equal to vanilla SCOPD for each sample.
     """
 
     if not 0.0 <= float(alpha) <= 4.0:
@@ -2815,7 +2815,7 @@ def budget_counterfactual_teachability_weights(
     pruning-specific counterfactual: it suppresses teacher corrections that
     are already explained by adding visual evidence while prioritizing
     support-compatible utilization gaps. All signals and weights are detached,
-    and the per-sample KL mass matches vanilla OPSD exactly.
+    and the per-sample KL mass matches vanilla SCOPD exactly.
     """
 
     if not 0.0 <= float(alpha) <= 4.0:

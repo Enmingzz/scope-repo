@@ -50,7 +50,7 @@ def compute_per_token_kl(
 
     The vocabulary calculation is performed in FP32 and chunked over token
     positions.  Passing full-token teacher logits as ``source_logits`` and
-    pruned-student logits as ``reference_logits`` matches the existing OPSD
+    pruned-student logits as ``reference_logits`` matches the existing SCOPD
     direction used by :func:`compute_forward_kl`.
     """
 
@@ -259,7 +259,7 @@ def compute_budget_gradient_alignment(
     For forward KL, the gradient with respect to the deployed student's
     logits is proportional to ``p_b - q``.  The adjacent-budget bridge has
     gradient ``p_b - p_b_plus``.  Positive cosine means that descending the
-    bridge objective is locally aligned with descending the original OPSD
+    bridge objective is locally aligned with descending the original SCOPD
     objective.  The returned diagnostic is fully detached.
     """
 
@@ -709,10 +709,10 @@ def compute_generalized_jsd(
     clip_mode: str = "token",
     chunk_size: int = 32,
 ) -> torch.Tensor:
-    """Official OPSD-style generalized JSD over generated token positions.
+    """Official SCOPD-style generalized JSD over generated token positions.
 
     With beta=0 this is forward KL from teacher to student, matching the main
-    OPSD setting.  With beta=1 it becomes reverse KL.  Intermediate beta values
+    SCOPD setting.  With beta=1 it becomes reverse KL.  Intermediate beta values
     use the generalized Jensen-Shannon mixture from the official trainer.
     """
 
@@ -726,7 +726,7 @@ def compute_generalized_jsd(
     temperature = float(temperature)
     beta = float(beta)
     if beta < 0.0 or beta > 1.0:
-        raise ValueError(f"OPSD beta must be in [0, 1], got {beta}.")
+        raise ValueError(f"SCOPD beta must be in [0, 1], got {beta}.")
 
     teacher_logits = _flatten_token_logits(teacher_logits)
     student_logits = _flatten_token_logits(student_logits)
@@ -776,7 +776,7 @@ def compute_per_token_generalized_jsd(
     if temperature <= 0.0:
         raise ValueError(f"JSD temperature must be positive, got {temperature}.")
     if beta < 0.0 or beta > 1.0:
-        raise ValueError(f"OPSD beta must be in [0, 1], got {beta}.")
+        raise ValueError(f"SCOPD beta must be in [0, 1], got {beta}.")
 
     teacher_logits = _flatten_token_logits(teacher_logits)
     student_logits = _flatten_token_logits(student_logits)

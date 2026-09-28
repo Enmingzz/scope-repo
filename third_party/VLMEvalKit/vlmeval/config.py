@@ -1519,7 +1519,7 @@ qwen2vl_series = {
     "Qwen": partial(
         Qwen2VLChat,
         model_path=os.environ.get("model_path", "Qwen/Qwen2.5-VL-7B-Instruct"),
-        max_new_tokens=int(os.environ.get("OPSD_EVAL_MAX_NEW_TOKENS", "2048")),
+        max_new_tokens=int(os.environ.get("SCOPD_EVAL_MAX_NEW_TOKENS", "2048")),
         adapter_path=os.environ.get("adapter_path", ""),
         min_pixels=1280 * 28 * 28,
         max_pixels=4096 * 28 * 28,

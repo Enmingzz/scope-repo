@@ -1,169 +1,130 @@
-# SCOPD / SCOPD+ Reproduction
+<div align="center">
 
-Core Qwen2.5-VL-7B training, merged-model image evaluation, and a single
-versioned Qwen27B visual post-processing protocol. Experimental outputs,
-model weights, datasets, personal paths, job histories and credentials are
-not included.
+# SCOPD / SCOPD+
 
-## Methods
+**Post-training vision-language models for visual-token pruning.**
 
-| CLI name | Method |
+[Models on Hugging Face](https://huggingface.co/enmingzhangzz/SCOPD) | [Quick Start](docs/QUICKSTART.md) | [Training](docs/TRAINING.md) | [Evaluation](docs/EVALUATION.md)
+
+</div>
+
+## News
+
+- **2026-09-28:** Released **13 LoRA checkpoints** for Qwen2.5-VL-7B and
+  Qwen3-VL-4B, together with an evaluation bundle, on
+  [Hugging Face](https://huggingface.co/enmingzhangzz/SCOPD).
+- **2026-09-28:** Released the core Qwen2.5-VL-7B training code, pinned runtime
+  sources, and a unified image-aware answer-judging protocol.
+
+## Overview
+
+Visual-token pruning reduces the visual context available to a vision-language
+model. SCOPD and SCOPD+ adapt the language decoder to this compressed input using
+on-policy distillation from a full-visual-context teacher.
+
+| Method | Response-token supervision |
 |---|---|
-| `scopd` | SCOPD: dense forward KL on every generated response token |
-| `scopd+` | SCOPD+: forward KL on the top 10% budget-JSD response tokens |
+| **SCOPD** | Forward KL from the full-context EMA teacher on all generated response tokens. |
+| **SCOPD+** | The same objective on the top 10% of response tokens ranked by student budget sensitivity. |
 
-## Training
+SCOPD+ measures sensitivity using Jensen-Shannon divergence between the
+student's predictions at **10% and 11% visual-token retention**, conditioned on
+the same student-generated response. Token selection is detached; only the
+selected teacher-student KL losses receive gradients. See the
+[training contract](docs/TRAINING.md) for the exact objective and reductions.
 
-The shared core is [train_scopd.py](train_scopd.py). Necessary trainer,
-EMA, optimizer, LoRA and pruning helpers are included under `scopd/`.
+## Models
 
-| Setting | Default |
+All released weights are hosted in **[enmingzhangzz/SCOPD](https://huggingface.co/enmingzhangzz/SCOPD)**.
+The collection contains **LoRA adapters only**, not merged base models.
+Download the matching base model at the revision recorded in each adapter's
+`provenance.json`; merge locally for evaluation using the release instructions.
+
+### Main Checkpoints
+
+| Base model | SCOPD | SCOPD+ | Evaluation |
+|---|---|---|---|
+| Qwen2.5-VL-7B-Instruct | [LoRA](https://huggingface.co/enmingzhangzz/SCOPD/tree/main/models/scopd) | [LoRA](https://huggingface.co/enmingzhangzz/SCOPD/tree/main/models/scopd-plus) | [Quick Start](docs/QUICKSTART.md#evaluation) |
+| Qwen3-VL-4B-Instruct | [LoRA](https://huggingface.co/enmingzhangzz/SCOPD/tree/main/models/qwen3-vl-4b-scopd) | [LoRA](https://huggingface.co/enmingzhangzz/SCOPD/tree/main/models/qwen3-vl-4b-scopd-plus) | [Qwen3 evaluation bundle](https://huggingface.co/enmingzhangzz/SCOPD#run-a-benchmark) |
+
+Qwen3 uses `<analysis>...</analysis><answer>...</answer>` and its own native
+VisionZip wrapper. **The training entry point in this GitHub repository is
+Qwen2.5-specific**; use the Qwen3 runtime provided with the model release for
+Qwen3 evaluation.
+
+<details>
+<summary><strong>Additional Qwen2.5-VL-7B checkpoints</strong></summary>
+
+| Variant | Weights |
 |---|---|
-| Student | Native VisionZip, retention 10% |
-| SCOPD+ probe | Native VisionZip, retention 11%, same response prefix |
-| Teacher | Full image, EMA LoRA, no ground-truth access |
-| Loss | Forward `KL(teacher || student)` in FP32 |
-| Trainable modules | LLM-only LoRA, rank 16, alpha 32, dropout 0 |
-| Learning rate | Constant AdamW, 2e-5 |
-| Effective batch | 32 examples; microbatch 1 per GPU |
-| Response length | At most **1024 new tokens** |
-| Training image budget | **1280** nominal visual tokens |
-| Processor pixel limits | `min_pixels = max_pixels = 1280 * 28 * 28 = 1003520` |
-| Run length | 10240 global examples = 320 optimizer updates |
-| Checkpoint interval | 1024 examples; step-0 and full final state included |
-| Output format | `<think>...</think><answer>...</answer>` |
+| SCOPD+ Top20 | [LoRA](https://huggingface.co/enmingzhangzz/SCOPD/tree/main/models/scopd-plus-top20) |
+| SCOPD+ Top40 | [LoRA](https://huggingface.co/enmingzhangzz/SCOPD/tree/main/models/scopd-plus-top40) |
+| SCOPD+ Top60 | [LoRA](https://huggingface.co/enmingzhangzz/SCOPD/tree/main/models/scopd-plus-top60) |
+| SCOPD+ Reverse KL | [LoRA](https://huggingface.co/enmingzhangzz/SCOPD/tree/main/models/scopd-plus-reverse-kl) |
+| SCOPD+ JSD | [LoRA](https://huggingface.co/enmingzhangzz/SCOPD/tree/main/models/scopd-plus-jsd) |
+| SCOPD Off-Policy | [LoRA](https://huggingface.co/enmingzhangzz/SCOPD/tree/main/models/scopd-offpolicy) |
+| SFT | [LoRA](https://huggingface.co/enmingzhangzz/SCOPD/tree/main/models/sft) |
+| EPIC | [LoRA](https://huggingface.co/enmingzhangzz/SCOPD/tree/main/models/epic) |
+| GRPO | [LoRA](https://huggingface.co/enmingzhangzz/SCOPD/tree/main/models/grpo) |
 
-The actual resized token count can differ because of native grid rounding.
-Use `--image-token-budget` and `--max-new-tokens` to set these budgets explicitly.
-Resume requires both values to match the saved configuration.
+</details>
 
-Activate a compatible environment and reconstruct the patched sources:
+**Top10/20/40/60 refer to response-token selection, not visual-token retention.**
+Checkpoint-specific objectives, base revisions, and weight hashes are listed in
+the release [model index](https://huggingface.co/enmingzhangzz/SCOPD/blob/main/models.json).
+The additional checkpoints are provided for evaluation; this repository exposes
+the two core training methods rather than a trainer for every listed variant.
 
-```bash
-python runtime/prepare.py
-source runtime/activate.sh train
-python -m pip install --no-deps -e .
+## Getting Started
 
-torchrun --standalone --nproc_per_node=4 train_scopd.py \
-  --method scopd+ --model "$BASE_MODEL" \
-  --dataset "$TRAIN_JSONL" --image-root "$IMAGE_ROOT" \
-  --output-dir "$RUN_ROOT/scopd_plus"
-```
+| Task | Guide |
+|---|---|
+| Download and evaluate a released checkpoint | [Model release](https://huggingface.co/enmingzhangzz/SCOPD#download) |
+| Install the pinned training/evaluation runtime | [Environment](docs/ENVIRONMENT.md) |
+| Train SCOPD or SCOPD+ and resume a run | [Quick Start](docs/QUICKSTART.md#training) |
+| Inspect the loss, token selection, EMA, and data contract | [Training](docs/TRAINING.md) |
+| Run benchmarks, merge shards, and judge answers | [Quick Start](docs/QUICKSTART.md#evaluation) |
+| Inspect the judge prompt and scoring policy | [Evaluation](docs/EVALUATION.md) |
 
-Use `--method scopd` for the dense control. One GPU uses the same command with
-`python` instead of `torchrun`; accumulation preserves effective batch 32.
-Use `--max-samples 20480` to consume a prepared ordered file of at least 20480
-entries without wrapping. A 20000-row file is not enough for 20480 examples.
-Use `--max-samples 20000` to consume exactly 20000 rows (625 optimizer updates).
+The core implementation is [train_scopd.py](train_scopd.py). Current training
+defaults use LLM-only LoRA (rank 16, alpha 32, dropout 0), a constant learning
+rate of `2e-5`, effective batch size 32, and 10% student visual retention.
+The response cap is **1024 new tokens**; both image pixel bounds are
+`1280 * 28 * 28`. These are separate budgets.
 
-The ordered 20000-example ID manifest is included in `manifests/`; images,
-questions and training targets are not redistributed. Check a local copy before
-training, including the first 10240 examples used by the default configuration:
-
-```bash
-python scripts/check_training_data.py --dataset "$TRAIN_JSONL" \
-  --image-root "$IMAGE_ROOT" --limit 10240
-```
-
-Resume using identical arguments plus `--resume-latest`. LoRA, AdamW, EMA,
-data position and per-rank RNG must all be present. The final output is a LoRA
-checkpoint, not a merged model.
-
-```bash
-python scripts/merge_lora.py --base-model "$BASE_MODEL" \
-  --adapter "$RUN_ROOT/scopd_plus/final" --output "$MERGED_MODEL"
-```
-
-See [training details](docs/TRAINING.md) and [environment notes](docs/ENVIRONMENT.md).
+The ordered 20K training ID manifest is included under [manifests/](manifests/).
+Images and training targets are not redistributed. Check the local dataset
+before training and preserve its ordering; the default run consumes 10240
+examples, corresponding to 320 optimizer updates.
 
 ## Evaluation
 
-Use a local pinned base/merged checkpoint. Retention is specified directly;
-the entry point converts it to the backend's different parameter convention.
-Do not pass `0.10` directly to the backend's `visionzip_ratio`.
+The image runner supports MME, MMStar, MathVista, MathVerse, MMMU-Pro,
+HallusionBench, CVBench, LogicVista, BLINK, VisOnlyQA, HRBench4K, MMVP,
+MME-RealWorld-Lite, RealWorldQA, POPE, and MathVision-MINI. Exact subsets and
+commands are documented in the [Quick Start](docs/QUICKSTART.md#evaluation).
+Use retention `1.0` for no pruning, or `0.10`, `0.20`, and `0.30` for pruned
+inference. Do not confuse retention with the backend's pruning parameter.
 
-```bash
-source runtime/activate.sh eval
-python -m scopd_eval.infer --model "$MERGED_MODEL" --model-revision "$MODEL_REVISION" \
-  --dataset mmstar --retention 0.10 --output-dir "$EVAL_ROOT/mmstar"
-```
+Every compared method uses the same answer-judging protocol, including MMStar:
+accept deterministic matches directly, then send **all nonmatches** to
+Qwen3.6-27B-FP8 with the question, options, reference answer, candidate answer,
+and original images. This is a versioned evaluation protocol, not a claim of
+equivalence to every benchmark's official judge. Do not mix scores obtained
+with different protocols.
 
-Use `--retention 1` for no pruning. Inference remains greedy with the existing
-reasoning prompt, cap 2048, and evaluation image bounds 1280 to 4096 tokens.
-**The training image-budget change does not change evaluation defaults.**
+## Validation
 
-Supported image tasks: MME, MMStar, MathVista-MINI, MathVerse-MINI-Vision-Only,
-MMMU-Pro-4c, HallusionBench, CVBench, LogicVista, BLINK, VisOnlyQA,
-HRBench4K, MMVP, MME-RealWorld-Lite, RealWorldQA, POPE, MathVision-MINI.
-Use `python -m scopd_eval.infer --help` for their short keys. Independent
-`--shard N --shards K` jobs may each use one GPU; do not score an incomplete
-set of shards as a full-benchmark result.
+Tests cover the loss, token selection, runtime hooks, checkpoint resume,
+inference sharding, and judge request routing. See
+[Tests and Validation](docs/QUICKSTART.md#tests-and-validation).
+The real image-aware judge and a clean-machine installation still require
+end-to-end validation; mock tests are not GPU memory or throughput guarantees.
 
-```bash
-python -m scopd_eval.merge_shards --input-dir "$EVAL_ROOT/mmstar" \
-  --shards 4 --output "$EVAL_ROOT/mmstar/all_predictions.jsonl"
-```
+## Licenses and Acknowledgements
 
-### One Post-Processing Protocol
-
-**MMStar uses the same Qwen3.6-27B-FP8 visual judge as every other exported task.**
-The legacy MMStar 7B fallback is disabled. Processing is:
-
-1. Extract the candidate's final answer and check deterministic equivalence.
-2. If it matches the reference, accept without a judge call.
-3. Otherwise give Qwen27B the candidate final answer, reference answer, original
-   question, options and original image(s).
-4. Judge correctness strictly; never solve the question to repair the candidate.
-5. Retain raw output, deterministic result, judge verdict and provenance separately.
-
-The gate is **all nonmatches**, including parsed wrong answers, not only parse
-failures. All methods use the same gate, prompt, judge checkpoint and images.
-Scores obtained with different judge models, inputs or protocols are not directly
-comparable. Reprocess every compared method under this protocol.
-See [exact prompt and scoring policy](docs/EVALUATION.md).
-
-Start the judge in its separate environment on an allocated GPU:
-
-```bash
-export JUDGE_MODEL_PATH=/path/to/pinned/Qwen3.6-27B-FP8
-export JUDGE_MODEL_REVISION=PINNED_CHECKPOINT_REVISION
-bash scripts/serve_judge.sh
-```
-
-From another shell:
-
-```bash
-python -m scopd_eval.postprocess \
-  --input "$EVAL_ROOT/mmstar/all_predictions.jsonl" \
-  --output-dir "$EVAL_ROOT/mmstar/judged" \
-  --judge-revision "$JUDGE_MODEL_REVISION"
-```
-
-For a single unsharded run, use `shard_000/predictions.jsonl` directly. For
-multiple shards, use the merged file rather than scoring only the first shard.
-
-`--dry-run` checks data and image availability without querying the judge.
-For existing VLMEvalKit files, use `scopd_eval.import_results`; there is no need
-to regenerate responses. A model/parser/judge failure is not silently turned
-into an incorrect answer. Resume uses request fingerprints; changing the model,
-reference, image, candidate, protocol or input file invalidates reuse.
-
-## Tests and Validation
-
-```bash
-source runtime/activate.sh train
-python -m pytest -q
-```
-
-The bundled source overlays are needed even when `transformers.__version__`
-already says 4.57.0. Experiment outputs and model weights are not included.
-Tests cover loss and gradient equivalence, token selection, runtime hooks,
-resume contracts, inference sharding and judge request routing. Tests requiring
-an unavailable dataset or GPU are skipped explicitly. Judge routing uses a mock
-server; the real 27B image-aware judge has not been validated end to end here.
-Large GPU runs and a clean-machine environment installation still need local
-validation; passing unit tests is not a memory guarantee for maximum-length runs.
-
-A private repository under an identifiable account is **not an anonymous
-reviewer link**. Export a source archive without `.git` and check paper/PDF
-metadata separately before a double-blind submission.
+The released adapters are available under the license stated in their
+[model card](https://huggingface.co/enmingzhangzz/SCOPD#license).
+We build on Qwen, Transformers, PEFT, VisionZip, and VLMEvalKit. Third-party
+source notices and licenses are retained; see the
+[attributions](docs/ENVIRONMENT.md#third-party-attribution).

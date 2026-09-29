@@ -15,6 +15,12 @@ from .protocol import digest
 from .runtime import activate
 
 
+def metadata_digest(frame):
+    text = frame.drop(columns=['image'], errors='ignore').astype(str).astype(object)
+    # Pandas 3 string conversion preserves missing values instead of stringifying them.
+    return digest(text.where(text.notna(), None).to_dict('records'))
+
+
 def visionzip_settings(retention):
     if retention == 1:
         return {'enable_visionzip': False, 'visionzip_ratio': 0.0}
@@ -67,7 +73,10 @@ def main():
                 'shard': a.shard, 'shards': a.shards, 'limit': a.limit,
                 'max_new_tokens': a.max_new_tokens, 'min_pixels': a.min_image_tokens * 784,
                 'max_pixels': a.max_image_tokens * 784, 'greedy': True,
-                'metadata_sha256': digest(selected.drop(columns=['image'], errors='ignore').astype(str).to_dict('records'))}
+                'metadata_sha256': metadata_digest(selected)}
+    from .prepare_data import source_metadata
+    if source_metadata(a.dataset) is not None:
+        contract['dataset_source'] = source_metadata(a.dataset)
     work = a.output_dir / f'shard_{a.shard:03d}'
     work.mkdir(parents=True, exist_ok=True)
     with (work / '.infer.lock').open('w') as lock:

@@ -17,6 +17,8 @@ def merge(root, shards, output):
             reference = manifest
         if any(manifest[key] != reference[key] for key in contracts):
             raise ValueError('Shards use different models/configurations')
+        if manifest.get('dataset_source') != reference.get('dataset_source'):
+            raise ValueError('Shards use different dataset sources')
         ids = set(manifest['sample_ids'])
         if ids & all_ids:
             raise ValueError('Overlapping shards')

@@ -1,4 +1,9 @@
 # Separate environment. Do not activate runtime/activate.sh here.
 vllm==0.25.1
 torch==2.11.0
+torchvision==0.26.0
+transformers==5.17.0
+tokenizers==0.23.2
+huggingface-hub==1.33.0
+Pillow==12.3.0
 # The tested build is torch 2.11.0+cu130. Use its matching CUDA wheel index.

@@ -33,6 +33,17 @@ def test_merge_complete_disjoint_shards(tmp_path):
         merge(tmp_path, 2, output)
 
 
+def test_reject_mixed_dataset_releases(tmp_path):
+    write_shard(tmp_path, 0, 'a')
+    write_shard(tmp_path, 1, 'b')
+    path = tmp_path / 'shard_001/input_manifest.json'
+    manifest = json.loads(path.read_text())
+    manifest['dataset_source'] = {'revision': 'another-release'}
+    path.write_text(json.dumps(manifest))
+    with pytest.raises(ValueError, match='dataset sources'):
+        merge(tmp_path, 2, tmp_path / 'all.jsonl')
+
+
 @pytest.mark.parametrize('failure', ['missing', 'incomplete', 'duplicate', 'overlap',
                                      'model', 'smoke', 'dataset'])
 def test_reject_bad_shards_without_publishing_output(tmp_path, failure):

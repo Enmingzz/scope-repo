@@ -10,6 +10,9 @@
 
 ## News
 
+- **2026-09-28:** Added a public one-GPU evaluation Quick Start, verified with
+  fresh environments, public downloads, real generation and Qwen27B judging.
+  See the [validation scope and limitations](docs/VALIDATION.md).
 - **2026-09-28:** Released **13 LoRA checkpoints** for Qwen2.5-VL-7B and
   Qwen3-VL-4B, together with an evaluation bundle, on
   [Hugging Face](https://huggingface.co/enmingzhangzz/SCOPD).
@@ -79,7 +82,7 @@ the two core training methods rather than a trainer for every listed variant.
 
 | Task | Guide |
 |---|---|
-| Download and evaluate a released checkpoint | [Model release](https://huggingface.co/enmingzhangzz/SCOPD#download) |
+| Install, download, merge and evaluate on one GPU | [First Evaluation](docs/QUICKSTART.md#first-evaluation-one-gpu) |
 | Install the pinned training/evaluation runtime | [Environment](docs/ENVIRONMENT.md) |
 | Train SCOPD or SCOPD+ and resume a run | [Quick Start](docs/QUICKSTART.md#training) |
 | Inspect the loss, token selection, EMA, and data contract | [Training](docs/TRAINING.md) |
@@ -118,8 +121,13 @@ with different protocols.
 Tests cover the loss, token selection, runtime hooks, checkpoint resume,
 inference sharding, and judge request routing. See
 [Tests and Validation](docs/QUICKSTART.md#tests-and-validation).
-The real image-aware judge and a clean-machine installation still require
-end-to-end validation; mock tests are not GPU memory or throughput guarantees.
+The public Qwen2.5 evaluation path passed a one-L40S end-to-end smoke from fresh
+environments and public downloads: SCOPD+ generation at 10% and 100% retention,
+real image-aware Qwen27B scoring, and exact resume/cache checks. GPU regression
+tests passed (123 passed, 2 training-data-dependent skips). All 16 image dataset
+loaders and first-sample prompt/record checks passed. These checks are not full
+benchmark scores or maximum-input memory guarantees. See the detailed
+[validation record](docs/VALIDATION.md).
 
 ## Licenses and Acknowledgements
 

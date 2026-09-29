@@ -284,7 +284,10 @@ class Qwen2VLChat(Qwen2VLPromptMixin, BaseModel):
         self.model_path = model_path
         MODEL_CLS = None
 
-        if listinstr(['omni'], model_path.lower()):
+        from transformers import AutoConfig
+        # Composite configs can forward instance attributes to the text config.
+        model_type = type(AutoConfig.from_pretrained(model_path)).model_type
+        if model_type == 'qwen2_5_omni':
             try:
                 from transformers import Qwen2_5OmniForConditionalGeneration, Qwen2_5OmniProcessor
             except Exception as err:
@@ -292,14 +295,16 @@ class Qwen2VLChat(Qwen2VLPromptMixin, BaseModel):
                 raise err
             MODEL_CLS = Qwen2_5OmniForConditionalGeneration
             self.processor = Qwen2_5OmniProcessor.from_pretrained(model_path)
-        elif listinstr(['2.5', '2_5', 'qwen25', 'mimo', 'openvlthinker', 'vision-r1', 'vl-rethinker'], model_path.lower()):
+        elif model_type == 'qwen2_5_vl':
             from transformers import Qwen2_5_VLForConditionalGeneration, AutoProcessor
             MODEL_CLS = Qwen2_5_VLForConditionalGeneration
             self.processor = AutoProcessor.from_pretrained(model_path)
-        else:
+        elif model_type == 'qwen2_vl':
             from transformers import Qwen2VLForConditionalGeneration, Qwen2VLProcessor
             MODEL_CLS = Qwen2VLForConditionalGeneration
             self.processor = Qwen2VLProcessor.from_pretrained(model_path)
+        else:
+            raise ValueError(f'Unsupported model_type for this Qwen2/2.5 evaluator: {model_type}')
 
         gpu_mems = get_gpu_memory()
         max_gpu_mem = max(gpu_mems) if gpu_mems != [] else -1

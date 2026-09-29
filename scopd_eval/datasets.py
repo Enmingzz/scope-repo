@@ -67,6 +67,9 @@ def make_record(dataset, row, response, images):
 
 
 def load(key):
+    from .prepare_data import SOURCES, prepare_dataset
+    if key in SOURCES or key == 'mmmupro':
+        prepare_dataset(key)
     from vlmeval.dataset import build_dataset, ConcatDataset
     if key == 'cvbench':
         ConcatDataset.DATASET_SETS['CVBench'] = ['CV-Bench-2D', 'CV-Bench-3D']

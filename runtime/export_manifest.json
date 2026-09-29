@@ -2543,8 +2543,9 @@
   {
     "file": "third_party/VLMEvalKit/vlmeval/smp/file.py",
     "source_sha256": "da566d1d84084101ee6af46ca02dd68827411f2350545c70bbeba2e7fc0ed233",
-    "export_sha256": "da566d1d84084101ee6af46ca02dd68827411f2350545c70bbeba2e7fc0ed233",
-    "portable_edits": 0
+    "export_sha256": "bd9c32a88101f24abb5d6a7d0bcba99fd151019c74eaa8dadb0164338c01d488",
+    "portable_edits": 0,
+    "additional_export_edit": "Honor image-localization worker limit and CPU affinity; close worker pools; return resolved image paths"
   },
   {
     "file": "third_party/VLMEvalKit/vlmeval/smp/log.py",
@@ -3341,9 +3342,9 @@
   {
     "file": "third_party/VLMEvalKit/vlmeval/vlm/qwen2_vl/model.py",
     "source_sha256": "a903369dd1c6df7749b3a53f2e847fef876a0e5c6ede4da21e445d4e6abce72d",
-    "export_sha256": "ee16d25ca7965aeed38f9209d2665e79dc194cc9c58088b12c38e139edb85674",
+    "export_sha256": "eab5ed626cd9b832d0db0adff9e1ad1373e627d86b07e8d3ce418dbcceb0a4bc",
     "portable_edits": 0,
-    "additional_export_edit": "Portable dependency path or multi-image prompt preservation"
+    "additional_export_edit": "Portable dependency path, multi-image prompt preservation, and config-based model dispatch"
   },
   {
     "file": "third_party/VLMEvalKit/vlmeval/vlm/qwen2_vl/prompt.py",

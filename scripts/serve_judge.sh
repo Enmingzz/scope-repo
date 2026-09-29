@@ -12,6 +12,7 @@ exec vllm serve "$JUDGE_MODEL_PATH" \
   --tensor-parallel-size "${JUDGE_GPUS:-1}" \
   --max-model-len "${JUDGE_CONTEXT:-8192}" \
   --gpu-memory-utilization "${JUDGE_MEMORY_FRACTION:-0.90}" \
-  --limit-mm-per-prompt '{"image": 24, "video": 0}' \
+  --limit-mm-per-prompt "{\"image\": ${JUDGE_MAX_IMAGES:-4}, \"video\": 0}" \
   --mm-processor-kwargs '{"min_pixels": 3136, "max_pixels": 1003520}' \
-  --max-num-seqs "${JUDGE_MAX_SEQS:-2}"
+  --max-num-seqs "${JUDGE_MAX_SEQS:-2}" \
+  --enforce-eager

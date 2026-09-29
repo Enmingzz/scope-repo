@@ -57,12 +57,14 @@ def localize_df(data, dname, nproc=32):
 
     tups = [(root, im, p) for p, im in zip(img_paths, images)]
 
-    pool = mp.Pool(32)
-    ret = pool.map(decode_img_omni, tups)
-    pool.close()
+    limit = int(os.environ.get('VLMEVAL_LOCALIZE_WORKERS', '2'))
+    if limit < 1 or nproc < 1:
+        raise ValueError('Image localization worker count must be positive')
+    cpus = len(os.sched_getaffinity(0)) if hasattr(os, 'sched_getaffinity') else (os.cpu_count() or 1)
+    with mp.Pool(min(nproc, limit, cpus)) as pool:
+        ret = pool.map(decode_img_omni, tups)
     data.pop('image')
-    if 'image_path' not in data:
-        data['image_path'] = [x[0] if len(x) == 1 else x for x in ret]
+    data['image_path'] = [x[0] if len(x) == 1 else x for x in ret]
     return data
 
 

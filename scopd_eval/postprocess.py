@@ -11,7 +11,7 @@ from pathlib import Path
 import time
 import urllib.request
 
-from .protocol import DEFAULT_MODEL, PROTOCOL, exact_match, make_request, validate
+from .protocol import DEFAULT_MODEL, PROTOCOL, exact_match, image_content, make_request, validate
 from .scoring import summarize
 
 
@@ -74,6 +74,8 @@ def run(input_path, output_dir, *, image_root, base_url, model, revision, concur
                       'source': 'deterministic_match' if matched else 'qwen27_pending', 'protocol': PROTOCOL}
             results.append(result)
             if matched:
+                for image in row['images']:
+                    image_content(str(image), Path(image_root))
                 continue
             payload, key, identity = make_request(row, image_root, model, revision)
             result['judge_fingerprint'] = key
